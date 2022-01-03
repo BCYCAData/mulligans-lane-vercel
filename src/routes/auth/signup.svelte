@@ -2,7 +2,9 @@
 	let submitting;
 </script>
 
-<div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+<div
+	class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
+>
 	<div class="bg-white px-6 py-1 rounded shadow-md text-black w-full">
 		<form action="/api/auth/signup" method="post">
 			<h1 class="mb-1 text-xl text-center">Sign up</h1>
@@ -84,7 +86,7 @@
 				type="password"
 				class="block border border-orange-700 w-full p-1 rounded mb-1"
 				name="confirmpassword"
-				required="required"
+				required="true"
 				placeholder="Confirm Password"
 			/>
 
@@ -103,7 +105,10 @@
 				Terms of Service
 			</a>
 			and
-			<a class="no-underline border-b border-grey-dark text-grey-dark" href="/policies/privacy">
+			<a
+				class="no-underline border-b border-grey-dark text-grey-dark"
+				href="/policies/privacy"
+			>
 				Privacy Policy
 			</a>
 		</div>
@@ -111,6 +116,11 @@
 
 	<div class="text-grey-dark mt-3">
 		Already have an account?
-		<a class="no-underline border-b border-blue text-blue" href="../auth/signin/"> Sign in </a>.
+		<a
+			class="no-underline border-b border-blue text-blue"
+			href="../auth/signin/"
+		>
+			Sign in
+		</a>.
 	</div>
 </div>
