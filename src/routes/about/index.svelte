@@ -1,5 +1,5 @@
 <script lang="ts">
-	import BasicMap from '$components/map/Basicmap.svelte';
+	import BasicMap from '$components/map/BasicMap.svelte';
 </script>
 
 <svelte:head>
