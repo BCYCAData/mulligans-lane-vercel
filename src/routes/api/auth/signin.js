@@ -1,5 +1,4 @@
 import supabaseConnection from '$lib/dbClient';
-import { getSession } from './../../../hooks/index';
 
 export async function post(request) {
 	const { user, session, error } = await supabaseConnection.auth.signIn({

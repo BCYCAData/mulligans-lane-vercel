@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+	// @ts-nocheck
+
 	let submitting;
 </script>
 

@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+	// @ts-nocheck
 	import supabaseConnection from '$lib/dbClient';
 
 	export async function surveyResult({ fetch }) {
@@ -27,7 +28,7 @@
 	}
 
 	async function resetPassword() {
-		const { user, error } = await supabase.auth.signIn({
+		const { user, error } = await supabaseConnection.auth.signIn({
 			email: 'example@email.com',
 			password: 'example-password'
 		});
