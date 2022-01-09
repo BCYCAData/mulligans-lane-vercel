@@ -2,6 +2,16 @@
 	export const prerender = true;
 </script>
 
+<script>
+	import Modal from '$components/Modal.svelte';
+	import AddressChallenge from '$components/form/AddressChallenge.svelte';
+
+	let visible = true;
+	export function toggle() {
+		visible = !visible;
+	}
+</script>
+
 <svelte:head>
 	<title>Home</title>
 </svelte:head>
@@ -16,7 +26,7 @@
 			>
 				Strengthening OUR Community
 			</h1>
-			<p class="text-sm md:(text-xl mb-5) max-w-prose leading-relaxed mb-3">
+			<p class="text-sm md:(text-xl mb-5) leading-relaxed mb-3">
 				This project, funded by the Bushfire Community Recovery Resilience Fund,
 				is a response to the community’s feedback following the 2019 bushfires.
 			</p>
@@ -26,7 +36,14 @@
 				knowledge that helps us to tackle whatever natural disaster comes our
 				way.
 			</p>
-
+			{#if visible}
+				<Modal
+					on:exit={() => toggle()}
+					title="Please enter your Street Address and Suburb:"
+				>
+					<AddressChallenge />
+				</Modal>
+			{/if}
 			<p
 				class="text-sm text-gray-900 font-semibold md:(text-xl mb-5) leading-relaxed mb-3"
 			>
@@ -34,6 +51,11 @@
 			</p>
 			<p class="text-sm md:(text-xl mb-7) text-red-500 font-semibold mb-5">
 				Will you join us?
+
+				<span
+					class="text-sm ml-4 md:(text-xl mb-7) text-orange-500 font-semibold mb-5 cursor-pointer hover:font-bold"
+					on:click={() => toggle()}>Click here to continue</span
+				>
 			</p>
 			<p class="text-sm md:(text-xl mb-5) leading-relaxed mb-3">
 				Please complete our initial online survey at <span

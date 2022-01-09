@@ -1,0 +1,27 @@
+[
+    {
+    attributes: {
+      rid: 724712,
+      createdate: 1452272340000,       
+      gurasid: 10010619,
+      principaladdresssiteoid: 1509518,
+      addressstringoid: 96780,
+      addresspointtype: 3,
+      addresspointuncertainty: null,
+      containment: 1,
+      startdate: 1452272387000,
+      enddate: 32503680000000,
+      lastupdate: 1452272425572,
+      msoid: 1226966,
+      centroidid: null,
+      shapeuuid: '3b6773d9-da37-37ee-b058-f4ea7d9f0f0b',
+      changetype: 'M',
+      processstate: null,
+      urbanity: 'S',
+      address: '41 SKYE ROAD BARRINGTON',
+      housenumber: '41'
+        },
+    geometry: { x: 16910587.8675, y: -3759276.0363
+        }
+    }
+]
