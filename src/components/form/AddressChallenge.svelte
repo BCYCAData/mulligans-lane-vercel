@@ -21,7 +21,7 @@
 		<button
 			type="submit"
 			class="w-24 m-4 text-center py-1 rounded-full  cursor-pointer bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1"
-			>Continue</button
+			>Check</button
 		>
 	</div>
 </form>

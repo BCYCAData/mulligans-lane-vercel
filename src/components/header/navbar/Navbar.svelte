@@ -11,11 +11,11 @@
 </script>
 
 <nav class="bg-orange-300">
-	<div class="flex justify-between mx-1 space-x-3 lg:mx-50">
+	<div class="flex justify-between mx-1 lg:mx-50">
 		<Logo />
 		<div class="inline-flex">
 			<!-- Primary Navbar items -->
-			<div class="flex items-center space-x-3">
+			<div class="flex items-center">
 				<div class="hidden md:block">
 					<a
 						class:active={$page.url.pathname.endsWith('/')}
@@ -43,7 +43,7 @@
 		</div>
 
 		<!-- Secondary Navbar items -->
-		<div class="hidden md:flex items-center space-x-3">
+		<div class="hidden md:flex items-center">
 			<a
 				class:active={$page.url.pathname.endsWith('/signin')}
 				sveltekit:prefetch
@@ -51,16 +51,16 @@
 				class="py-0 px-2 font-semibold text-white bg-orange-500 rounded-xl"
 				>Sign In</a
 			>
-			<a
+			<!-- <a
 				class:active={$page.url.pathname.endsWith('/signup')}
 				sveltekit:prefetch
 				href="{base}/auth/signup"
 				class="py-0 px-2 font-semibold text-white bg-orange-500 rounded-xl"
 				>Sign Up</a
-			>
+			> -->
 		</div>
 		<div
-			class="px-8  text-sm text-center font-extrabold text-orange-500 md:hidden"
+			class="-ml-12 mt-auto mb-auto text-sm text-center font-extrabold text-orange-500 md:hidden"
 		>
 			Strengthening Our Community
 		</div>
@@ -126,7 +126,7 @@
 					>Sign In</a
 				>
 			</li>
-			<li>
+			<!-- <li>
 				<a
 					on:click={handleNav}
 					class:active={$page.url.pathname.endsWith('/register')}
@@ -135,7 +135,7 @@
 					class="py-0.5 px-2 font-semibold text-white bg-orange-500 rounded-xl"
 					>Sign Up</a
 				>
-			</li>
+			</li> -->
 		</ul>
 	</div>
 </nav>

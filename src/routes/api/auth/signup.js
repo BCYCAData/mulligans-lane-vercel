@@ -1,9 +1,10 @@
 import supabaseConnection from '$lib/dbClient';
 
-export async function post(request) {
+export async function post({ request }) {
+	const body = await request.formData();
 	const { user, session, error } = await supabaseConnection.auth.signUp({
-		email: request.body.get('email'),
-		password: request.body.get('password')
+		email: body.get('email'),
+		password: body.get('password')
 	});
 
 	if (error) {
@@ -15,6 +16,8 @@ export async function post(request) {
 	} else {
 		console.log('Registered User:  ');
 		console.log(user);
+		console.log('Session:  ');
+		console.log(session);
 	}
 	return {
 		status: 302,

@@ -3,6 +3,7 @@
 	import { fade, fly } from 'svelte/transition';
 
 	export let title;
+	export let instruction;
 
 	/* This component emits an "exit" event when the user requests to exit */
 	const dispatch = createEventDispatcher();
@@ -26,7 +27,10 @@
 		on:click={() => dispatch('exit')}>&times</span
 	>
 	{#if title}
-		<h2 class="mb-1 pt-[15px] text-xl text-center">{title}</h2>
+		<h2 class=" pt-[15px] text-xl text-center">{title}</h2>
+	{/if}
+	{#if instruction}
+		<p class="mb-1 text-base text-center">{instruction}</p>
 	{/if}
 	<slot />
 </div>

@@ -1,19 +1,25 @@
 <script>
-	import { get } from 'svelte/store';
+	// import { get } from 'svelte/store';
 
-	let submitting;
+	// let submitting;
 
-	// const signIn = async () => {};
+	// // const signIn = async () => {};
 
-	async function signIn(e) {
-		const { response } = await fetch('/api/auth/signin.js', {
-			method: 'post',
-			body: new FormData(e.target)
-		});
-	}
+	// async function signIn(e) {
+	// 	let bo = new FormData(e.target);
+	// 	console.log(bo);
+	// 	const response = await fetch('/api/auth/signin.js', {
+	// 		method: 'post',
+	// 		body: new FormData(e.target)
+	// 	});
+
+	// 	console.log(response);
+	// }
 </script>
 
-<div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+<div
+	class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
+>
 	<div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
 		<h1 class="mb-8 text-3xl text-center">Welcome Back</h1>
 		<!-- <form on:submit|preventDefault={signIn}> -->
@@ -23,7 +29,7 @@
 				type="email"
 				class="block border border-orange-700 w-full p-3 rounded mb-4"
 				name="email"
-				required="true"
+				required
 				placeholder="Email"
 				autocomplete="email"
 			/>
@@ -32,7 +38,7 @@
 				type="password"
 				class="block border border-orange-700 w-full p-3 rounded mb-4"
 				name="password"
-				required="true"
+				required
 				placeholder="Password"
 			/>
 			<div class="flex justify-between mt-4 mb-3">
@@ -52,7 +58,10 @@
 	</div>
 	<div class="text-grey-dark mt-6">
 		Not registered?
-		<a class="no-underline border-b border-blue text-blue" href="../auth/signup">
+		<a
+			class="no-underline border-b border-blue text-blue"
+			href="../auth/signup"
+		>
 			Create an account
 		</a>
 	</div>
