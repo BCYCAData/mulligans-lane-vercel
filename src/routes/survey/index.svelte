@@ -1,6 +1,6 @@
 <script>
 	// import Form from './Form.svelte';
-	import ProgressBar from '$components/Form/ProgressBar.svelte';
+	import ProgressBar from '$components/form/ProgressBar.svelte';
 	let steps = ['Info', 'Address', 'Payment', 'Confirmation'],
 		currentActive = 1,
 		progressBar;
