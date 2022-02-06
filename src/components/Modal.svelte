@@ -2,8 +2,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 
-	export let title;
-	export let instruction;
+	// export let title;
+	// export let instruction;
 
 	/* This component emits an "exit" event when the user requests to exit */
 	const dispatch = createEventDispatcher();
@@ -26,19 +26,19 @@
 		class="fixed cursor-pointer hover:font-bold right-0 pr-1"
 		on:click={() => dispatch('exit')}>&times</span
 	>
-	{#if title}
-		<h2 class=" pt-[15px] text-xl text-center">{title}</h2>
+	<!-- {#if title}
+		<h2 class=" pt-[15px] text-base text-center">{title}</h2>
 	{/if}
 	{#if instruction}
-		<p class="mb-1 text-base text-center">{instruction}</p>
-	{/if}
+		<p class="mb-1 text-sm text-center">{instruction}</p>
+	{/if} -->
 	<slot />
 </div>
 
 <style>
-	h2 {
+	/* h2 {
 		padding-top: 15px;
-	}
+	} */
 	.popup-modal {
 		/* width: 400px; */
 		height: min-content;
