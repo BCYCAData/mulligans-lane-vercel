@@ -29,5 +29,6 @@ const pointInPolygon = function (polygon, point) {
 	}
 	//If the number of crossings was odd, the point is in the polygon
 	return odd;
+	//WTF
 };
 export { pointInPolygon as PIP };
