@@ -5,7 +5,7 @@ export async function post({ request }) {
 	const suburb = body.suburb.toUpperCase();
 	let addressString = `${street} ${suburb}`;
 	const addressURL =
-		'https://poral.spatial.nsw.gov.au/server/rest/services/NSW_Geocoded_Addressing_Theme/MapServer/1/query?where=';
+		'https://portal.spatial.nsw.gov.au/server/rest/services/NSW_Geocoded_Addressing_Theme/MapServer/1/query?where=';
 	safeAddressString = addressString.replace(/\s+/g, '+');
 	let addressQuery = `address='${safeAddressString}'`;
 	const addressQueryParams = '&outFields=*&featureEncoding=esriDefault&f=pjson';
