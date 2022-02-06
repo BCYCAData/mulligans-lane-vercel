@@ -4,7 +4,7 @@ export default {
 	features: [
 		{
 			type: 'Feature',
-			properties: { Community: 'MulligansLane' },
+			properties: { Community: 'Mulligans Lane' },
 			geometry: {
 				type: 'MultiPolygon',
 				coordinates: [
