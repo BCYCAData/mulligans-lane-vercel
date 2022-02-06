@@ -11,8 +11,8 @@ export async function post({ request }) {
 	const addressQueryParams = '&outFields=*&featureEncoding=esriDefault&f=pjson';
 	let geocodingFetchUrl = `${addressURL}${addressQuery}${addressQueryParams}`;
 	try {
+		console.log(geocodingFetchUrl);
 		let response = await fetch(geocodingFetchUrl);
-
 		let data = await response.json();
 		if (data.features?.length) {
 			return {
