@@ -1,4 +1,5 @@
 <script>
+	import Spinner from '../Spinner.svelte';
 	import { PIP } from '$lib/spatialUtils';
 	import communityPolygons from '$lib/geojsonData/communities';
 	import { suburbAliases } from '$lib/utils';
@@ -11,7 +12,10 @@
 	export let validAddress;
 	export let community;
 
+	let loading = false;
+
 	async function submitForm() {
+		loading = !loading;
 		searchAddress = `${streetaddress.toUpperCase()} ${suburb.toUpperCase()}`;
 		const aliases = suburbAliases(
 			streetaddress.toUpperCase(),
@@ -54,8 +58,13 @@
 			unchallenged = true;
 			status = 'addressError';
 		}
+		loading = !loading;
 	}
 </script>
+
+{#if loading}
+	<Spinner />
+{/if}
 
 <h2 class=" font-semibold pt-[15px] text-base text-center">
 	Membership is restricted to specific Communities
