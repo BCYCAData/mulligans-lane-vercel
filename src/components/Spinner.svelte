@@ -3,7 +3,7 @@
 	//
 	export let size: string | number = '60';
 	export let unit: string = 'px';
-	export let ballTopLeft: string = '#9EAAB6';
+	export let ballTopLeft: string = '#006400';
 	export let ballTopRight: string = '#FF3E00';
 	export let ballBottomLeft: string = '#44444';
 	export let ballBottomRight: string = '#F46524';
