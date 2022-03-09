@@ -6,16 +6,22 @@ export async function post({ request }) {
 		email: body.get('email'),
 		password: body.get('password')
 	});
-
+	// console.log('Signin: ', user);
+	console.log(user.identities);
 	if (error) {
 		console.log(error.message);
 		return {
-			status: error.status
+			status: error.status,
+			body: error.message
 		};
 	}
 
 	return {
-		status: 201
-		// body: 'Success'
+		status: 302,
+		body: user,
+		headers: {
+			'Set-Cookie': `id=${user.id}; Path=/; Secure; HttpOnly`,
+			location: '/profile'
+		}
 	};
 }

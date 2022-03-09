@@ -1,10 +1,10 @@
-<script context="module" lang="ts">
+<script context="module">
 	export const prerender = true;
 </script>
 
 <script>
 	import Modal from '$components/Modal.svelte';
-	import AddressChallenge from '$components/form/AddressChallenge.svelte';
+	import AddressChallenge from '$components/form/addressChallenge/AddressChallenge.svelte';
 
 	let visible = false;
 	export function toggle() {
@@ -37,11 +37,7 @@
 				way.
 			</p>
 			{#if visible}
-				<Modal
-					on:exit={() => toggle()}
-					title="Membership is restricted to specific Communities"
-					instruction="Please enter your Street Address and Suburb to check your qualification"
-				>
+				<Modal on:exit={() => toggle()}>
 					<AddressChallenge />
 				</Modal>
 			{/if}
@@ -57,7 +53,7 @@
 				class="cursor-pointer no-underline hover:underline m-2 py-1 px-1 font-semibold text-white bg-orange-500 rounded-xl"
 				on:click={() => toggle()}
 			>
-				Click here to find out if you qualify
+				Tap here to find out if you qualify
 			</p>
 
 			<p class="text-base md:(text-xl mb-5) leading-relaxed mb-3">

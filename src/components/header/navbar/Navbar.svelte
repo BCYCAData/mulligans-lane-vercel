@@ -1,5 +1,15 @@
+<script context="module">
+	async function handleSignOut() {
+		console.log('handleSignOut');
+		const response = await fetch('/api/auth/signout.js', {
+			method: 'post'
+		});
+	}
+</script>
+
 <script>
 	import Logo from '$components/header/logo/Logo.svelte';
+	import supabaseConnection from '$lib/dbClient';
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
 
@@ -8,6 +18,8 @@
 	const handleNav = () => {
 		menuOpen = !menuOpen;
 	};
+
+	let aud;
 </script>
 
 <nav class="bg-orange-300">
@@ -44,6 +56,14 @@
 
 		<!-- Secondary Navbar items -->
 		<div class="hidden md:flex items-center">
+			<!-- {#if aud === 'authenticated'} -->
+			<form action="/api/auth/signout" method="post">
+				<button
+					class="py-0 px-2 font-semibold text-white bg-orange-500 rounded-xl"
+					on:click={handleSignOut}>Sign Out</button
+				>
+			</form>
+			<!-- {:else} -->
 			<a
 				class:active={$page.url.pathname.endsWith('/signin')}
 				sveltekit:prefetch
@@ -51,13 +71,7 @@
 				class="py-0 px-2 font-semibold text-white bg-orange-500 rounded-xl"
 				>Sign In</a
 			>
-			<!-- <a
-				class:active={$page.url.pathname.endsWith('/signup')}
-				sveltekit:prefetch
-				href="{base}/auth/signup"
-				class="py-0 px-2 font-semibold text-white bg-orange-500 rounded-xl"
-				>Sign Up</a
-			> -->
+			<!-- {/if} -->
 		</div>
 		<div
 			class="-ml-12 mt-auto mb-auto text-sm text-center font-extrabold text-orange-500 md:hidden"
@@ -126,16 +140,15 @@
 					>Sign In</a
 				>
 			</li>
-			<!-- <li>
-				<a
-					on:click={handleNav}
-					class:active={$page.url.pathname.endsWith('/register')}
-					sveltekit:prefetch
-					href="{base}/auth/signup"
-					class="py-0.5 px-2 font-semibold text-white bg-orange-500 rounded-xl"
-					>Sign Up</a
-				>
-			</li> -->
+			{#if aud === 'authenticated'}
+				<li>
+					<button
+						on:click={handleSignOut}
+						class="py-0.5 px-2 font-semibold text-white bg-orange-500 rounded-xl"
+						>Sign Out</button
+					>
+				</li>
+			{/if}
 		</ul>
 	</div>
 </nav>

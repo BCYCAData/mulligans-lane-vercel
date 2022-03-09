@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import BasicMap from '$components/map/BasicMap.svelte';
 </script>
 

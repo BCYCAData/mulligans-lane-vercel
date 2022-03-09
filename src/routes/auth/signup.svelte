@@ -1,9 +1,3 @@
-<script lang="ts">
-	// @ts-nocheck
-
-	let submitting;
-</script>
-
 <div
 	class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
 >
@@ -15,7 +9,7 @@
 				type="text"
 				class="block border border-orange-700 w-full p-1 rounded mb-1"
 				name="fullname"
-				required="required"
+				required={true}
 				placeholder="Full Name"
 				autocomplete="name"
 			/>
@@ -24,9 +18,10 @@
 				type="text"
 				class="block border border-orange-700 w-full p-1 rounded mb-1"
 				name="streetaddress"
-				required="required"
+				required={true}
 				placeholder="Street Address"
-				autocomplete="address-line1"
+				autocomplete="street-address"
+				style="text-transform:uppercase"
 			/>
 			<div class="inline-block">
 				<input
@@ -34,7 +29,7 @@
 					type="text"
 					class=" border max-w-1/2 border-orange-700 w-full p-1 rounded mb-1"
 					name="suburb"
-					required="required"
+					required={true}
 					placeholder="Suburb"
 					autocomplete="address-level2"
 				/>
@@ -43,7 +38,7 @@
 					type="text"
 					class=" border max-w-1/3 border-orange-700 w-full p-1 rounded mb-1"
 					name="postcode"
-					required="required"
+					required={true}
 					placeholder="Postcode"
 					autocomplete="postal-code"
 				/>
@@ -53,7 +48,7 @@
 				type="tel"
 				class="block border border-orange-700 w-full p-1 rounded mb-1"
 				name="mobile"
-				required="required"
+				required={true}
 				placeholder="Mobile phone number"
 			/>
 			<!-- pattern="[0]{1}[1-9]{3} [0-9]{3} [0-9]{3}" -->
@@ -62,7 +57,7 @@
 				type="username"
 				class="block border border-orange-700 w-full p-1 rounded mb-1"
 				name="username"
-				required="required"
+				required={true}
 				placeholder="User Name"
 				autocomplete="username"
 			/>
@@ -71,7 +66,7 @@
 				type="email"
 				class="block border border-orange-700 w-full p-1 rounded mb-1"
 				name="email"
-				required="required"
+				required={true}
 				placeholder="Email"
 				autocomplete="email"
 			/>
@@ -80,7 +75,7 @@
 				type="password"
 				class="block border border-orange-700 w-full p-1 rounded mb-1"
 				name="password"
-				required="required"
+				required={true}
 				placeholder="Password"
 			/>
 			<input
@@ -88,7 +83,7 @@
 				type="password"
 				class="block border border-orange-700 w-full p-1 rounded mb-1"
 				name="confirmpassword"
-				required="true"
+				required={true}
 				placeholder="Confirm Password"
 			/>
 

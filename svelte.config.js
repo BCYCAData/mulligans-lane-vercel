@@ -1,4 +1,4 @@
-import { resolve } from 'path';
+import path from 'path';
 import adapter from '@sveltejs/adapter-auto';
 import preprocess from 'svelte-preprocess';
 
@@ -16,9 +16,9 @@ const config = {
 			},
 			resolve: {
 				alias: {
-					$components: resolve('./src/components'),
-					$stores: resolve('./src/stores'),
-					$actions: resolve('./src/actions')
+					$components: path.resolve('./src/components'),
+					$stores: path.resolve('./src/stores'),
+					$actions: path.resolve('./src/actions')
 				}
 			}
 		}

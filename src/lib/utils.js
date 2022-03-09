@@ -1,6 +1,6 @@
 import locations from '$lib/geojsonData/locations';
 
-const suburbAliases = function (street, suburb) {
+export const suburbAliases = function (street, suburb) {
 	const result = locations.suburbAlias.filter(function (item) {
 		return item.name == suburb;
 	});
@@ -16,4 +16,32 @@ const suburbAliases = function (street, suburb) {
 	return aliases;
 };
 
-export { suburbAliases };
+let validations = [];
+export const passwordStrength = function (password) {
+	validations = [
+		password.length > 8,
+		password.search(/[A-Z]/) > -1,
+		password.search(/[0-9]/) > -1,
+		password.search(/[$&+,:;=?@#!]/) > -1
+	];
+	strength = validations.reduce((acc, cur) => acc + cur, 0);
+};
+
+export const formatMobile = function (mobileNumber, digit) {
+	mobileNumber += digit;
+	if (mobileNumber.length == 4) {
+		mobileNumber += ' ';
+	}
+	if (mobileNumber.length == 8) {
+		mobileNumber += ' ';
+	}
+	return mobileNumber;
+};
+
+export const formatPhone = function (phoneNumber, digit) {
+	phoneNumber += digit;
+	if (phoneNumber.length == 4) {
+		phoneNumber += ' ';
+	}
+	return phoneNumber;
+};

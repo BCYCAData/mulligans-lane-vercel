@@ -1,6 +1,6 @@
 <script>
-	export let steps = [],
-		currentActive = 1;
+	export let steps = [];
+	export let currentActive = 1;
 	let circles, progress;
 
 	export const handleProgress = (stepIncrement) => {
@@ -18,7 +18,6 @@
 				currentActive = 1;
 			}
 		}
-
 		update();
 	};
 
@@ -36,12 +35,24 @@
 		progress.style.width =
 			((actives.length - 1) / (circles.length - 1)) * 100 + '%';
 	}
+
+	export const skipTo = (e) => {
+		circles = document.querySelectorAll('.circle');
+		currentActive = e.currentTarget.attributes['data-title'].value;
+		update();
+	};
 </script>
 
-<div class="progress-container" bind:this={circles}>
+<div class="progress-container">
 	<div class="progress" bind:this={progress} />
 	{#each steps as step, i}
-		<div class="circle {i == 0 ? 'active' : ''}" data-title={step}>{i + 1}</div>
+		<div
+			class="circle {i == 0 ? 'active' : ''}"
+			data-title={step}
+			on:click={(e) => {
+				skipTo(e);
+			}}
+		/>
 	{/each}
 </div>
 
@@ -50,9 +61,8 @@
 		display: flex;
 		justify-content: space-between;
 		position: relative;
-		margin-bottom: 30px;
-		max-width: 100%;
-		width: 350px;
+		margin-top: 30px;
+		margin-bottom: 10px;
 	}
 
 	.progress-container::before {
@@ -68,7 +78,7 @@
 	}
 
 	.progress {
-		background-color: #3498db;
+		background-color: #fdba74;
 		position: absolute;
 		top: 50%;
 		left: 0;
@@ -83,8 +93,9 @@
 		background-color: #fff;
 		color: #999;
 		border-radius: 50%;
-		height: 30px;
-		width: 30px;
+		height: 15px;
+		margin-right: 5px;
+		width: 15px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -96,16 +107,16 @@
 	.circle::after {
 		content: attr(data-title) ' ';
 		position: absolute;
-		bottom: 35px;
+		bottom: 15px;
 		color: #999;
 		transition: 0.4s ease;
 	}
 
 	.circle.active::after {
-		color: #3498db;
+		color: #f97316;
 	}
 
 	.circle.active {
-		border-color: #3498db;
+		border-color: #f97316;
 	}
 </style>
