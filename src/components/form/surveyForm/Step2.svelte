@@ -6,6 +6,8 @@
 		accessOptions
 	} from '$lib/surveyOptions';
 
+	// export let survey_responses;
+
 	/**
 	 * Need to get the validAddress & searchAddress from the address challenge into a store
 	 * and validate this address OR populate the address
@@ -43,7 +45,7 @@
 					<input
 						name="residency_profile"
 						type="radio"
-						bind:group={surveyData.residencyOptions}
+						bind:group={surveyData.residency_profile}
 						{value}
 					/>
 					<label for="residency_profile"> {lable}</label>

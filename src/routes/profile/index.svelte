@@ -1,6 +1,13 @@
 <script>
 	import { db } from '$lib/dbClient';
 
+	export let survey_responses;
+
+	export let error;
+
+	console.log('survey_responses:', survey_responses);
+	console.log('error:', error);
+
 	console.log('Profile:', db.auth.user());
 	let profileData = {
 		fullname: 'Alan Keown',
