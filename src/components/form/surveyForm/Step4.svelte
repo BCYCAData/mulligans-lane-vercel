@@ -1,5 +1,9 @@
 <script>
-	import { yesNoMaybeOptions, yesNoOptions } from '$lib/surveyOptions';
+	import {
+		surveyData,
+		yesNoMaybeOptions,
+		yesNoOptions
+	} from '$lib/surveyOptions';
 	import NumberInput from '$components/form/inputs/NumberInput.svelte';
 	let live_stock_present = false;
 	let live_stock_safe_area = 'N';
@@ -11,10 +15,26 @@
 		<h3>Please record the number of pets you have on this property</h3>
 		<div class=" py-2 px-2 rounded-lg bg-[#FDBA74]">
 			<ul class="inline-grid grid-cols-1 gap-4">
-				<NumberInput name="number_dogs" lable="Dogs" />
-				<NumberInput name="number_dogs" lable="Cats" />
-				<NumberInput name="number_dogs" lable="Birds" />
-				<NumberInput name="number_dogs" lable="Other" />
+				<NumberInput
+					name="number_dogs"
+					lable="Dogs"
+					bind:value={surveyData.number_dogs}
+				/>
+				<NumberInput
+					name="number_cats"
+					lable="Cats"
+					bind:value={surveyData.number_cats}
+				/>/>
+				<NumberInput
+					name="number_birds"
+					lable="Birds"
+					bind:value={surveyData.number_birds}
+				/>
+				<NumberInput
+					name="number_other_pets"
+					lable="Other"
+					bind:value={surveyData.number_other_pets}
+				/>
 			</ul>
 		</div>
 	</div>
@@ -30,6 +50,7 @@
 							}}
 							name="live_stock_present"
 							type="radio"
+							bind:group={surveyData.live_stock_present}
 							{value}
 						/>
 						<label for="live_stock_present"> {lable}</label>
@@ -52,6 +73,7 @@
 								}}
 								name="live_stock_safe_area"
 								type="radio"
+								bind:group={surveyData.live_stock_safe_area}
 								{value}
 							/>
 							<label for="live_stock_safe_area"> {lable}</label>
@@ -74,6 +96,8 @@
 									}}
 									name="share_livestock_safe_area"
 									type="radio"
+									live_stock_present
+									bind:group={surveyData.share_livestock_safe_area}
 									{value}
 								/>
 								<label for="share_livestock_safe_area"> {lable}</label>

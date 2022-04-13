@@ -1,5 +1,6 @@
 <script>
 	import {
+		surveyData,
 		residencyOptions,
 		yesNoOptions,
 		accessOptions
@@ -30,6 +31,7 @@
 				on:change={(e) => {
 					validateAddress(e);
 				}}
+				bind:value={surveyData.property_address}
 			/>
 		</div>
 	</div>
@@ -38,7 +40,12 @@
 		<ul class="py-1 px-2 p-0 rounded-lg bg-[#FDBA74]">
 			{#each residencyOptions as { value, lable }}
 				<li>
-					<input name="residency_profile" type="radio" {value} />
+					<input
+						name="residency_profile"
+						type="radio"
+						bind:group={surveyData.residencyOptions}
+						{value}
+					/>
 					<label for="residency_profile"> {lable}</label>
 				</li>
 			{/each}
@@ -53,7 +60,12 @@
 			<ul class="flex justify-center px-3">
 				{#each yesNoOptions as { value, lable }}
 					<li class="flex-auto">
-						<input name="sign_posted" type="radio" {value} />
+						<input
+							name="sign_posted"
+							type="radio"
+							bind:group={surveyData.sign_posted}
+							{value}
+						/>
 						<label for="sign_posted"> {lable}</label>
 					</li>
 				{/each}
@@ -92,6 +104,7 @@
 							}}
 							name="truck_access"
 							type="radio"
+							bind:group={surveyData.truck_access}
 							{value}
 						/>
 						<label for="truck_access"> {lable}</label>

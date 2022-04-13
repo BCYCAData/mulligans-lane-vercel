@@ -1,4 +1,4 @@
-import { db, dbAuth } from '$lib/dbClient';
+import { db } from '$lib/dbClient';
 
 export async function post({ request }) {
 	const body = await request.formData();
