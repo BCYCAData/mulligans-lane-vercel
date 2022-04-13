@@ -6,10 +6,7 @@
 	import Modal from '$components/Modal.svelte';
 	import AddressChallenge from '$components/form/addressChallenge/AddressChallenge.svelte';
 
-	let visible = false;
-	export function toggle() {
-		visible = !visible;
-	}
+	let modalVisible = false;
 </script>
 
 <svelte:head>
@@ -36,8 +33,8 @@
 				knowledge that helps us to tackle whatever natural disaster comes our
 				way.
 			</p>
-			{#if visible}
-				<Modal on:exit={() => toggle()}>
+			{#if modalVisible}
+				<Modal on:exit={() => (modalVisible = !modalVisible)}>
 					<AddressChallenge />
 				</Modal>
 			{/if}
@@ -51,11 +48,11 @@
 			</p>
 			<p
 				class="cursor-pointer no-underline hover:underline m-2 py-1 px-1 font-semibold text-white bg-orange-500 rounded-xl"
-				on:click={() => toggle()}
+				on:click={() => (modalVisible = !modalVisible)}
 			>
 				Tap here to find out if you qualify
 			</p>
-
+			<!-- <div>DBUser = {$dbUser}</div> -->
 			<p class="text-base md:(text-xl mb-5) leading-relaxed mb-3">
 				Please complete our initial online survey at <span
 					><a href="https://forms.gle/z6dHgPxJbS7AhGLa6"

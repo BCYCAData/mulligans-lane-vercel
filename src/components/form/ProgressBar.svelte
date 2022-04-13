@@ -3,7 +3,7 @@
 	export let currentActive = 1;
 	let circles, progress;
 
-	export const handleProgress = (stepIncrement) => {
+	export const handleProgress = (/** @type {number} */ stepIncrement) => {
 		circles = document.querySelectorAll('.circle');
 		if (stepIncrement == 1) {
 			currentActive++;
@@ -22,13 +22,18 @@
 	};
 
 	function update() {
-		circles.forEach((circle, idx) => {
-			if (idx < currentActive) {
-				circle.classList.add('active');
-			} else {
-				circle.classList.remove('active');
+		circles.forEach(
+			(
+				/** @type {{ classList: { add: (arg0: string) => void; remove: (arg0: string) => void; }; }} */ circle,
+				/** @type {number} */ idx
+			) => {
+				if (idx < currentActive) {
+					circle.classList.add('active');
+				} else {
+					circle.classList.remove('active');
+				}
 			}
-		});
+		);
 
 		const actives = document.querySelectorAll('.active');
 
@@ -36,7 +41,9 @@
 			((actives.length - 1) / (circles.length - 1)) * 100 + '%';
 	}
 
-	export const skipTo = (e) => {
+	export const skipTo = (
+		/** @type {MouseEvent & { currentTarget: EventTarget & HTMLDivElement; }} */ e
+	) => {
 		circles = document.querySelectorAll('.circle');
 		currentActive = e.currentTarget.attributes['data-title'].value;
 		update();

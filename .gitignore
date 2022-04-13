@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
+/work
 /build
+/design
 /.svelte-kit
 /package
 TODO.txt

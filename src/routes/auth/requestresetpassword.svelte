@@ -1,18 +1,16 @@
 <script>
-	import supabaseConnection from '$lib/dbClient';
-	import { supabaseRedirectBase } from '$lib/dbClient';
+	import { db, supabaseRedirectBase } from '$lib/dbClient';
 
 	let systemError = false;
 
 	async function resetPassword() {
 		console.log('Base: ', supabaseRedirectBase);
-		const { data, error } =
-			await supabaseConnection.auth.api.resetPasswordForEmail(
-				'bcycadata@outlook.com',
-				{
-					redirectTo: `${supabaseRedirectBase}/auth/resetpassword`
-				}
-			);
+		const { data, error } = await db.auth.api.resetPasswordForEmail(
+			'bcycadata@outlook.com',
+			{
+				redirectTo: `${supabaseRedirectBase}/auth/resetpassword`
+			}
+		);
 		console.log('Data: ', data);
 		console.log('Error: ', error);
 		if (error) {
@@ -25,7 +23,8 @@
 	class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
 >
 	<div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-		<form on:submit|preventDefault={resetPassword}>
+		<form action="/api/auth/resetpassword" method="POST">
+			<!-- <form on:submit|preventDefault={resetPassword}> -->
 			<h1 class="mb-8 text-3xl text-center">Reset Password</h1>
 			<input
 				id="email"

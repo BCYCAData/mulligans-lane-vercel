@@ -1,6 +1,6 @@
 import locations from '$lib/geojsonData/locations';
 
-export const suburbAliases = function (street, suburb) {
+export const suburbAliases = (street, suburb) => {
 	const result = locations.suburbAlias.filter(function (item) {
 		return item.name == suburb;
 	});
@@ -9,7 +9,7 @@ export const suburbAliases = function (street, suburb) {
 		for (let address of result[0].alternative) {
 			aliases = [
 				...aliases,
-				`${street.toUpperCase()} ${address.toUpperCase()}`
+				`${street.toUpperCase()}, ${address.toUpperCase()}`
 			];
 		}
 	}
@@ -17,17 +17,17 @@ export const suburbAliases = function (street, suburb) {
 };
 
 let validations = [];
-export const passwordStrength = function (password) {
+export const passwordStrength = (password) => {
 	validations = [
 		password.length > 8,
 		password.search(/[A-Z]/) > -1,
 		password.search(/[0-9]/) > -1,
 		password.search(/[$&+,:;=?@#!]/) > -1
 	];
-	strength = validations.reduce((acc, cur) => acc + cur, 0);
+	let strength = validations.reduce((acc, cur) => acc + cur, 0);
 };
 
-export const formatMobile = function (mobileNumber, digit) {
+export const formatMobile = (mobileNumber, digit) => {
 	mobileNumber += digit;
 	if (mobileNumber.length == 4) {
 		mobileNumber += ' ';
@@ -38,7 +38,7 @@ export const formatMobile = function (mobileNumber, digit) {
 	return mobileNumber;
 };
 
-export const formatPhone = function (phoneNumber, digit) {
+export const formatPhone = (phoneNumber, digit) => {
 	phoneNumber += digit;
 	if (phoneNumber.length == 4) {
 		phoneNumber += ' ';

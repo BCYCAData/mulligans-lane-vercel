@@ -10,7 +10,7 @@
 	 * and validate this address OR populate the address
 	 */
 	const validateAddress = (e) => {
-		console.log(e.currentTarget.value);
+		console.log('Validate address:  ', e.currentTarget.value);
 	};
 	let otherAccessChecked = false;
 </script>

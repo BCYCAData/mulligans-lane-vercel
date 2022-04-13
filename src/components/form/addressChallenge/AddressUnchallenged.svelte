@@ -16,22 +16,35 @@
 
 	async function submitForm() {
 		loading = !loading;
-		searchAddress = `${streetaddress.toUpperCase()} ${suburb.toUpperCase()}`;
+		searchAddress = `${streetaddress.toUpperCase()}, ${suburb.toUpperCase()}`;
+		let found = [];
+		let notFound = [];
+		let error = [];
+		// const response = await fetch('/api/data/propertyGeoscape', {
+		// 	method: 'POST',
+		// 	body: JSON.stringify({ searchAddress })
+		// });
+		// if (response.status === 400) {
+		// 	error = [...error, ['addressError', response]];
+		// } else if (response.status === 404) {
+		// 	notFound = [...notFound, ['addressNotFound', response]];
+		// } else {
+		// 	found = [...found, ['addressFound', await response.json()]];
+		// }
 		const aliases = suburbAliases(
 			streetaddress.toUpperCase(),
 			suburb.toUpperCase()
 		);
-		let found = [];
-		let notFound = [];
-		let error = [];
 		for (let address of aliases) {
-			const response = await fetch('/api/data/property', {
+			const response = await fetch('/api/data/propertyNSWSS', {
 				method: 'POST',
 				body: JSON.stringify({ address })
 			});
 			if (response.status === 400) {
 				error = [...error, ['addressError', response]];
 			} else if (response.status === 404) {
+				notFound = [...notFound, ['addressNotFound', response]];
+			} else if (response.status === 500) {
 				notFound = [...notFound, ['addressNotFound', response]];
 			} else {
 				found = [...found, ['addressFound', await response.json()]];

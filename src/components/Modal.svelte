@@ -7,7 +7,7 @@
 
 	/* This component emits an "exit" event when the user requests to exit */
 	const dispatch = createEventDispatcher();
-	const onKeyDown = (e) => {
+	const onKeyDown = (/** @type {{ keyCode: number; }} */ e) => {
 		// keycode 27 is the Escape key
 		if (e.keyCode === 27) {
 			dispatch('exit');

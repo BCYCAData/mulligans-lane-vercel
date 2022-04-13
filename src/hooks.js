@@ -1,16 +1,35 @@
-export function getSession(event) {
-	// console.log('request.headers: ', event.request.headers);
-	console.log('locals: ', event.locals);
-	return event.locals.user
-		? {
-				user: {
-					// only include properties needed client-side —
-					// exclude anything else attached to the user
-					// like access tokens etc
-					name: event.locals.user.name,
-					email: event.locals.user.email,
-					avatar: event.locals.user.avatar
-				}
-		  }
-		: {};
+import * as cookie from 'cookie';
+// import { db } from '$lib/dbClient';
+
+export async function handle({ event, resolve }) {
+	const cookies = cookie.parse(event.request.headers.get('cookie') || '');
+	if (cookies && cookies.user) {
+		event.locals.user = cookies.user;
+		event.locals.signInError = cookies.signInError;
+		event.locals.authEvent = cookies.authEvent;
+	} else {
+		event.locals.user = 'guest';
+		event.locals.signInError = '';
+		event.locals.authenticated = false;
+		event.locals.authEvent = '';
+	}
+	if (event.locals.user !== 'guest') {
+		event.locals.authenticated = true;
+	}
+
+	const response = await resolve(event, {});
+	// console.log('handle event:', JSON.stringify(event));
+	// console.log('handle response:', JSON.stringify(response));
+
+	return response;
+}
+
+export async function getSession(event) {
+	// console.log('session event:', JSON.stringify(event));
+	return {
+		user: event.locals.user,
+		signInError: event.locals.signInError,
+		authenticated: event.locals.authenticated,
+		authEvent: event.locals.authEvent
+	};
 }

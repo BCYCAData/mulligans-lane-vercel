@@ -8,6 +8,7 @@ export async function post({ request }) {
 	let geocodingFetchUrl = `${addressURL}${addressQuery}${addressQueryParams}`;
 	try {
 		let response = await fetch(geocodingFetchUrl);
+
 		let data = await response.json();
 		if (data.features.length > 0) {
 			return {
@@ -24,6 +25,7 @@ export async function post({ request }) {
 			};
 		}
 	} catch (error) {
+		console.log('error:  ', error);
 		return {
 			status: 400,
 			body: {

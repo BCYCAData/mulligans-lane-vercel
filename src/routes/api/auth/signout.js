@@ -1,21 +1,23 @@
-import supabaseConnection from '$lib/dbClient';
+import { db } from '$lib/dbClient';
 
 export async function post({ request }) {
-	const { error } = await supabaseConnection.auth.signOut();
-
+	const { error } = await db.auth.signOut();
 	if (error) {
-		// return validation errors
-		return {
-			status: 400,
-			body: { error }
-		};
+		console.log('Sign Out Error:  ', error.message);
 	}
-
-	// redirect to the newly created item
+	console.log('Signout on server');
+	let message = 'guest';
+	let id = '';
 	return {
-		status: 303,
+		status: 302,
 		headers: {
-			location: '/'
+			'set-cookie': [
+				`user=${message}; Path=/; HttpOnly`,
+				`authEvent=SIGNED_OUT; Path=/; HttpOnly`,
+				`signInError=none; Path=/; HttpOnly`,
+				`token=${id}; Path=/; HttpOnly`
+			],
+			location: '/auth/signout'
 		}
 	};
 }

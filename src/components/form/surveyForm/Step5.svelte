@@ -7,7 +7,6 @@
 
 	let selectedStaticSources = new Set();
 	const unCheckAllStaticWater = (e) => {
-		console.log(noneChecked);
 		if (e.currentTarget.checked) {
 			for (const source of selectedStaticSources) {
 				source.checked = false;

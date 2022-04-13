@@ -1,25 +1,14 @@
-<script context="module">
-	async function handleSignOut() {
-		console.log('handleSignOut');
-		const response = await fetch('/api/auth/signout.js', {
-			method: 'post'
-		});
-	}
-</script>
-
 <script>
 	import Logo from '$components/header/logo/Logo.svelte';
-	import supabaseConnection from '$lib/dbClient';
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
+	import { session } from '$app/stores';
 
 	let menuOpen = true;
 
 	const handleNav = () => {
 		menuOpen = !menuOpen;
 	};
-
-	let aud;
 </script>
 
 <nav class="bg-orange-300">
@@ -56,22 +45,30 @@
 
 		<!-- Secondary Navbar items -->
 		<div class="hidden md:flex items-center">
-			<!-- {#if aud === 'authenticated'} -->
-			<form action="/api/auth/signout" method="post">
-				<button
+			{#if $session['authenticated']}
+				<form action="/api/auth/signout" method="post">
+					<!-- <form on:submit|preventDefault={handleSubmit}> -->
+					<button
+						class="py-0 px-2 font-semibold text-white bg-orange-500 rounded-xl"
+						>Sign Out</button
+					>
+				</form>
+				<!-- <a
+					class:active={$page.url.pathname.endsWith('/signin')}
+					sveltekit:prefetch
+					href="{base}/auth/signout"
 					class="py-0 px-2 font-semibold text-white bg-orange-500 rounded-xl"
-					on:click={handleSignOut}>Sign Out</button
+					>Sign Out</a
+				> -->
+			{:else}
+				<a
+					class:active={$page.url.pathname.endsWith('/signin')}
+					sveltekit:prefetch
+					href="{base}/auth/signin"
+					class="py-0 px-2 font-semibold text-white bg-orange-500 rounded-xl"
+					>Sign In</a
 				>
-			</form>
-			<!-- {:else} -->
-			<a
-				class:active={$page.url.pathname.endsWith('/signin')}
-				sveltekit:prefetch
-				href="{base}/auth/signin"
-				class="py-0 px-2 font-semibold text-white bg-orange-500 rounded-xl"
-				>Sign In</a
-			>
-			<!-- {/if} -->
+			{/if}
 		</div>
 		<div
 			class="-ml-12 mt-auto mb-auto text-sm text-center font-extrabold text-orange-500 md:hidden"
@@ -130,24 +127,38 @@
 					>Contact Us</a
 				>
 			</li>
-			<li>
-				<a
-					on:click={handleNav}
-					class:active={$page.url.pathname.endsWith('/signin')}
-					sveltekit:prefetch
-					href="{base}/auth/signin"
-					class="py-0.5 px-2 font-semibold text-white bg-orange-500 rounded-xl"
-					>Sign In</a
-				>
-			</li>
-			{#if aud === 'authenticated'}
+			{#if $session['authenticated']}
 				<li>
-					<button
+					<!-- <button
 						on:click={handleSignOut}
 						class="py-0.5 px-2 font-semibold text-white bg-orange-500 rounded-xl"
 						>Sign Out</button
+					> -->
+
+					<form action="/api/auth/signout" method="post">
+						<!-- <form on:submit|preventDefault={handleSubmit}> -->
+						<button
+							class="py-0 px-2 font-semibold text-white bg-orange-500 rounded-xl"
+							>Sign Out</button
+						>
+					</form>
+
+					<a
+						class:active={$page.url.pathname.endsWith('/signin')}
+						sveltekit:prefetch
+						href="{base}/auth/signout"
+						class="py-0 px-2 font-semibold text-white bg-orange-500 rounded-xl"
+						>Sign Out</a
 					>
 				</li>
+			{:else}
+				<a
+					class:active={$page.url.pathname.endsWith('/signin')}
+					sveltekit:prefetch
+					href="{base}/auth/signin"
+					class="py-0 px-2 font-semibold text-white bg-orange-500 rounded-xl"
+					>Sign In</a
+				>
 			{/if}
 		</ul>
 	</div>

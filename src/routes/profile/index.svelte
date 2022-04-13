@@ -1,6 +1,7 @@
 <script>
-	import supabaseConnection from '$lib/dbClient';
+	import { db } from '$lib/dbClient';
 
+	console.log('Profile:', db.auth.user());
 	let profileData = {
 		fullname: 'Alan Keown',
 		property_address: '',
@@ -49,10 +50,6 @@
 	};
 
 	async function updateProfile() {
-		const { user, error } = await supabaseConnection.auth.signIn({
-			email: 'example@email.com',
-			password: 'example-password'
-		});
 		let p = 'p';
 	}
 </script>
@@ -174,4 +171,3 @@
 		>
 	</form>
 </div>
-<!-- </div> -->

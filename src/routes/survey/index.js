@@ -1,9 +1,9 @@
-import supabaseConnection from '$lib/dbClient';
+import { db } from '$lib/dbClient';
 
 // // params.id comes from route path/items/[id].js
 // export async function get({ params }) {
 // 	console.log('Params:  ', params);
-// 	// const a = await supabaseConnection.get(params.id);
+// 	// const a = await db.get(params.id);
 // 	const a = 'Bewdy';
 // 	if (a) {
 // 		return {
@@ -22,7 +22,7 @@ export async function post({ request }) {
 	const bodyObject = getFormBody(body);
 	console.log('Body:  ', bodyObject);
 
-	// const { data, error } = await supabaseConnection
+	// const { data, error } = await db
 	// 	.from('tablename')
 	// 	.insert([{ bodyObject }]); //{name: 'value', field: 'value'}
 }

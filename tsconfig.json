@@ -24,7 +24,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"baseUrl": ".",
 		"allowJs": true,
-		"checkJs": true,
+		"checkJs": false,
 		"paths": {
 			"$lib": [
 				"src/lib"
@@ -38,8 +38,10 @@
 			"$components/*": [
 				"src/components/*"
 			],
-		}
+		},
+		"outDir": "./dist"
 	},
+	"extends": "./.svelte-kit/tsconfig.json",
 	"include": [
 		"src/**/*.d.ts",
 		"src/**/*.ts",

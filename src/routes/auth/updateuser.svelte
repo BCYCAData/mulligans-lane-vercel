@@ -1,44 +1,70 @@
+<!-- <script context="module">
+	import { db } from '$lib/dbClient';
+	export async function load({ stuff }) {
+		return {
+			props: {
+				email: db.auth.session().user.email
+			}
+		};
+	}
+</script> -->
 <script>
+	import { session } from '$app/stores';
+
 	// @ts-nocheck
 
-	import supabaseConnection from '$lib/dbClient';
 	import { supabaseRedirectBase } from '$lib/dbClient';
+	import { db } from '$lib/dbClient';
 
+	export let redirectType;
+
+	$: email = '';
+
+	db.auth.onAuthStateChange(async (event, _session) => {
+		email = _session.user.email;
+		console.log('Supabase event: ', event);
+	});
 	let strength = 0;
 	let validations = [];
 	let showPassword = false;
 	let password = '';
 	let confirmPassword = '';
-	let email = '';
+	let heading = '';
+	let submitText = '';
 
+	if (redirectType == 'invite') {
+		heading = 'Please Set a Password';
+		submitText = 'Set Password';
+	}
 	function validatePassword(e) {
 		const password = e.target.value;
 		validations = [
 			password.length > 8,
 			password.search(/[A-Z]/) > -1,
 			password.search(/[0-9]/) > -1,
-			password.search(/[$&+,:;=?@#!]/) > -1
+			password.search(/[$&+,:;=?#^!]/) > -1
 		];
 		strength = validations.reduce((acc, cur) => acc + cur, 0);
 	}
 
-	async function resetPassword() {
-		console.log('Base: ', supabaseRedirectBase);
-		const { data, error } =
-			await supabaseConnection.auth.api.resetPasswordForEmail(email, {
-				redirectTo: `${supabaseRedirectBase}/signin`
-			});
-		console.log('Data: ', data);
-		console.log('Error: ', error);
-	}
+	// async function handleSubmit() {
+	// 	console.log('Base: ', supabaseRedirectBase);
+	// 	const { data, error } = await db.auth.api.resetPasswordForEmail(email, {
+	// 		redirectTo: `${supabaseRedirectBase}/signin`
+	// 	});
+	// 	console.log('Data: ', data);
+	// 	console.log('Error: ', error);
+	// }
 </script>
 
+<!-- <pre>{JSON.stringify(load().url)}</pre> -->
 <div
 	class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
 >
 	<div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-		<form on:submit|preventDefault={resetPassword}>
-			<h1 class="mb-8 text-3xl text-center">Reset Password</h1>
+		<form action="/api/auth/updateuser" method="POST">
+			<!-- <form on:submit|preventDefault={handleSubmit}> -->
+			<h1 class="mb-8 text-3xl text-center">{heading}</h1>
 			<label
 				class="inline uppercase tracking-wide text-orange-500 text-xs font-bold"
 				for="email">Email:</label
@@ -106,23 +132,29 @@
 
 			<ul>
 				<li>
-					{validations[0] ? '🏆' : '❌'} must be at least 5 characters
+					<span class="text-[10px]">{validations[0] ? '🏆' : '❌'}</span>
+					<span class="text-base"> must be at least 5 characters</span>
 				</li>
 				<li>
-					{validations[1] ? '🏆' : '❌'} must contain a capital letter
+					<span class="text-[10px]">{validations[1] ? '🏆' : '❌'}</span>
+					<span class="text-base"> must contain a capital letter</span>
 				</li>
-				<li>{validations[2] ? '🏆' : '❌'} must contain a number</li>
 				<li>
-					{validations[3] ? '🏆' : '❌'} must contain one symbol ($&+,:;=?@!#)
+					<span class="text-[10px]">{validations[2] ? '🏆' : '❌'}</span>
+					<span class="text-base"> must contain a number</span>
+				</li>
+				<li>
+					<span class="text-[10px]">{validations[3] ? '🏆' : '❌'}</span>
+					<span class="text-base"> must contain one symbol ($&+,:;=?#^!)</span>
 				</li>
 			</ul>
 
-			<button disabled={strength < 4}>Sign Up</button>
+			<!-- <button disabled={strength < 4}>Sign Up</button> -->
 			<button
 				type="submit"
 				class="w-full text-center py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1"
 				disabled={strength < 4 && { confirmPassword } !== { password }}
-				>Send Password Reset Link</button
+				>{submitText}</button
 			>
 		</form>
 	</div>
