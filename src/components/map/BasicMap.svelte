@@ -49,7 +49,7 @@
 	});
 </script>
 
-<div id="map" class="m-4 h-550px w-750px" />
+<div id="map" class="m-4 h-1/2 w-3/4 " />
 
 <style>
 	@import 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.css';

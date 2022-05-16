@@ -2,11 +2,6 @@
 	import SurveyFormContainer from '$components/form/surveyForm/SurveyFormContainer.svelte';
 	import ProgressBar from '$components/form/ProgressBar.svelte';
 
-	export let survey_responses;
-	console.log('survey_responses: ', survey_responses);
-	export let error;
-	console.log('error: ', error);
-
 	let steps = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
 	let currentActive = 1;
 	let progressBar;
@@ -20,7 +15,9 @@
 	};
 </script>
 
-<div class="w-auto h-full">
+<section
+	class="flex flex-col items-center mt-5 sm:mt-1 mx-auto h-full w-full sm:w-11/12 text-gray-800"
+>
 	<SurveyFormContainer active_step={steps[currentActive - 1]} />
 	<ProgressBar
 		{steps}
@@ -42,4 +39,4 @@
 			hidden={currentActive == steps.length}>Next</button
 		>
 	</div>
-</div>
+</section>

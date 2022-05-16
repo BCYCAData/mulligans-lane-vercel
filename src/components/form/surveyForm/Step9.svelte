@@ -3,22 +3,24 @@
 	import TextAreaInput from '../inputs/TextAreaInput.svelte';
 </script>
 
-<div class="w-screen py-3 px-3 p-0 bg-[#FFEFD5]">
-	<div>
+<div>
+	<div class="pt-5">
 		<h3>What information sheets would be useful to you?</h3>
-		<ul class="py-1 px-2 p-0 rounded-lg bg-[#FDBA74]">
-			{#each informationSheetOptions as { value, lable }}
-				<li>
-					<input name="information_sheet_choices" type="checkbox" {value} />
-					<label for="information_sheet_choices"> {lable}</label>
-				</li>
-			{/each}
-		</ul>
+		<div class="rounded-lg bg-orange-300">
+			<ul class="list-none sm:text-xl">
+				{#each informationSheetOptions as { value, lable }}
+					<li>
+						<input name="information_sheet_choices" type="checkbox" {value} />
+						<label for="information_sheet_choices"> {lable}</label>
+					</li>
+				{/each}
+			</ul>
+		</div>
 	</div>
 	<TextAreaInput
 		headingText="Are there other information sheets that you would find useful?"
-		divClass="py-2 px-2 rounded-lg bg-[#FDBA74]"
+		divClass="p-3 rounded-lg bg-orange-300 sm:text-xl"
 		nameText="other_information_sheet"
-		textAreaClass="w-full resize-y"
+		textAreaClass="w-full resize-y sm:text-xl"
 	/>
 </div>

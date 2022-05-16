@@ -1,7 +1,7 @@
 export const residencyOptions = [
 	{ value: 1, lable: 'Resident at the property fulltime ' },
 	{ value: 2, lable: 'Present large proportion of time' },
-	{ value: 3, lable: 'Occaissional short periods away' },
+	{ value: 3, lable: 'Occasional short periods away' },
 	{ value: 4, lable: 'At the property regularly (at least every month)' },
 	{ value: 5, lable: 'At the property occasionally' },
 	{
@@ -64,7 +64,7 @@ export const fireFightingExperienceOptions = [
 export const yesNoSendOptions = [
 	{ value: 'Y', lable: 'Yes' },
 	{ value: 'N', lable: 'No' },
-	{ value: 'S', lable: 'Please send me one' }
+	{ value: 'S', lable: 'Please send one' }
 ];
 
 export const stayGoOptions = [
@@ -119,7 +119,11 @@ export const accessOptions = [
 ];
 
 export let surveyData = {
+	first_name: '',
+	family_name: '',
 	property_address: '',
+	home_address: '',
+	contact_address: '',
 	residency_profile: '',
 	sign_posted: true,
 	truck_access: '',

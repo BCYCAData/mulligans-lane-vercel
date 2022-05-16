@@ -1,10 +1,7 @@
-import { db, supabaseRedirectBase } from '$lib/dbClient';
+import { db } from '$lib/dbClient';
 
 export async function post({ request }) {
-	let removeCookie = '';
 	const body = await request.formData();
-	const email = body.get('email');
-	const password = body.get('password');
 	const { user, error } = await db.auth.signUp({
 		email: body.get('email'),
 		password: body.get('password')
@@ -38,46 +35,3 @@ export async function post({ request }) {
 		}
 	};
 }
-// let data, redirect, cookie;
-// let currentCookie = request.headers.get('cookie');
-// if (null !== currentCookie) {
-// 	// console.log('Cookie Exists: ', request.headers.get('cookie'));
-// 	removeCookie = `${currentCookie}; Path=/; HttpOnly; expires=Thu, 01-Jan-1970 00:00:01 GMT`;
-// }
-// if (error) {
-// 	console.log('Signup error:  ', error);
-// 	data = {};
-// 	cookie = `error=${error.message}`;
-// 	redirect = '/';
-// } else {
-// 	data = user;
-// 	cookie = `aud=${user.aud}`;
-// 	redirect = '/auth/checkyouremail';
-// }
-// if (removeCookie !== '') {
-// 	return {
-// 		status: 302,
-// 		body: data,
-// 		headers: {
-// 			// 'Set-Cookie': [
-// 			// 	'error=Invalid login credentials; Path=/; HttpOnly; expires=Thu, 01-Jan-1970 00:00:01 GMT',
-// 			// 	`${cookie}; Path=/; HttpOnly`
-// 			// ],
-// 			'Set-Cookie': [
-// 				'error=Invalid login credentials; Path=/; HttpOnly; expires=Thu, 01-Jan-1970 00:00:01 GMT',
-// 				`${cookie}; Path=/; HttpOnly`
-// 			],
-// 			location: redirect
-// 		}
-// 	};
-// }
-// return {
-// 	status: 302,
-// 	body: data,
-// 	headers: {
-// 		'Set-Cookie': `${cookie}; Path=/; HttpOnly`,
-// 		location: redirect
-// 	}
-// };
-// }
-// async function checkUser(email, validAddres, searchAddress, fullname) {}

@@ -24,17 +24,17 @@
 	// }
 </script>
 
-<div
-	class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
->
-	<div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-		<h1 class="mb-8 text-3xl text-center">Welcome Back</h1>
+<div class="container max-w-sm max-w-screen-xsm mx-auto">
+	<div
+		class="bg-white p-6 sm:ml-0 rounded shadow-md text-black w-5/6 sm:w-full"
+	>
+		<h1 class="text-2xl text-center">Welcome Back</h1>
 		<form action="/api/auth/signin" method="POST">
 			<!-- <form on:submit|preventDefault={handleSubmit}> -->
 			<input
 				id="email"
 				type="email"
-				class="block border border-orange-700 w-full p-3 rounded mb-4"
+				class="block text-xl border border-orange-700 w-full py-3 rounded mb-4"
 				name="email"
 				required={true}
 				placeholder="Email"
@@ -43,7 +43,7 @@
 			<input
 				id="password"
 				type="password"
-				class="block border border-orange-700 w-full p-3 rounded mb-4"
+				class="block text-xl border border-orange-700 w-full py-3 rounded mb-4"
 				name="password"
 				required={true}
 				placeholder="Password"
@@ -51,9 +51,9 @@
 			<div class="flex justify-between mt-4 mb-3">
 				<a
 					href="/auth/requestresetpassword"
-					class="text-sm text-gray-600 dark:text-gray-400 hover:underline"
+					class="text-sm font-semibold text-orange-600 dark:text-gray-400 hover:underline"
 				>
-					Forgot Your Password?
+					Forgot Your Password? &lt&lt&lt
 				</a>
 			</div>
 			{#if $session['signInError'] !== 'none' && $session['signInError'] !== ''}
@@ -75,7 +75,7 @@
 	<div class="text-grey-dark mt-6">
 		Not registered?
 		<button
-			class="text-center py-0 px-5 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1"
+			class="text-center py-1 px-5 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1"
 			on:click={() => (modalVisible = !modalVisible)}
 		>
 			Create an account

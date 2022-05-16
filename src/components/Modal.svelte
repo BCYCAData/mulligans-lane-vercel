@@ -18,7 +18,8 @@
 <svelte:window on:keydown={onKeyDown} />
 <div class="shadow" transition:fade={{ duration: 200 }} />
 <div
-	class="popup-modal"
+	id="popup-modal"
+	class="top-1/2 left-1/4 -translate-x-1/4 -translate-y-1/2 w-[90%] sm:top-1/2 md:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-auto"
 	in:fade={{ duration: 300 }}
 	out:fly={{ y: 500, duration: 400 }}
 >
@@ -26,26 +27,13 @@
 		class="fixed cursor-pointer hover:font-bold right-0 pr-1"
 		on:click={() => dispatch('exit')}>&times</span
 	>
-	<!-- {#if title}
-		<h2 class=" pt-[15px] text-base text-center">{title}</h2>
-	{/if}
-	{#if instruction}
-		<p class="mb-1 text-sm text-center">{instruction}</p>
-	{/if} -->
 	<slot />
 </div>
 
 <style>
-	/* h2 {
-		padding-top: 15px;
-	} */
-	.popup-modal {
-		/* width: 400px; */
+	#popup-modal {
 		height: min-content;
 		position: fixed;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
 		box-shadow: 1px 2px 2px hsla(209deg, 61%, 16%, 0.075),
 			2px 4px 4px hsla(209deg, 61%, 16%, 0.075),
 			4px 8px 8px hsla(209deg, 61%, 16%, 0.075),

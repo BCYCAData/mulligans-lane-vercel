@@ -6,7 +6,9 @@
 	<title>About</title>
 </svelte:head>
 
-<div class="content">
+<section
+	class="flex flex-col items-center mx-auto mt-10 sm:mt-1 h-full max-w-3xl text-gray-800 text-center"
+>
 	<h1>About this app</h1>
 
 	<h3>We have a project</h3>
@@ -16,6 +18,5 @@
 		Connect<br />
 		Rebound
 	</p>
-</div>
-
-<BasicMap />
+	<BasicMap />
+</section>

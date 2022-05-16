@@ -5,7 +5,6 @@ export async function post({ request }) {
 	if (error) {
 		console.log('Sign Out Error:  ', error.message);
 	}
-	console.log('Signout on server');
 	let message = 'guest';
 	let id = '';
 	return {

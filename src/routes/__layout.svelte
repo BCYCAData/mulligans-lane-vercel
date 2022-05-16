@@ -1,7 +1,11 @@
 <script context="module">
+	let showFooter = true;
 	export async function load({ url, session }) {
-		console.log(session);
-		// console.log(url);
+		showFooter = true;
+		if (url.pathname.includes('/profile')) {
+			showFooter = false;
+		}
+
 		if (
 			(url.pathname === '/profile' && session.user === 'guest') ||
 			(url.pathname === '/profile' && session.user === '')
@@ -18,6 +22,7 @@
 	import { session } from '$app/stores';
 	import Navbar from '$components/header/navbar/Navbar.svelte';
 	import '../app.css';
+	import 'uno.css';
 
 	db.auth.onAuthStateChange(async (event, _session) => {
 		if (event === 'SIGNED_IN') {
@@ -32,28 +37,28 @@
 				}
 			}
 		}
-		// else {
-		// 	session.set({ user: { guest: true } });
-		// 	await unsetAuthCookie();
-		// }
-		console.log('Supabase event: ', event);
 	});
 </script>
 
-<!-- 
-<Header /> -->
-<div class="flex flex-col h-screen overflow-hidden">
-	<header class="w-full">
+<div class="grid w-11/12 mx-auto min-h-screen" id="wrapper">
+	<header class="col-span-8 row-span-1">
 		<Navbar />
 	</header>
-	<main class="flex flex-1 overflow-y-scroll">
-		<div class="container mx-auto">
-			<slot />
-		</div>
-	</main>
-	<footer
-		class="flex  justify-center items-center p-2 bg-orange-600 text-light-600 w-full"
-	>
-		<p>Building a safer connected community</p>
-	</footer>
+	<!-- <aside>Aside</aside> -->
+	<main class="col-span-8 row-span-22"><slot /></main>
+	{#if showFooter}
+		<footer class="col-span-8 row-span-1 sticky bottom-0">
+			<div
+				class="flex content-center items-center justify-center bg-orange-600 text-light-600 w-full h-[45px]"
+			>
+				<h3>Building a safer connected community</h3>
+			</div>
+		</footer>
+	{/if}
 </div>
+
+<style>
+	#wrapper {
+		grid-template-rows: auto 1fr auto;
+	}
+</style>

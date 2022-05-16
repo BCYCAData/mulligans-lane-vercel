@@ -10,12 +10,6 @@ export async function post({ request }) {
 	return {
 		status: 302,
 		headers: {
-			// 'set-cookie': [
-			// 	`user=${message}; Path=/; HttpOnly`,
-			// 	`authEvent=SIGNED_IN; Path=/; HttpOnly`,
-			// 	`signInError=none; Path=/; HttpOnly`,
-			// 	`token=${id}; Path=/; HttpOnly`
-			// ],
 			location: '/profile'
 		}
 	};

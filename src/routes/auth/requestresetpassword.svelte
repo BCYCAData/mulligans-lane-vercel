@@ -19,17 +19,17 @@
 	}
 </script>
 
-<div
-	class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
->
-	<div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
+<div class="container max-w-sm max-w-screen-xsm mx-auto">
+	<div
+		class="bg-white p-6 ml-1.5 sm:ml-0 rounded shadow-md text-black w-5/6 sm:w-full"
+	>
 		<form action="/api/auth/resetpassword" method="POST">
 			<!-- <form on:submit|preventDefault={resetPassword}> -->
 			<h1 class="mb-8 text-3xl text-center">Reset Password</h1>
 			<input
 				id="email"
 				type="email"
-				class="block border border-orange-700 w-full p-3 rounded mb-4"
+				class="block text-xl border border-orange-700 w-full py-3 rounded mb-4"
 				name="email"
 				required={true}
 				placeholder="Email"

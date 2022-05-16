@@ -50,7 +50,7 @@
 	};
 </script>
 
-<div class="progress-container">
+<div class="progress-container z-50">
 	<div class="progress" bind:this={progress} />
 	{#each steps as step, i}
 		<div
@@ -59,7 +59,9 @@
 			on:click={(e) => {
 				skipTo(e);
 			}}
-		/>
+		>
+			.
+		</div>
 	{/each}
 </div>
 
@@ -101,7 +103,7 @@
 		color: #999;
 		border-radius: 50%;
 		height: 15px;
-		margin-right: 5px;
+		/* margin-right: 5px; */
 		width: 15px;
 		display: flex;
 		align-items: center;
@@ -114,7 +116,7 @@
 	.circle::after {
 		content: attr(data-title) ' ';
 		position: absolute;
-		bottom: 15px;
+		bottom: 20px;
 		color: #999;
 		transition: 0.4s ease;
 	}

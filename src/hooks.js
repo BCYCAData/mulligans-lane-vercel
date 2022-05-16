@@ -18,14 +18,11 @@ export async function handle({ event, resolve }) {
 	}
 
 	const response = await resolve(event, {});
-	// console.log('handle event:', JSON.stringify(event));
-	// console.log('handle response:', JSON.stringify(response));
 
 	return response;
 }
 
 export async function getSession(event) {
-	// console.log('session event:', JSON.stringify(event));
 	return {
 		user: event.locals.user,
 		signInError: event.locals.signInError,

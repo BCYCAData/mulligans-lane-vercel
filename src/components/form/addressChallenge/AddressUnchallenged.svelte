@@ -94,7 +94,7 @@
 	<input
 		id="streetaddress"
 		type="text"
-		class="block border border-orange-700 w-full p-1 rounded mb-1"
+		class="block border border-orange-700 w-full py-3 rounded mb-1"
 		name="streetaddress"
 		required={true}
 		placeholder="Street Address"
@@ -106,7 +106,7 @@
 		<input
 			id="suburb"
 			type="text"
-			class=" border max-w-1/2 border-orange-700 w-30% object-left p-1 rounded mb-1"
+			class=" border max-w-1/2 border-orange-700 w-30% object-left py-3 rounded mb-1"
 			name="suburb"
 			required
 			placeholder="Suburb"

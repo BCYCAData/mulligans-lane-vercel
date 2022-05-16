@@ -18,18 +18,18 @@
 	let otherAccessChecked = false;
 </script>
 
-<div class="w-screen py-3 px-3 p-0 bg-[#FFEFD5]">
-	<div>
+<div>
+	<div class="py-5">
 		<h3>What is your property address?</h3>
-		<div class="py-2 px-2 p-0 rounded-lg bg-[#FDBA74]">
+		<div class="p-2 rounded-lg bg-orange-300">
 			<input
 				type="text"
 				id="property_address"
 				name="property_address"
-				class="block border w-full max-w-3xl border-orange-700 p-1 rounded"
+				class="block border w-full border-orange-700 rounded sm:text-xl"
 				placeholder="Property Address"
 				autocomplete="street-address"
-				style="text-transform:uppercase"
+				style="text-transform:uppercase sm:text-xl"
 				on:change={(e) => {
 					validateAddress(e);
 				}}
@@ -39,13 +39,14 @@
 	</div>
 	<div>
 		<h3>Are you:</h3>
-		<ul class="py-1 px-2 p-0 rounded-lg bg-[#FDBA74]">
+		<ul class="list-none p-3 rounded-lg bg-orange-300  sm:text-xl">
 			{#each residencyOptions as { value, lable }}
 				<li>
 					<input
 						name="residency_profile"
 						type="radio"
 						bind:group={surveyData.residency_profile}
+						class="m-1"
 						{value}
 					/>
 					<label for="residency_profile"> {lable}</label>
@@ -58,32 +59,33 @@
 		<h3>
 			Is your property well sign_posted and numbered clearly from the road?
 		</h3>
-		<div class="py-2 px-2 rounded-lg bg-[#FDBA74]">
-			<ul class="flex justify-center px-3">
-				{#each yesNoOptions as { value, lable }}
-					<li class="flex-auto">
-						<input
-							name="sign_posted"
-							type="radio"
-							bind:group={surveyData.sign_posted}
-							{value}
-						/>
-						<label for="sign_posted"> {lable}</label>
-					</li>
-				{/each}
-			</ul>
-		</div>
+		<ul
+			class="list-none  p-3 flex justify-start rounded-lg bg-orange-300  sm:text-xl"
+		>
+			{#each yesNoOptions as { value, lable }}
+				<li class="flex-none px-3">
+					<input
+						name="sign_posted"
+						type="radio"
+						bind:group={surveyData.sign_posted}
+						{value}
+					/>
+					<label for="sign_posted"> {lable}</label>
+				</li>
+			{/each}
+		</ul>
 	</div>
 	<div>
 		<h3>Is there easy access to property and paddocks?</h3>
-		<ul class="py-1 px-2 p-0 rounded-lg bg-[#FDBA74]">
+		<ul class="list-none p-3 rounded-lg bg-orange-300  sm:text-xl">
 			{#each accessOptions as { value, lable }}
 				{#if lable === 'Other'}
-					<li class="flex justify-start place-items-center">
+					<li class="justify-start place-items-center">
 						<input
 							on:change={(e) => {
 								otherAccessChecked = true;
 							}}
+							class="m-1"
 							name="truck_access"
 							type="radio"
 							{value}
@@ -92,7 +94,7 @@
 
 						<input
 							type="text"
-							class="flex-1 border w-auto border-orange-700  rounded mb-1"
+							class="flex-1 border w-auto border-orange-700 rounded mb-1"
 							id="truck_access_other"
 							name="truck_access_other"
 							hidden={otherAccessChecked === false}
@@ -116,3 +118,11 @@
 		</ul>
 	</div>
 </div>
+
+<style>
+	ul {
+		margin-block-start: 10px;
+		margin-block-end: 10px;
+		padding-inline-start: 20px;
+	}
+</style>

@@ -3,23 +3,25 @@
 	import TextAreaInput from '../inputs/TextAreaInput.svelte';
 </script>
 
-<div class="w-screen py-3 px-3 p-0 bg-[#FFEFD5]">
-	<div>
+<div>
+	<div class="pt-5">
 		<h3>What community meetings would be useful to you?</h3>
-		<ul class="py-1 px-2 p-0 rounded-lg bg-[#FDBA74]">
-			{#each communityMeetingOptions as { value, lable }}
-				<li>
-					<input name="community_meeting_choices" type="checkbox" {value} />
-					<label for="community_meeting_choices"> {lable}</label>
-				</li>
-			{/each}
-		</ul>
+		<div class="rounded-lg bg-orange-300">
+			<ul class="list-none sm:text-xl">
+				{#each communityMeetingOptions as { value, lable }}
+					<li>
+						<input name="community_meeting_choices" type="checkbox" {value} />
+						<label for="community_meeting_choices"> {lable}</label>
+					</li>
+				{/each}
+			</ul>
+		</div>
 	</div>
 	<TextAreaInput
 		headingText="If there are other events you would be interested in, please add them
 			below."
-		divClass="py-2 px-2 rounded-lg bg-[#FDBA74]"
+		divClass="p-3 rounded-lg bg-orange-300 sm:text-xl"
 		nameText="other_community_meeting"
-		textAreaClass="w-full resize-y"
+		textAreaClass="w-full resize-y sm:text-xl"
 	/>
 </div>

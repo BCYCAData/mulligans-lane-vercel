@@ -1,10 +1,11 @@
 <script>
-	import logo from './hall_logo_image.png';
+	// import logo from './hall_logo_image.png';
+	import logo from './hall_logo_image_90px.png';
 </script>
 
-<div class="flex">
+<div>
 	<a
-		class=" w-11"
+		class=" absolute top-0"
 		aria-label="Hall photo"
 		href="https://www.facebook.com/Burrell-Creek-Youth-and-Community-Association-Inc-1584955455117833/?__tn__=-UC*F"
 	>

@@ -3,32 +3,34 @@
 	import TextAreaInput from '../inputs/TextAreaInput.svelte';
 </script>
 
-<div class="w-screen py-3 px-3 p-0 bg-[#FFEFD5]">
-	<div>
+<div>
+	<div class="pt-5">
 		<h3>
 			Which of these community initiated workshops would be useful to you?
 		</h3>
-		<ul class="py-1 px-2 p-0 rounded-lg bg-[#FDBA74]">
-			{#each communityWorkshopOptions as { value, lable }}
-				<li>
-					<input name="community_workshop_choices" type="checkbox" {value} />
-					<label for="community_workshop_choices"> {lable}</label>
-				</li>
-			{/each}
-		</ul>
+		<div class="rounded-lg bg-orange-300">
+			<ul class="list-none sm:text-xl">
+				{#each communityWorkshopOptions as { value, lable }}
+					<li>
+						<input name="community_workshop_choices" type="checkbox" {value} />
+						<label for="community_workshop_choices"> {lable}</label>
+					</li>
+				{/each}
+			</ul>
+		</div>
 	</div>
 	<TextAreaInput
 		headingText="If there are other workshops that you would like to see run, please add
 			the details here"
-		divClass="py-2 px-2 rounded-lg bg-[#FDBA74]"
+		divClass="p-3 rounded-lg bg-orange-300 sm:text-xl"
 		nameText="other_community_workshop"
-		textAreaClass="w-full resize-y"
+		textAreaClass="w-full resize-y sm:text-xl"
 	/>
 	<TextAreaInput
 		headingText="If you would like to help run any of the workshops, please indicate which
 			ones below."
-		divClass="py-2 px-2 rounded-lg bg-[#FDBA74]"
+		divClass="p-3 rounded-lg bg-orange-300 sm:text-xl"
 		nameText="will_run_community_workshops"
-		textAreaClass="w-full resize-y"
+		textAreaClass="w-full resize-y sm:text-xl"
 	/>
 </div>

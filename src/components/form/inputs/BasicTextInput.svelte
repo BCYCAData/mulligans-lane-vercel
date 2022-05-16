@@ -8,7 +8,7 @@
 
 <div>
 	<h3>{headingText}</h3>
-	<div class="py-2 px-2 p-0 rounded-lg bg-[#FDBA74]">
+	<div class="py-2 px-2 p-0 rounded-lg bg-orange-100">
 		<!-- <li> -->
 		<input
 			type="text"

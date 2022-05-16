@@ -46,22 +46,13 @@
 		];
 		strength = validations.reduce((acc, cur) => acc + cur, 0);
 	}
-
-	// async function handleSubmit() {
-	// 	console.log('Base: ', supabaseRedirectBase);
-	// 	const { data, error } = await db.auth.api.resetPasswordForEmail(email, {
-	// 		redirectTo: `${supabaseRedirectBase}/signin`
-	// 	});
-	// 	console.log('Data: ', data);
-	// 	console.log('Error: ', error);
-	// }
 </script>
 
 <!-- <pre>{JSON.stringify(load().url)}</pre> -->
-<div
-	class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
->
-	<div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
+<div class="container max-w-sm max-w-screen-xsm mx-auto">
+	<div
+		class="bg-white p-6 ml-1.5 sm:ml-0 rounded shadow-md text-black w-5/6 sm:w-full"
+	>
 		<form action="/api/auth/updateuser" method="POST">
 			<!-- <form on:submit|preventDefault={handleSubmit}> -->
 			<h1 class="mb-8 text-3xl text-center">{heading}</h1>
@@ -72,7 +63,7 @@
 			<input
 				id="email"
 				type="email"
-				class="block border border-orange-700 w-full p-3 rounded mb-4"
+				class="block text-xl border border-orange-700 w-full py-3 rounded mb-4"
 				name="email"
 				required={true}
 				placeholder="Email"
@@ -93,14 +84,13 @@
 			<input
 				id="password"
 				type={showPassword ? 'text' : 'password'}
-				class="block border border-orange-700 w-full p-3 rounded mb-4"
+				class="block text-xl border border-orange-700 w-full py-3 rounded mb-4"
 				name="password"
 				required={true}
 				placeholder="New Password"
 				on:input={validatePassword}
 				value={password}
 			/>
-			<div>{strength}</div>
 			<label
 				class="inline uppercase tracking-wide text-orange-500 text-xs font-bold"
 				for="confirmPassword"
@@ -116,7 +106,7 @@
 			<input
 				id="confirmPassword"
 				type={showPassword ? 'text' : 'password'}
-				class="block border border-orange-700 w-full p-3 rounded mb-4"
+				class="block text-xl border border-orange-700 w-full py-3 rounded mb-4"
 				name="confirmPassword"
 				required={true}
 				placeholder="Confirm New Password"
@@ -130,7 +120,7 @@
 				<span class="bar bar-4" class:bar-show={strength > 3} />
 			</div>
 
-			<ul>
+			<ul class="list-none">
 				<li>
 					<span class="text-[10px]">{validations[0] ? '🏆' : '❌'}</span>
 					<span class="text-base"> must be at least 5 characters</span>

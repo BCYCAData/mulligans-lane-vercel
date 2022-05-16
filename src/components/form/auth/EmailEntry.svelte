@@ -32,7 +32,7 @@
 			<input
 				id="email"
 				type="email"
-				class="block border border-orange-700 w-full p-3 rounded mb-4"
+				class="block border border-orange-700 w-full py-3 rounded mb-4"
 				name="email"
 				required={true}
 				placeholder="Email"
