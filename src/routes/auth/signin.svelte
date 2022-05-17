@@ -13,15 +13,6 @@
 			$session['signInError'] = 'none';
 		}
 	}
-	// import { db } from '$lib/dbClient';
-
-	// async function handleSubmit(e) {
-	// 	const formData = new FormData(e.target);
-	// 	const { user, error } = await db.auth.signIn({
-	// 		email: formData.get('email'),
-	// 		password: formData.get('password')
-	// 	});
-	// }
 </script>
 
 <div class="container max-w-sm max-w-screen-xsm mx-auto">
