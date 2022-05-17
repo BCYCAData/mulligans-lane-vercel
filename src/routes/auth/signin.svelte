@@ -72,13 +72,4 @@
 			Create an account
 		</button>
 	</div>
-	<!-- <div class="text-grey-dark mt-6">
-		Not registered?
-		<a
-			class="no-underline border-b border-blue text-blue"
-			href="../auth/signup"
-		>
-			Create an account
-		</a>
-	</div> -->
 </div>
