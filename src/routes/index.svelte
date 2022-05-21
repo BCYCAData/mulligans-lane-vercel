@@ -17,7 +17,7 @@
 	class="flex flex-col items-center text-center mt-5 sm:mt-1 mx-auto h-full max-w-3xl text-gray-800"
 >
 	<h1
-		class="title-font font-bold underline hidden sm:block sm:text-2xl sm:font-bold text-orange-600"
+		class="title-font font-bold underline hidden sm:block sm:text-2xl text-orange-600"
 	>
 		Strengthening OUR Community
 	</h1>
