@@ -1,5 +1,6 @@
 import path from 'path';
-import adapter from '@sveltejs/adapter-auto';
+// import adapter from '@sveltejs/adapter-auto';
+import vercel from '@sveltejs/adapter-vercel';
 import preprocess from 'svelte-preprocess';
 import Unocss from 'unocss/vite';
 
@@ -10,7 +11,7 @@ const config = {
 	preprocess: [preprocess({})],
 
 	kit: {
-		adapter: adapter(),
+		adapter: vercel(),
 		vite: {
 			define: {
 				'process.env': process.env
