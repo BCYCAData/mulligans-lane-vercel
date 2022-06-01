@@ -8,7 +8,16 @@ export async function get() {
 			'static_water_available,have_stortz,stortz_size,fire_fighting_assets,fire_hazard_reduction'
 		)
 		.eq('id', _session.user.id);
-	console.log('profileAssets:', profileAssets);
+
+	if (null == profileAssets[0].static_water_available) {
+		profileAssets[0].static_water_available = [];
+	}
+	if (null == profileAssets[0].fire_fighting_assets) {
+		profileAssets[0].fire_fighting_assets = [];
+	}
+	if (null == profileAssets[0].fire_hazard_reduction) {
+		profileAssets[0].fire_hazard_reduction = [];
+	}
 	if (error) {
 		console.log('error profileAssets:', error);
 		return {

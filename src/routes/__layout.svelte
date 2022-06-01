@@ -1,10 +1,10 @@
 <script context="module">
 	let showFooter = true;
 	export async function load({ url, session }) {
-		showFooter = true;
-		if (url.pathname.includes('/profile')) {
-			showFooter = false;
-		}
+		// showFooter = true;
+		// if (url.pathname.includes('/profile')) {
+		// 	showFooter = false;
+		// }
 
 		if (
 			(url.pathname === '/profile' && session.user === 'guest') ||

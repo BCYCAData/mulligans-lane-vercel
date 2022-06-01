@@ -8,7 +8,9 @@ export async function get() {
 			'community_workshop_choices,other_community_workshop,will_run_community_workshops'
 		)
 		.eq('id', _session.user.id);
-
+	if (null == profileWorkshops[0].community_workshop_choices) {
+		profileWorkshops[0].community_workshop_choices = [];
+	}
 	console.log('profileWorkshops:', profileWorkshops);
 	if (error) {
 		console.log('error profileWorkshops:', error);

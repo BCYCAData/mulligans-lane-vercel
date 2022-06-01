@@ -11,7 +11,7 @@
 </script>
 
 <!-- <p>Redirecting</p> -->
-{supabaseRedirectType}
+<!-- {supabaseRedirectType} -->
 {#if supabaseRedirectType === 'invite'}
 	<PasswordEntry />
 {/if}

@@ -19,7 +19,7 @@
 	}
 </script>
 
-<div class="container max-w-sm max-w-screen-xsm mx-auto">
+<div class="flex flex-col items-center max-w-sm max-w-screen-xsm mx-auto">
 	<div
 		class="bg-white p-6 ml-1.5 sm:ml-0 rounded shadow-md text-black w-5/6 sm:w-full"
 	>

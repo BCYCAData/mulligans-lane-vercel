@@ -7,9 +7,11 @@
 	let unsaved = false;
 	let modalVisible = false;
 
-	beforeNavigate(({ to, cancel }) => {
-		if (!unsaved) return; // nothing to do
-		modalVisible = !modalVisible;
+	beforeNavigate(async ({ cancel }) => {
+		if (unsaved) {
+			cancel();
+			modalVisible = !modalVisible;
+		}
 	});
 </script>
 

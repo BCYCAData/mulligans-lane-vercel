@@ -20,17 +20,7 @@
 		let found = [];
 		let notFound = [];
 		let error = [];
-		// const response = await fetch('/api/data/propertyGeoscape', {
-		// 	method: 'POST',
-		// 	body: JSON.stringify({ searchAddress })
-		// });
-		// if (response.status === 400) {
-		// 	error = [...error, ['addressError', response]];
-		// } else if (response.status === 404) {
-		// 	notFound = [...notFound, ['addressNotFound', response]];
-		// } else {
-		// 	found = [...found, ['addressFound', await response.json()]];
-		// }
+
 		const aliases = suburbAliases(
 			streetaddress.toUpperCase(),
 			suburb.toUpperCase()
@@ -41,32 +31,34 @@
 				body: JSON.stringify({ address })
 			});
 			if (response.status === 400) {
-				error = [...error, ['addressError', response]];
+				error = ['addressError', response];
 			} else if (response.status === 404) {
-				notFound = [...notFound, ['addressNotFound', response]];
+				notFound = ['addressNotFound', response];
 			} else if (response.status === 500) {
-				notFound = [...notFound, ['addressNotFound', response]];
+				notFound = ['serviceNotAvailable', response.json()];
 			} else {
-				found = [...found, ['addressFound', await response.json()]];
+				found = ['addressFound', await response.json()];
 			}
 		}
-
-		if (found.length === 1) {
+		console.log(found[1]);
+		if (found.length === 2) {
 			for (let i = 0; i < communityPolygons.features.length; i++) {
 				let polygon = communityPolygons.features[i].geometry.coordinates[0];
-				let ok = PIP(polygon[0], found[0][1].point);
+				let ok = PIP(polygon[0], found[1].point);
+				console.log('OK', ok);
 				unchallenged = false;
 				if (ok) {
 					status = 'addressValid';
 					community = communityPolygons.features[i].properties.Community;
-					validAddress = found[0][1].address;
+					validAddress = found[1].address;
 				} else {
 					status = 'addressInvalid';
 				}
 			}
 		} else if (notFound.length > 0) {
 			unchallenged = true;
-			status = 'addressNotFound';
+			status = notFound[0];
+			console.log(status);
 		} else {
 			unchallenged = true;
 			status = 'addressError';

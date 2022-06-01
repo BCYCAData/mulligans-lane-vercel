@@ -6,7 +6,7 @@ export async function post({ request }) {
 	const { data, error } = await db.auth.api.resetPasswordForEmail(
 		body.get('email'),
 		{
-			redirectTo: `${supabaseRedirectBase}/redirect`
+			redirectTo: `${supabaseRedirectBase}/auth/redirect`
 		}
 	);
 

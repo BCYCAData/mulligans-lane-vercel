@@ -16438,16 +16438,12 @@ __export(layout_svelte_exports, {
   load: () => load
 });
 async function load({ url, session: session2 }) {
-  showFooter = true;
-  if (url.pathname.includes("/profile")) {
-    showFooter = false;
-  }
   if (url.pathname === "/profile" && session2.user === "guest" || url.pathname === "/profile" && session2.user === "") {
     return { redirect: "/", status: 302 };
   }
   return { props: {} };
 }
-var logo, Logo, css$1, Navbar, css, showFooter, _layout;
+var logo, Logo, css$1, Navbar, css, _layout;
 var init_layout_svelte = __esm({
   ".svelte-kit/output/server/entries/pages/__layout.svelte.js"() {
     init_index_5e953619();
@@ -16501,7 +16497,6 @@ var init_layout_svelte = __esm({
       code: "#wrapper.svelte-1jjqws8{grid-template-rows:auto 1fr auto}",
       map: null
     };
-    showFooter = true;
     _layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let $$unsubscribe_session;
       let $page, $$unsubscribe_page;
@@ -16514,9 +16509,9 @@ var init_layout_svelte = __esm({
       $$unsubscribe_page();
       return `<div class="${"grid w-11/12 mx-auto min-h-screen svelte-1jjqws8"}" id="${"wrapper"}"><header class="${"col-span-8 row-span-1"}">${validate_component(Navbar, "Navbar").$$render($$result, {}, {}, {})}</header>
 	<main class="${"col-span-8 row-span-22"}">${slots.default ? slots.default({}) : ``}</main>
-	${showFooter ? `<footer class="${"col-span-8 row-span-1 sticky bottom-0"}"><div class="${"flex content-center items-center justify-around bg-orange-600 text-light-600 w-full h-[45px]"}"><a sveltekit:prefetch href="${escape(base) + "/policies/termsofservice"}"${add_classes(($page.url.pathname.endsWith("/policies/termsofservice") ? "active" : "").trim())}>Terms of Service</a>
+	${`<footer class="${"col-span-8 row-span-1 sticky bottom-0"}"><div class="${"flex content-center items-center justify-around bg-orange-600 text-light-600 w-full h-[45px]"}"><a sveltekit:prefetch href="${escape(base) + "/policies/termsofservice"}"${add_classes(($page.url.pathname.endsWith("/policies/termsofservice") ? "active" : "").trim())}>Terms of Service</a>
 				<h3>Building a safer connected community</h3>
-				<a sveltekit:prefetch href="${escape(base) + "/policies/privacy"}"${add_classes(($page.url.pathname.endsWith("/policies/privacy") ? "active" : "").trim())}>Privacy Policy</a></div></footer>` : ``}
+				<a sveltekit:prefetch href="${escape(base) + "/policies/privacy"}"${add_classes(($page.url.pathname.endsWith("/policies/privacy") ? "active" : "").trim())}>Privacy Policy</a></div></footer>`}
 </div>`;
     });
   }
@@ -16534,8 +16529,8 @@ var entry, js, css2;
 var init__ = __esm({
   ".svelte-kit/output/server/nodes/0.js"() {
     init_layout_svelte();
-    entry = "pages/__layout.svelte-2e67c489.js";
-    js = ["pages/__layout.svelte-2e67c489.js", "chunks/index-27e8d48c.js", "chunks/dbClient-f8d02c03.js", "chunks/_commonjsHelpers-7d66b65f.js", "chunks/stores-619a4aad.js", "chunks/paths-396f020f.js"];
+    entry = "pages/__layout.svelte-ea0cab02.js";
+    js = ["pages/__layout.svelte-ea0cab02.js", "chunks/index-27e8d48c.js", "chunks/dbClient-f8d02c03.js", "chunks/_commonjsHelpers-7d66b65f.js", "chunks/stores-619a4aad.js", "chunks/paths-396f020f.js"];
     css2 = ["assets/pages/__layout.svelte-40acadf5.css"];
   }
 });
@@ -18513,7 +18508,7 @@ var init_layout_svelte2 = __esm({
 </ul>`;
     });
     css6 = {
-      code: ".main-head.svelte-29klvh{grid-area:header}.content.svelte-29klvh{grid-area:content}.crumbs.svelte-29klvh{grid-area:crumbs}.side.svelte-29klvh{grid-area:sidebar}.messaging.svelte-29klvh{grid-area:messaging}.main-footer.svelte-29klvh{grid-area:footer}.wrapper.svelte-29klvh{display:grid;grid-auto-rows:min-content;grid-template-areas:'header'\r\n			'sidebar'\r\n			'crumbs'\r\n			'content'\r\n			'messaging'\r\n			'footer'}@media(min-width: 640px){.wrapper.svelte-29klvh{grid-template-columns:1fr 3fr;grid-template-rows:45px auto 1fr 1fr 45px;grid-template-areas:'header  header'\r\n				'sidebar     crumbs'\r\n				'sidebar content'\r\n				'messaging      content'\r\n				'messaging  footer'}}@media(min-width: 1024px){.wrapper.svelte-29klvh{grid-template-columns:1fr 4fr 1fr;grid-template-rows:45px auto 1fr 1fr 45px;grid-template-areas:'header header header'\r\n				'sidebar crumbs messaging'\r\n				'sidebar content messaging'\r\n				'sidebar content messaging'\r\n				'sidebar footer messaging'}}",
+      code: ".main-head.svelte-9vabfd{grid-area:header}.content.svelte-9vabfd{grid-area:content}.crumbs.svelte-9vabfd{grid-area:crumbs}.side.svelte-9vabfd{grid-area:sidebar}.messaging.svelte-9vabfd{grid-area:messaging}.wrapper.svelte-9vabfd{display:grid;grid-auto-rows:min-content;grid-template-areas:'header'\r\n			'sidebar'\r\n			'crumbs'\r\n			'content'\r\n			'messaging'}@media(min-width: 640px){.wrapper.svelte-9vabfd{grid-template-columns:1fr 3fr;grid-template-rows:45px auto 1fr 1fr 45px;grid-template-areas:'header  header'\r\n				'sidebar     crumbs'\r\n				'sidebar content'\r\n				'messaging      content'\r\n				'messaging  content'}}@media(min-width: 1024px){.wrapper.svelte-9vabfd{grid-template-columns:1fr 4fr 1fr;grid-template-rows:45px auto 1fr 1fr 45px;grid-template-areas:'header header header'\r\n				'sidebar crumbs messaging'\r\n				'sidebar content messaging'\r\n				'sidebar content messaging'\r\n				'sidebar content messaging'}}",
       map: null
     };
     _layout2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
@@ -18521,16 +18516,13 @@ var init_layout_svelte2 = __esm({
       $$unsubscribe_page = subscribe(page, (value) => $page = value);
       $$result.css.add(css6);
       $$unsubscribe_page();
-      return `<div class="${"wrapper grid min-h-full bg-orange-100 svelte-29klvh"}"><header class="${"main-head grid grid-cols-1 max-h-[45px] min-h-[45px] place-items-center  svelte-29klvh"}"><div class="${"text-orange-900"}">Burrell Creek Youth &amp; Community Association Inc.
+      return `<div class="${"wrapper grid min-h-full bg-orange-100 svelte-9vabfd"}"><header class="${"main-head grid grid-cols-1 max-h-[45px] min-h-[45px] place-items-center  svelte-9vabfd"}"><div class="${"text-orange-900"}">Burrell Creek Youth &amp; Community Association Inc.
 		</div>
 		<button ${"hidden"} type="${"submit"}" form="${"profileForm"}">Save My Answers</button></header>
-	<section class="${"crumbs p-0 max-h-[35px] bg-stone-200 svelte-29klvh"}">${validate_component(Breadcrumbs, "Breadcrumbs").$$render($$result, { path: $page.url.pathname }, {}, {})}</section>
-	<section class="${"content min-h-full text-orange-900 bg-orange-300 svelte-29klvh"}">${``}
-		
-		
-		${slots.default ? slots.default({}) : ``}
-		</section>
-	<aside class="${"side p-1 flex flex-col bg-stone-200 svelte-29klvh"}"><div class="${"flex flex-row justify-around pt-2 text-xl"}">Profile Menu</div>
+	<section class="${"crumbs p-0 max-h-[35px] bg-stone-200 svelte-9vabfd"}">${validate_component(Breadcrumbs, "Breadcrumbs").$$render($$result, { path: $page.url.pathname }, {}, {})}</section>
+	<section class="${"content min-h-full text-orange-900 bg-orange-300 svelte-9vabfd"}">${``}
+		${slots.default ? slots.default({}) : ``}</section>
+	<aside class="${"side p-1 flex flex-col bg-stone-200 svelte-9vabfd"}"><div class="${"flex flex-row justify-around pt-2 text-xl"}">Profile Menu</div>
 		<div class="${"flex flex-col rounded-lg bg-orange-600"}"><ul class="${"flex flex-row justify-around mx-0 px-2 sm:flex-1 sm:flex-nowrap sm:flex-col list-none"}" id="${"mainMenu"}"><li class="${"sm:mt-2 hover:bg-orange-300 rounded items-center"}"><div class="${"flex flex-row items-center justify-start"}"><a class="${"flex items-center"}" href="${"/profile/aboutme"}">${validate_component(Icon, "Icon").$$render($$result, {
         icon: "carbon:user",
         style: "font-size: 24px"
@@ -18560,14 +18552,12 @@ var init_layout_svelte2 = __esm({
         style: "font-size: 24px"
       }, {}, {})}
 							<span class="${"hidden px-2 mt-1 font-semibold sm:inline"}">Settings</span></a></div></li></ul></div></aside>
-	<div class="${"messaging bg-stone-200 svelte-29klvh"}"><div class="${"flex flex-row justify-around pt-2 text-xl"}">Messages</div>
+	<div class="${"messaging bg-stone-200 svelte-9vabfd"}"><div class="${"flex flex-row justify-around pt-2 text-xl"}">Messages</div>
 		<div class="${"flex flex-col my-4 mx-4"}"><h3>Please make sure you click every heading in the menu on the left <br>
 				AND <br>
 				answer all the questions.
 			</h3></div></div>
-	<footer class="${"main-footer max-h-[45px] bg-stone-300 svelte-29klvh"}"><div class="${"flex content-center items-center justify-center text-orange-900 w-full"}"><h3>Building a safer connected community</h3></div>
-		/footer&gt;
-	</footer>
+	
 </div>`;
     });
   }
@@ -18585,9 +18575,9 @@ var entry4, js4, css7;
 var init__4 = __esm({
   ".svelte-kit/output/server/nodes/2.js"() {
     init_layout_svelte2();
-    entry4 = "pages/profile/__layout.svelte-1a839a0c.js";
-    js4 = ["pages/profile/__layout.svelte-1a839a0c.js", "chunks/index-27e8d48c.js", "chunks/stores-619a4aad.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css7 = ["assets/pages/profile/__layout.svelte-5d93a5a5.css", "assets/Modal-186ac193.css"];
+    entry4 = "pages/profile/__layout.svelte-083c40f6.js";
+    js4 = ["pages/profile/__layout.svelte-083c40f6.js", "chunks/index-27e8d48c.js", "chunks/stores-619a4aad.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
+    css7 = ["assets/pages/profile/__layout.svelte-ce89e211.css", "assets/Modal-186ac193.css"];
   }
 });
 
@@ -19661,8 +19651,8 @@ var entry11, js11, css17;
 var init__11 = __esm({
   ".svelte-kit/output/server/nodes/15.js"() {
     init_signin_svelte();
-    entry11 = "pages/auth/signin.svelte-46555979.js";
-    js11 = ["pages/auth/signin.svelte-46555979.js", "chunks/index-27e8d48c.js", "chunks/stores-619a4aad.js", "chunks/AddressChallenge-9100db77.js", "chunks/utils-b80a401c.js", "chunks/Modal-7232ca99.js"];
+    entry11 = "pages/auth/signin.svelte-9b686e0c.js";
+    js11 = ["pages/auth/signin.svelte-9b686e0c.js", "chunks/index-27e8d48c.js", "chunks/stores-619a4aad.js", "chunks/AddressChallenge-c8f9a1ff.js", "chunks/utils-b80a401c.js", "chunks/Modal-7232ca99.js"];
     css17 = ["assets/pages/auth/signin.svelte-9c1651a0.css", "assets/AddressChallenge-b65205e8.css", "assets/Modal-186ac193.css"];
   }
 });
@@ -19741,9 +19731,6 @@ var init_updateuser_svelte = __esm({
       $$result.css.add(css19);
       email = "";
       return `
-
-
-
 <div class="${"container max-w-sm max-w-screen-xsm mx-auto"}"><div class="${"bg-white p-6 ml-1.5 sm:ml-0 rounded shadow-md text-black w-5/6 sm:w-full"}"><form action="${"/api/auth/updateuser"}" method="${"POST"}">
 			<h1 class="${"mb-8 text-3xl text-center"}">${escape(heading)}</h1>
 			<label class="${"inline uppercase tracking-wide text-orange-500 text-xs font-bold"}" for="${"email"}">Email:</label>
@@ -20155,7 +20142,7 @@ var init__17 = __esm({
     init_layout_svelte3();
     entry17 = "pages/profile/aboutme/__layout.svelte-2d887bd9.js";
     js17 = ["pages/profile/aboutme/__layout.svelte-2d887bd9.js", "chunks/index-27e8d48c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css24 = ["assets/pages/profile/aboutme/__layout.svelte-bb935598.css", "assets/Modal-186ac193.css"];
+    css24 = ["assets/pages/profile/myplace/hazards/__layout.svelte-ca2c6065.css", "assets/Modal-186ac193.css"];
   }
 });
 
@@ -20841,7 +20828,7 @@ var init__26 = __esm({
     init_layout_svelte5();
     entry26 = "pages/profile/mycommunity/information/__layout.svelte-7d325615.js";
     js26 = ["pages/profile/mycommunity/information/__layout.svelte-7d325615.js", "chunks/index-27e8d48c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css35 = ["assets/pages/profile/aboutme/__layout.svelte-bb935598.css", "assets/Modal-186ac193.css"];
+    css35 = ["assets/pages/profile/myplace/hazards/__layout.svelte-ca2c6065.css", "assets/Modal-186ac193.css"];
   }
 });
 
@@ -20943,7 +20930,7 @@ var init__28 = __esm({
     init_layout_svelte6();
     entry28 = "pages/profile/mycommunity/meetings/__layout.svelte-765408f8.js";
     js28 = ["pages/profile/mycommunity/meetings/__layout.svelte-765408f8.js", "chunks/index-27e8d48c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css37 = ["assets/pages/profile/aboutme/__layout.svelte-bb935598.css", "assets/Modal-186ac193.css"];
+    css37 = ["assets/pages/profile/myplace/hazards/__layout.svelte-ca2c6065.css", "assets/Modal-186ac193.css"];
   }
 });
 
@@ -21046,7 +21033,7 @@ var init__30 = __esm({
     init_layout_svelte7();
     entry30 = "pages/profile/mycommunity/workshops/__layout.svelte-31c51381.js";
     js30 = ["pages/profile/mycommunity/workshops/__layout.svelte-31c51381.js", "chunks/index-27e8d48c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css39 = ["assets/pages/profile/aboutme/__layout.svelte-bb935598.css", "assets/Modal-186ac193.css"];
+    css39 = ["assets/pages/profile/myplace/hazards/__layout.svelte-ca2c6065.css", "assets/Modal-186ac193.css"];
   }
 });
 
@@ -21163,7 +21150,7 @@ var init__32 = __esm({
     init_layout_svelte8();
     entry32 = "pages/profile/myplace/animals/__layout.svelte-de8d5dcc.js";
     js32 = ["pages/profile/myplace/animals/__layout.svelte-de8d5dcc.js", "chunks/index-27e8d48c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css41 = ["assets/pages/profile/aboutme/__layout.svelte-bb935598.css", "assets/Modal-186ac193.css"];
+    css41 = ["assets/pages/profile/myplace/hazards/__layout.svelte-ca2c6065.css", "assets/Modal-186ac193.css"];
   }
 });
 
@@ -21322,7 +21309,7 @@ var init__34 = __esm({
     init_layout_svelte9();
     entry34 = "pages/profile/myplace/assets/__layout.svelte-1be75f65.js";
     js34 = ["pages/profile/myplace/assets/__layout.svelte-1be75f65.js", "chunks/index-27e8d48c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css43 = ["assets/pages/profile/aboutme/__layout.svelte-bb935598.css", "assets/Modal-186ac193.css"];
+    css43 = ["assets/pages/profile/myplace/hazards/__layout.svelte-ca2c6065.css", "assets/Modal-186ac193.css"];
   }
 });
 
@@ -21432,7 +21419,7 @@ var init__36 = __esm({
     init_layout_svelte10();
     entry36 = "pages/profile/myplace/hazards/__layout.svelte-635e7670.js";
     js36 = ["pages/profile/myplace/hazards/__layout.svelte-635e7670.js", "chunks/index-27e8d48c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css45 = ["assets/pages/profile/aboutme/__layout.svelte-bb935598.css", "assets/Modal-186ac193.css"];
+    css45 = ["assets/pages/profile/myplace/hazards/__layout.svelte-ca2c6065.css", "assets/Modal-186ac193.css"];
   }
 });
 
@@ -21920,19 +21907,28 @@ async function post6({ request }) {
   try {
     let response = await fetch(geocodingFetchUrl);
     let data2 = await response.json();
-    if (data2.features.length > 0) {
+    if (data2.error) {
       return {
-        status: 200,
+        status: data2.error.code,
         body: {
-          point: [data2.features[0].geometry.x, data2.features[0].geometry.y],
-          address: body.address
+          message: data2.error.message
         }
       };
-    } else if (data2.features) {
-      return {
-        status: 404,
-        body: {}
-      };
+    } else {
+      if (data2.features.length > 0) {
+        return {
+          status: 200,
+          body: {
+            point: [data2.features[0].geometry.x, data2.features[0].geometry.y],
+            address: body.address
+          }
+        };
+      } else if (data2.features) {
+        return {
+          status: 404,
+          body: {}
+        };
+      }
     }
   } catch (error2) {
     console.log("error:  ", error2);
@@ -23303,12 +23299,12 @@ async function render_response({
   resolve_opts,
   stuff
 }) {
-  if (state.prerender) {
+  if (state.prerendering) {
     if (options.csp.mode === "nonce") {
       throw new Error('Cannot use prerendering if config.kit.csp.mode === "nonce"');
     }
     if (options.template_contains_nonce) {
-      throw new Error("Cannot use prerendering if page template contains %svelte.nonce%");
+      throw new Error("Cannot use prerendering if page template contains %sveltekit.nonce%");
     }
   }
   const stylesheets = new Set(options.manifest._.entry.css);
@@ -23356,7 +23352,7 @@ async function render_response({
         routeId: event.routeId,
         status,
         stuff,
-        url: state.prerender ? create_prerendering_url_proxy(event.url) : event.url
+        url: state.prerendering ? create_prerendering_url_proxy(event.url) : event.url
       },
       components: branch.map(({ node }) => node.module.default)
     };
@@ -23382,7 +23378,7 @@ async function render_response({
   await csp_ready;
   const csp = new Csp(options.csp, {
     dev: options.dev,
-    prerender: !!state.prerender,
+    prerender: !!state.prerendering,
     needs_nonce: options.template_contains_nonce
   });
   const target = hash(body);
@@ -23459,7 +23455,7 @@ async function render_response({
     head += `
 			<script${csp.script_needs_nonce ? ` nonce="${csp.nonce}"` : ""}>${init_service_worker}<\/script>`;
   }
-  if (state.prerender) {
+  if (state.prerendering) {
     const http_equiv = [];
     const csp_headers = csp.get_meta();
     if (csp_headers) {
@@ -23487,7 +23483,7 @@ async function render_response({
   if (!options.floc) {
     headers.set("permissions-policy", "interest-cohort=()");
   }
-  if (!state.prerender) {
+  if (!state.prerendering) {
     const csp_header = csp.get_header();
     if (csp_header) {
       headers.set("content-security-policy", csp_header);
@@ -23823,24 +23819,15 @@ function normalize(loaded2) {
   }
   if (loaded2.redirect) {
     if (!loaded2.status || Math.floor(loaded2.status / 100) !== 3) {
-      return {
-        status: 500,
-        error: new Error('"redirect" property returned from load() must be accompanied by a 3xx status code')
-      };
+      throw new Error('"redirect" property returned from load() must be accompanied by a 3xx status code');
     }
     if (typeof loaded2.redirect !== "string") {
-      return {
-        status: 500,
-        error: new Error('"redirect" property returned from load() must be a string')
-      };
+      throw new Error('"redirect" property returned from load() must be a string');
     }
   }
   if (loaded2.dependencies) {
     if (!Array.isArray(loaded2.dependencies) || loaded2.dependencies.some((dep) => typeof dep !== "string")) {
-      return {
-        status: 500,
-        error: new Error('"dependencies" property returned from load() must be of type string[]')
-      };
+      throw new Error('"dependencies" property returned from load() must be of type string[]');
     }
   }
   if (loaded2.context) {
@@ -23921,7 +23908,8 @@ async function load_node({
   const cookies = parse_1(event.request.headers.get("cookie") || "");
   const new_cookies = [];
   let loaded2;
-  const shadow = is_leaf ? await load_shadow_data(route, event, options, !!state.prerender) : {};
+  const should_prerender = node.module.prerender ?? options.prerender.default;
+  const shadow = is_leaf ? await load_shadow_data(route, event, options, should_prerender) : {};
   if (shadow.cookies) {
     shadow.cookies.forEach((header) => {
       new_cookies.push(parseString_1(header));
@@ -23939,7 +23927,7 @@ async function load_node({
     };
   } else if (module2.load) {
     const load_input = {
-      url: state.prerender ? create_prerendering_url_proxy(event.url) : event.url,
+      url: state.prerendering ? create_prerendering_url_proxy(event.url) : event.url,
       params: event.params,
       props: shadow.body || {},
       routeId: event.routeId,
@@ -24015,9 +24003,9 @@ async function load_node({
           response = await respond(new Request(new URL(requested, event.url).href, __spreadProps(__spreadValues({}, opts), { credentials: void 0 })), options, __spreadProps(__spreadValues({}, state), {
             initiator: route
           }));
-          if (state.prerender) {
+          if (state.prerendering) {
             dependency = { response, body: null };
-            state.prerender.dependencies.set(resolved, dependency);
+            state.prerendering.dependencies.set(resolved, dependency);
           }
         } else {
           if (resolved.startsWith("//")) {
@@ -24111,13 +24099,13 @@ async function load_node({
   } else {
     loaded2 = {};
   }
-  if (shadow.body && state.prerender) {
+  if (shadow.body && state.prerendering) {
     const pathname = `${event.url.pathname.replace(/\/$/, "")}/__data.json`;
     const dependency = {
       response: new Response(void 0),
       body: JSON.stringify(shadow.body)
     };
-    state.prerender.dependencies.set(pathname, dependency);
+    state.prerendering.dependencies.set(pathname, dependency);
   }
   return {
     node,
@@ -24320,8 +24308,8 @@ async function respond$1(opts) {
   }
   const leaf = nodes[nodes.length - 1].module;
   let page_config = get_page_config(leaf, options);
-  if (state.prerender) {
-    const should_prerender = leaf.prerender ?? state.prerender.default;
+  if (state.prerendering) {
+    const should_prerender = leaf.prerender ?? options.prerender.default;
     if (!should_prerender) {
       return new Response(void 0, {
         status: 204
@@ -24527,7 +24515,7 @@ function exec(match, names, types2, matchers) {
 var DATA_SUFFIX = "/__data.json";
 var default_transform = ({ html }) => html;
 async function respond(request, options, state) {
-  var _a, _b, _c;
+  var _a, _b, _c, _d;
   let url = new URL(request.url);
   const { parameter, allowed } = options.method_override;
   const method_override = (_a = url.searchParams.get(parameter)) == null ? void 0 : _a.toUpperCase();
@@ -24555,7 +24543,7 @@ async function respond(request, options, state) {
   let decoded = decodeURI(url.pathname);
   let route = null;
   let params = {};
-  if (options.paths.base && !((_b = state.prerender) == null ? void 0 : _b.fallback)) {
+  if (options.paths.base && !((_b = state.prerendering) == null ? void 0 : _b.fallback)) {
     if (!decoded.startsWith(options.paths.base)) {
       return new Response(void 0, { status: 404 });
     }
@@ -24566,7 +24554,7 @@ async function respond(request, options, state) {
     decoded = decoded.slice(0, -DATA_SUFFIX.length) || "/";
     url = new URL(url.origin + url.pathname.slice(0, -DATA_SUFFIX.length) + url.search);
   }
-  if (!state.prerender || !state.prerender.fallback) {
+  if (!((_c = state.prerendering) == null ? void 0 : _c.fallback)) {
     const matchers = await options.manifest._.matchers();
     for (const candidate of options.manifest._.routes) {
       const match = candidate.pattern.exec(decoded);
@@ -24582,7 +24570,7 @@ async function respond(request, options, state) {
   }
   if ((route == null ? void 0 : route.type) === "page") {
     const normalized = normalize_path(url.pathname, options.trailing_slash);
-    if (normalized !== url.pathname && !((_c = state.prerender) == null ? void 0 : _c.fallback)) {
+    if (normalized !== url.pathname && !((_d = state.prerendering) == null ? void 0 : _d.fallback)) {
       return new Response(void 0, {
         status: 301,
         headers: {
@@ -24637,13 +24625,14 @@ async function respond(request, options, state) {
     const response = await options.hooks.handle({
       event,
       resolve: async (event2, opts) => {
+        var _a2;
         if (opts) {
           resolve_opts = {
             ssr: opts.ssr !== false,
             transformPage: opts.transformPage || default_transform
           };
         }
-        if (state.prerender && state.prerender.fallback) {
+        if ((_a2 = state.prerendering) == null ? void 0 : _a2.fallback) {
           return await render_response({
             event: event2,
             options,
@@ -24720,7 +24709,7 @@ async function respond(request, options, state) {
             resolve_opts
           });
         }
-        if (state.prerender) {
+        if (state.prerendering) {
           return new Response("not found", { status: 404 });
         }
         return await fetch(request);
@@ -24781,7 +24770,10 @@ var Server = class {
       method_override: { "parameter": "_method", "allowed": [] },
       paths: { base, assets },
       prefix: assets + "/_app/",
-      prerender: true,
+      prerender: {
+        default: false,
+        enabled: true
+      },
       read,
       root: Root,
       service_worker: null,
@@ -24814,7 +24806,7 @@ var manifest = {
   assets: /* @__PURE__ */ new Set(["favicon.png"]),
   mimeTypes: { ".png": "image/png" },
   _: {
-    entry: { "file": "start-a7717f9b.js", "js": ["start-a7717f9b.js", "chunks/index-27e8d48c.js", "chunks/paths-396f020f.js", "chunks/preload-helper-e4860ae8.js", "chunks/singletons-d1fb5791.js"], "css": ["assets/start-b7cfbc3f.css"] },
+    entry: { "file": "start-88ab2c6d.js", "js": ["start-88ab2c6d.js", "chunks/index-27e8d48c.js", "chunks/paths-396f020f.js", "chunks/preload-helper-e4860ae8.js", "chunks/singletons-d1fb5791.js"], "css": ["assets/start-b7cfbc3f.css"] },
     nodes: [
       () => Promise.resolve().then(() => (init__(), __exports)),
       () => Promise.resolve().then(() => (init__2(), __exports2)),

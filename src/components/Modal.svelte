@@ -16,18 +16,21 @@
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
-<div class="shadow" transition:fade={{ duration: 200 }} />
-<div
-	id="popup-modal"
-	class="top-1/2 left-1/4 -translate-x-1/4 -translate-y-1/2 w-[90%] sm:top-1/2 md:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-auto"
-	in:fade={{ duration: 300 }}
-	out:fly={{ y: 500, duration: 400 }}
->
-	<span
-		class="fixed cursor-pointer hover:font-bold right-0 pr-1"
-		on:click={() => dispatch('exit')}>&times</span
+<div class="container bg-stone-200">
+	<div class="shadow" transition:fade={{ duration: 200 }} />
+	<div
+		id="popup-modal"
+		class="top-1/2 left-1/4 -translate-x-1/4 -translate-y-1/2 w-[90%] sm:top-1/2 md:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-auto"
+		in:fade={{ duration: 300 }}
+		out:fly={{ y: 500, duration: 400 }}
 	>
-	<slot />
+		<span
+			class="fixed cursor-pointer hover:font-bold right-0 pr-1"
+			on:click={() => dispatch('exit')}>&times</span
+		>
+
+		<slot />
+	</div>
 </div>
 
 <style>

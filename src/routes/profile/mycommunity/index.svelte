@@ -26,11 +26,6 @@
 </script>
 
 <section class="content min-h-full bg-orange-300">
-	{#if modalVisible}
-		<Modal on:exit={() => (modalVisible = !modalVisible)}>
-			<SaveProfilePrompt />
-		</Modal>
-	{/if}
 	<form
 		id="profileCommunityForm"
 		on:change={(e) => {

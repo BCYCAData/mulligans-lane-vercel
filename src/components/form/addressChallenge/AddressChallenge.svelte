@@ -4,6 +4,7 @@
 	import AddressNotFound from '$components/form/addressChallenge/AddressNotFound.svelte';
 	import AddressInvalid from '$components/form/addressChallenge/AddressInvalid.svelte';
 	import AddressUnchallenged from '$components/form/addressChallenge/AddressUnchallenged.svelte';
+	import AddressNoService from '$components/form/addressChallenge/AddressNoService.svelte';
 
 	let streetaddress;
 	let suburb;
@@ -32,6 +33,9 @@
 {/if}
 {#if status === 'addressNotFound'}
 	<AddressNotFound />
+{/if}
+{#if status === 'serviceNotAvailable'}
+	<AddressNoService />
 {/if}
 {#if status === 'addressError'}
 	<AddressError />

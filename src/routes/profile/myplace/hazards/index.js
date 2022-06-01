@@ -8,6 +8,10 @@ export async function get() {
 			'site_hazards,other_site_hazards,land_adjacent_hazard,other_hazards'
 		)
 		.eq('id', _session.user.id);
+	console.log('profileHazards:', profileHazards);
+	if (null == profileHazards[0].site_hazards) {
+		profileHazards[0].site_hazards = [];
+	}
 	if (error) {
 		console.log('error profileHazards:', error);
 		return {

@@ -3,18 +3,8 @@
 	import Icon from '@iconify/svelte';
 	import Breadcrumbs from '$components/Breadcrumbs.svelte';
 
-	import { beforeNavigate, afterNavigate } from '$app/navigation';
-
-	import Modal from '$components/Modal.svelte';
-	import SaveProfilePrompt from '$components/form/SaveProfilePrompt.svelte';
-
-	let unsaved = false;
-	let modalVisible = false;
-
-	beforeNavigate(({ to, cancel }) => {
-		if (!unsaved) return; // nothing to do
-		modalVisible = !modalVisible;
-	});
+	// let unsaved = false;
+	// let modalVisible = false;
 </script>
 
 <div class="wrapper grid  min-h-full bg-orange-100">
@@ -24,37 +14,15 @@
 		<div class="text-orange-900">
 			Burrell Creek Youth & Community Association Inc.
 		</div>
-		<button hidden={!unsaved} type="submit" form="profileForm"
+		<!-- <button hidden={!unsaved} type="submit" form="profileForm"
 			>Save My Answers</button
-		>
+		> -->
 	</header>
 	<section class="crumbs p-0 max-h-[35px] bg-stone-200">
 		<Breadcrumbs path={$page.url.pathname} />
 	</section>
 	<section class="content min-h-full text-orange-900 bg-orange-300">
-		{#if modalVisible}
-			<Modal on:exit={() => (modalVisible = !modalVisible)}>
-				<SaveProfilePrompt />
-			</Modal>
-		{/if}
-		<!-- <form
-			id="profileForm"
-			on:change={(e) => {
-				unsaved = true;
-			}}
-			class="flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"
-			action="/profile"
-			method="POST"
-		> -->
-		<!-- <form
-			id="profileForm"
-			on:change={(e) => {
-				unsaved = true;
-			}}
-			class="flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"
-		> -->
 		<slot />
-		<!-- </form> -->
 	</section>
 	<aside class="side p-1 flex flex-col bg-stone-200">
 		<div class="flex flex-row justify-around pt-2 text-xl">Profile Menu</div>
@@ -146,14 +114,13 @@
 			</h3>
 		</div>
 	</div>
-	<footer class="main-footer max-h-[45px] bg-stone-300">
+	<!-- <footer class="main-footer max-h-[45px] bg-stone-300">
 		<div
 			class="flex content-center items-center justify-center text-orange-900 w-full"
 		>
 			<h3>Building a safer connected community</h3>
 		</div>
-		/footer>
-	</footer>
+	</footer> -->
 </div>
 
 <style>
@@ -172,9 +139,9 @@
 	.messaging {
 		grid-area: messaging;
 	}
-	.main-footer {
+	/* .main-footer {
 		grid-area: footer;
-	}
+	} */
 	.wrapper {
 		display: grid;
 		/* grid-template-rows: 45px auto 1fr 0.25fr 45px; */
@@ -184,8 +151,7 @@
 			'sidebar'
 			'crumbs'
 			'content'
-			'messaging'
-			'footer';
+			'messaging';
 	}
 	@media (min-width: 640px) {
 		.wrapper {
@@ -196,7 +162,7 @@
 				'sidebar     crumbs'
 				'sidebar content'
 				'messaging      content'
-				'messaging  footer';
+				'messaging  content';
 		}
 	}
 
@@ -209,7 +175,7 @@
 				'sidebar crumbs messaging'
 				'sidebar content messaging'
 				'sidebar content messaging'
-				'sidebar footer messaging';
+				'sidebar content messaging';
 		}
 	}
 </style>

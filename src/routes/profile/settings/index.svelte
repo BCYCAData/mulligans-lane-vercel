@@ -1,14 +1,6 @@
 <script>
 	import { stayInTouchOptions } from '$lib/profileOptions';
 	// export let profileSettings;
-
-	/**
-	 * Need to get the validAddress & searchAddress from the address challenge into a store
-	 * and validate this address OR populate the address
-	 */
-	const validateAddress = (e) => {
-		// console.log('Validate address:  ', e.currentTarget.value);
-	};
 </script>
 
 <!--stay_in_touch_choices -->

@@ -8,6 +8,9 @@ export async function get() {
 			'stay_in_touch_choices,postal_address_street,postal_address_suburb,postal_address_postcode,other_comments'
 		)
 		.eq('id', _session.user.id);
+	if (null == profileCommunity[0].stay_in_touch_choices) {
+		profileCommunity[0].stay_in_touch_choices = [];
+	}
 	console.log('profileSettings:', profileCommunity);
 	if (error) {
 		console.log('error profileSettings:', error);

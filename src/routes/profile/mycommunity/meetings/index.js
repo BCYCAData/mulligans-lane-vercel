@@ -6,7 +6,9 @@ export async function get() {
 		.from('profile')
 		.select('community_meeting_choices,other_community_meeting')
 		.eq('id', _session.user.id);
-
+	if (null == profileMeetings[0].community_meeting_choices) {
+		profileMeetings[0].community_meeting_choices = [];
+	}
 	console.log('profileMeetings:', profileMeetings);
 	if (error) {
 		console.log('error profileMeetings:', error);

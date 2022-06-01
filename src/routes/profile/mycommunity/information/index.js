@@ -6,7 +6,9 @@ export async function get() {
 		.from('profile')
 		.select('information_sheet_choices,other_information_sheet')
 		.eq('id', _session.user.id);
-
+	if (null == profileInformation[0].information_sheet_choices) {
+		profileInformation[0].information_sheet_choices = [];
+	}
 	console.log('profileInformation:', profileInformation);
 	if (error) {
 		console.log('error profileInformation:', error);
