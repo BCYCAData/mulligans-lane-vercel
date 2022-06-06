@@ -1,5 +1,5 @@
 import { db } from '$lib/dbClient';
-import { getFormBody } from '$lib';
+import { getFormBody } from '$lib/';
 
 export async function post({ request }) {
 	const _session = db.auth.session();
