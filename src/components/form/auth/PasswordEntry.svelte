@@ -1,4 +1,5 @@
 <script>
+	import { db } from '$lib/dbClient';
 	export let redirectType;
 
 	let strength = 0;
