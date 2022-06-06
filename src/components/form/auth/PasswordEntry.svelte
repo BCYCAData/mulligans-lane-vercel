@@ -31,6 +31,10 @@
 	}
 
 	async function setPassword() {
+		const _session = await db.auth.session();
+		const token = _session?.access_token;
+
+		db.auth.setAuth(token);
 		const { data, error } = await db.auth.update({ password: password });
 		console.log('data', data);
 		console.log('error', error);
