@@ -5,6 +5,7 @@
 	let strength = 0;
 	let validations = [];
 	let showPassword = false;
+	let updatePassword = '';
 
 	$: password = '';
 	$: confirmPassword = '';
@@ -29,8 +30,8 @@
 		strength = validations.reduce((acc, cur) => acc + cur, 0);
 	}
 
-	async function setPassword() {
-		const { data, error } = await db.auth.update({ password: $password });
+	async function setPassword(updatePassword) {
+		const { data, error } = await db.auth.update({ password: updatePassword });
 		console.log('data', data);
 		console.log('error', error);
 	}
@@ -40,7 +41,7 @@
 	class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
 >
 	<div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-		<form on:submit|preventDefault={setPassword}>
+		<form on:submit|preventDefault={setPassword($confirmPassword)}>
 			<!-- <form action="/api/auth/updateuser" method="POST"> -->
 			<label
 				class="inline uppercase tracking-wide text-orange-900 text-xs font-bold"
