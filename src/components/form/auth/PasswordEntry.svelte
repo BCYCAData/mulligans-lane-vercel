@@ -30,7 +30,7 @@
 	}
 
 	async function setPassword() {
-		const { data, error } = await db.auth.update({ password: password });
+		const { data, error } = await db.auth.update({ password: $password });
 		console.log('data', data);
 		console.log('error', error);
 	}
