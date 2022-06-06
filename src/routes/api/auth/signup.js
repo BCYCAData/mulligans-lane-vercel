@@ -2,6 +2,7 @@ import { db } from '$lib/dbClient';
 
 export async function post({ request }) {
 	const body = await request.formData();
+	console.log('SignIn', email, body.get('password'));
 	const { user, error } = await db.auth.signUp({
 		email: body.get('email'),
 		password: body.get('password')

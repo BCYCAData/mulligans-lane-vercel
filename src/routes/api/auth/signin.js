@@ -1,8 +1,9 @@
-import { db, supabaseKey, supabaseURL } from '$lib/dbClient';
+import { db } from '$lib/dbClient';
 
 export async function post({ request }) {
 	const body = await request.formData();
 	const email = body.get('email');
+	console.log('SignIn', email, body.get('password'));
 	const { user, error } = await db.auth.signIn({
 		email: email,
 		password: body.get('password')

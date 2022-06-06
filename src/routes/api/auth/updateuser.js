@@ -1,9 +1,13 @@
 import { db } from '$lib/dbClient';
 
 export async function post({ request }) {
+	const token = _session?.access_token;
+	const _session = db.auth.session();
 	const body = await request.formData();
 	password = body.get('password');
-	const { error } = await db.auth.update({ password });
+	db.auth.setAuth(token);
+	const { data, error } = await db.auth.update({ password: 'password' });
+	console.log(data);
 	if (error) {
 		console.log(error);
 	}
