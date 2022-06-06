@@ -13,12 +13,12 @@
 	const skipTo = (e) => {
 		progressBar.skipTo(e);
 	};
+
+	export let surveyData;
 </script>
 
-<section
-	class="flex flex-col items-center mt-5 sm:mt-1 mx-auto h-full w-full sm:w-11/12 text-gray-800"
->
-	<SurveyFormContainer active_step={steps[currentActive - 1]} />
+<section class="container mx-auto h-full w-full sm:w-11/12 text-gray-800">
+	<SurveyFormContainer active_step={steps[currentActive - 1]} {surveyData} />
 	<ProgressBar
 		{steps}
 		bind:currentActive

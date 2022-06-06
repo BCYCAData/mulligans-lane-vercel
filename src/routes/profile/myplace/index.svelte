@@ -4,7 +4,6 @@
 		residencyOptions,
 		accessOptions
 	} from '$lib/profileOptions';
-	import { beforeNavigate } from '$app/navigation';
 
 	import NumberInput from '$components/form/inputs/NumberInput.svelte';
 
@@ -19,7 +18,7 @@
 	};
 </script>
 
-<section class="content min-h-full bg-orange-300">
+<section class="min-h-full bg-orange-300">
 	<!-- Property address -->
 	<div class="flex flex-row mt-2 mx-2">
 		<div class="flex flex-col basis-7/12 mx-2">
@@ -50,7 +49,7 @@
 				name="property_address_suburb"
 				class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"
 				placeholder="Suburb"
-				autocomplete=""
+				autocomplete="address-level2"
 				style="text-transform:uppercase sm:text-xl"
 				on:change={(e) => {
 					validateAddress(e);
@@ -68,7 +67,7 @@
 				name="property_address_postcode"
 				class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"
 				placeholder="Postcode"
-				autocomplete=""
+				autocomplete="postal-code"
 				on:change={(e) => {
 					validateAddress(e);
 				}}

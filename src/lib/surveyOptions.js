@@ -15,13 +15,6 @@ export const yesNoOptions = [
 	{ value: false, lable: 'No' }
 ];
 
-// export const accessOptions = [
-// 	{ value: 'All', lable: 'All gates are more than 2.5 metres wide' },
-// 	{ value: 'Most', lable: 'Most gates are more than 2.5 metres wide' },
-// 	{ value: 'No', lable: 'No' },
-// 	{ value: otherAccessOption, lable: 'Other' }
-// ];
-
 export const yesNoMaybeOptions = [
 	{ value: 'Y', lable: 'Yes' },
 	{ value: 'N', lable: 'No' },

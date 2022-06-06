@@ -13,7 +13,7 @@
 	});
 </script>
 
-<section class="content min-h-full bg-orange-300">
+<section class="min-h-full bg-orange-300">
 	{#if modalVisible}
 		<Modal on:exit={() => (modalVisible = !modalVisible)}>
 			<SaveProfilePrompt />

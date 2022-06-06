@@ -12,6 +12,6 @@
 
 <!-- <p>Redirecting</p> -->
 <!-- {supabaseRedirectType} -->
-{#if supabaseRedirectType === 'invite'}
-	<PasswordEntry />
-{/if}
+<!-- {#if supabaseRedirectType === 'invite'} -->
+<PasswordEntry />
+<!-- {/if} -->

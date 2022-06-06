@@ -13,46 +13,50 @@
 	import Step12 from '$components/form/surveyForm/Step12.svelte';
 
 	export let active_step;
+	export let surveyData;
 </script>
 
-<div class:hidden={active_step != '1'}>
-	<Step1 />
-</div>
-<div class:hidden={active_step != '13'}>
-	<Step12 />
-</div>
-<form method="post" action="/api/userdata/survey">
-	<div class:hidden={active_step != '2'}>
-		<Step2 />
+<form method="post" action="/api/userdata/survey" id="surveyForm">
+	<div hidden={active_step != '1'}>
+		<Step1 />
 	</div>
-	<div class:hidden={active_step != '3'}>
-		<Step3 />
+	<div hidden={active_step != '2'}>
+		<Step2 {surveyData} />
 	</div>
-	<div class:hidden={active_step != '4'}>
-		<Step4 />
+	<div hidden={active_step != '3'}>
+		<Step3 {surveyData} />
 	</div>
-	<div class:hidden={active_step != '5'}>
-		<Step5 />
+	<div hidden={active_step != '4'}>
+		<Step4 {surveyData} />
 	</div>
-	<div class:hidden={active_step != '6'}>
-		<Step6 />
+	<div hidden={active_step != '5'}>
+		<Step5 {surveyData} />
 	</div>
-	<div class:hidden={active_step != '7'}>
-		<Step7 />
+	<div hidden={active_step != '6'}>
+		<Step6 {surveyData} />
 	</div>
-	<div class:hidden={active_step != '8'}>
-		<Step8 />
+	<div hidden={active_step != '7'}>
+		<Step7 {surveyData} />
 	</div>
-	<div class:hidden={active_step != '9'}>
-		<Step9 />
+	<div hidden={active_step != '8'}>
+		<Step8 {surveyData} />
 	</div>
-	<div class:hidden={active_step != '10'}>
-		<Step10 />
+	<div hidden={active_step != '9'}>
+		<Step9 {surveyData} />
 	</div>
-	<div class:hidden={active_step != '11'}>
-		<Step11 />
+	<div hidden={active_step != '10'}>
+		<Step10 {surveyData} />
 	</div>
-	<div class:hidden={active_step != '12'}>
-		<Step12 />
+	<div hidden={active_step != '11'}>
+		<Step11 {surveyData} />
 	</div>
+	<div hidden={active_step != '12'}>
+		<Step12 {surveyData} />
+	</div>
+	<button
+		class="w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"
+		hidden={active_step != '11'}
+		type="submit"
+		form="surveyForm">Save My Answers</button
+	>
 </form>

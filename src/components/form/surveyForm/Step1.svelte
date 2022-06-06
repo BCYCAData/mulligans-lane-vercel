@@ -1,4 +1,4 @@
-<div class="contianer">
+<div>
 	<h1>
 		Strengthening Our Community<br />
 		Project Survey

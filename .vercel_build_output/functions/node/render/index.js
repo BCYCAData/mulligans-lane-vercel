@@ -117,20 +117,10 @@ async function toFormData(Body2, ct) {
   parser.end();
   return formData;
 }
-var import_node_worker_threads, s, S, f, F, LF, CR, SPACE, HYPHEN, COLON, A, Z, lower, noop, MultipartParser;
+var s, S, f, F, LF, CR, SPACE, HYPHEN, COLON, A, Z, lower, noop, MultipartParser;
 var init_multipart_parser = __esm({
   "node_modules/@sveltejs/kit/dist/chunks/multipart-parser.js"() {
-    import_node_worker_threads = require("node:worker_threads");
-    init_install_fetch();
-    globalThis.DOMException || (() => {
-      const port = new import_node_worker_threads.MessageChannel().port1;
-      const ab = new ArrayBuffer(0);
-      try {
-        port.postMessage(ab, [ab, ab]);
-      } catch (err) {
-        return err.constructor;
-      }
-    })();
+    init_polyfills();
     s = 0;
     S = {
       START_BOUNDARY: s++,
@@ -173,26 +163,26 @@ var init_multipart_parser = __esm({
         this.boundaryChars = {};
         boundary = "\r\n--" + boundary;
         const ui8a = new Uint8Array(boundary.length);
-        for (let i2 = 0; i2 < boundary.length; i2++) {
-          ui8a[i2] = boundary.charCodeAt(i2);
-          this.boundaryChars[ui8a[i2]] = true;
+        for (let i3 = 0; i3 < boundary.length; i3++) {
+          ui8a[i3] = boundary.charCodeAt(i3);
+          this.boundaryChars[ui8a[i3]] = true;
         }
         this.boundary = ui8a;
         this.lookbehind = new Uint8Array(this.boundary.length + 8);
         this.state = S.START_BOUNDARY;
       }
       write(data2) {
-        let i2 = 0;
+        let i3 = 0;
         const length_ = data2.length;
         let previousIndex = this.index;
-        let { lookbehind, boundary, boundaryChars, index, state, flags } = this;
+        let { lookbehind, boundary, boundaryChars, index: index41, state, flags } = this;
         const boundaryLength = this.boundary.length;
         const boundaryEnd = boundaryLength - 1;
         const bufferLength = data2.length;
         let c;
         let cl;
         const mark = (name) => {
-          this[name + "Mark"] = i2;
+          this[name + "Mark"] = i3;
         };
         const clear = (name) => {
           delete this[name + "Mark"];
@@ -208,31 +198,31 @@ var init_multipart_parser = __esm({
             return;
           }
           if (clear2) {
-            callback(name, this[markSymbol], i2, data2);
+            callback(name, this[markSymbol], i3, data2);
             delete this[markSymbol];
           } else {
             callback(name, this[markSymbol], data2.length, data2);
             this[markSymbol] = 0;
           }
         };
-        for (i2 = 0; i2 < length_; i2++) {
-          c = data2[i2];
+        for (i3 = 0; i3 < length_; i3++) {
+          c = data2[i3];
           switch (state) {
             case S.START_BOUNDARY:
-              if (index === boundary.length - 2) {
+              if (index41 === boundary.length - 2) {
                 if (c === HYPHEN) {
                   flags |= F.LAST_BOUNDARY;
                 } else if (c !== CR) {
                   return;
                 }
-                index++;
+                index41++;
                 break;
-              } else if (index - 1 === boundary.length - 2) {
+              } else if (index41 - 1 === boundary.length - 2) {
                 if (flags & F.LAST_BOUNDARY && c === HYPHEN) {
                   state = S.END;
                   flags = 0;
                 } else if (!(flags & F.LAST_BOUNDARY) && c === LF) {
-                  index = 0;
+                  index41 = 0;
                   callback("onPartBegin");
                   state = S.HEADER_FIELD_START;
                 } else {
@@ -240,29 +230,29 @@ var init_multipart_parser = __esm({
                 }
                 break;
               }
-              if (c !== boundary[index + 2]) {
-                index = -2;
+              if (c !== boundary[index41 + 2]) {
+                index41 = -2;
               }
-              if (c === boundary[index + 2]) {
-                index++;
+              if (c === boundary[index41 + 2]) {
+                index41++;
               }
               break;
             case S.HEADER_FIELD_START:
               state = S.HEADER_FIELD;
               mark("onHeaderField");
-              index = 0;
+              index41 = 0;
             case S.HEADER_FIELD:
               if (c === CR) {
                 clear("onHeaderField");
                 state = S.HEADERS_ALMOST_DONE;
                 break;
               }
-              index++;
+              index41++;
               if (c === HYPHEN) {
                 break;
               }
               if (c === COLON) {
-                if (index === 1) {
+                if (index41 === 1) {
                   return;
                 }
                 dataCallback("onHeaderField", true);
@@ -304,36 +294,36 @@ var init_multipart_parser = __esm({
               state = S.PART_DATA;
               mark("onPartData");
             case S.PART_DATA:
-              previousIndex = index;
-              if (index === 0) {
-                i2 += boundaryEnd;
-                while (i2 < bufferLength && !(data2[i2] in boundaryChars)) {
-                  i2 += boundaryLength;
+              previousIndex = index41;
+              if (index41 === 0) {
+                i3 += boundaryEnd;
+                while (i3 < bufferLength && !(data2[i3] in boundaryChars)) {
+                  i3 += boundaryLength;
                 }
-                i2 -= boundaryEnd;
-                c = data2[i2];
+                i3 -= boundaryEnd;
+                c = data2[i3];
               }
-              if (index < boundary.length) {
-                if (boundary[index] === c) {
-                  if (index === 0) {
+              if (index41 < boundary.length) {
+                if (boundary[index41] === c) {
+                  if (index41 === 0) {
                     dataCallback("onPartData", true);
                   }
-                  index++;
+                  index41++;
                 } else {
-                  index = 0;
+                  index41 = 0;
                 }
-              } else if (index === boundary.length) {
-                index++;
+              } else if (index41 === boundary.length) {
+                index41++;
                 if (c === CR) {
                   flags |= F.PART_BOUNDARY;
                 } else if (c === HYPHEN) {
                   flags |= F.LAST_BOUNDARY;
                 } else {
-                  index = 0;
+                  index41 = 0;
                 }
-              } else if (index - 1 === boundary.length) {
+              } else if (index41 - 1 === boundary.length) {
                 if (flags & F.PART_BOUNDARY) {
-                  index = 0;
+                  index41 = 0;
                   if (c === LF) {
                     flags &= ~F.PART_BOUNDARY;
                     callback("onPartEnd");
@@ -347,20 +337,20 @@ var init_multipart_parser = __esm({
                     state = S.END;
                     flags = 0;
                   } else {
-                    index = 0;
+                    index41 = 0;
                   }
                 } else {
-                  index = 0;
+                  index41 = 0;
                 }
               }
-              if (index > 0) {
-                lookbehind[index - 1] = c;
+              if (index41 > 0) {
+                lookbehind[index41 - 1] = c;
               } else if (previousIndex > 0) {
                 const _lookbehind = new Uint8Array(lookbehind.buffer, lookbehind.byteOffset, lookbehind.byteLength);
                 callback("onPartData", 0, previousIndex, _lookbehind);
                 previousIndex = 0;
                 mark("onPartData");
-                i2--;
+                i3--;
               }
               break;
             case S.END:
@@ -372,7 +362,7 @@ var init_multipart_parser = __esm({
         dataCallback("onHeaderField");
         dataCallback("onHeaderValue");
         dataCallback("onPartData");
-        this.index = index;
+        this.index = index41;
         this.state = state;
         this.flags = flags;
       }
@@ -387,7 +377,7 @@ var init_multipart_parser = __esm({
   }
 });
 
-// node_modules/@sveltejs/kit/dist/install-fetch.js
+// node_modules/@sveltejs/kit/dist/node/polyfills.js
 function dataUriToBuffer(uri) {
   if (!/^data:/i.test(uri)) {
     throw new TypeError('`uri` does not appear to be a Data URI (must begin with "data:")');
@@ -402,13 +392,13 @@ function dataUriToBuffer(uri) {
   let base642 = false;
   const type = meta[0] || "text/plain";
   let typeFull = type;
-  for (let i2 = 1; i2 < meta.length; i2++) {
-    if (meta[i2] === "base64") {
+  for (let i3 = 1; i3 < meta.length; i3++) {
+    if (meta[i3] === "base64") {
       base642 = true;
     } else {
-      typeFull += `;${meta[i2]}`;
-      if (meta[i2].indexOf("charset=") === 0) {
-        charset = meta[i2].substring(8);
+      typeFull += `;${meta[i3]}`;
+      if (meta[i3].indexOf("charset=") === 0) {
+        charset = meta[i3].substring(8);
       }
     }
   }
@@ -424,7 +414,7 @@ function dataUriToBuffer(uri) {
   buffer.charset = charset;
   return buffer;
 }
-async function* toIterator(parts, clone2 = true) {
+async function* toIterator(parts, clone2) {
   for (const part of parts) {
     if ("stream" in part) {
       yield* part.stream();
@@ -442,9 +432,9 @@ async function* toIterator(parts, clone2 = true) {
         yield part;
       }
     } else {
-      let position = 0;
-      while (position !== part.size) {
-        const chunk = part.slice(position, Math.min(part.size, position + POOL_SIZE));
+      let position = 0, b = part;
+      while (position !== b.size) {
+        const chunk = b.slice(position, Math.min(b.size, position + POOL_SIZE));
         const buffer = await chunk.arrayBuffer();
         position += buffer.byteLength;
         yield new Uint8Array(buffer);
@@ -475,10 +465,10 @@ async function consumeBody(data2) {
   }
   const { body } = data2;
   if (body === null) {
-    return Buffer.alloc(0);
+    return import_node_buffer.Buffer.alloc(0);
   }
   if (!(body instanceof import_node_stream.default)) {
-    return Buffer.alloc(0);
+    return import_node_buffer.Buffer.alloc(0);
   }
   const accum = [];
   let accumBytes = 0;
@@ -499,9 +489,9 @@ async function consumeBody(data2) {
   if (body.readableEnded === true || body._readableState.ended === true) {
     try {
       if (accum.every((c) => typeof c === "string")) {
-        return Buffer.from(accum.join(""));
+        return import_node_buffer.Buffer.from(accum.join(""));
       }
-      return Buffer.concat(accum, accumBytes);
+      return import_node_buffer.Buffer.concat(accum, accumBytes);
     } catch (error2) {
       throw new FetchError(`Could not create Buffer from response body for ${data2.url}: ${error2.message}`, "system", error2);
     }
@@ -510,9 +500,9 @@ async function consumeBody(data2) {
   }
 }
 function fromRawHeaders(headers = []) {
-  return new Headers2(headers.reduce((result, value, index, array) => {
-    if (index % 2 === 0) {
-      result.push(array.slice(index, index + 2));
+  return new Headers2(headers.reduce((result, value, index41, array2) => {
+    if (index41 % 2 === 0) {
+      result.push(array2.slice(index41, index41 + 2));
     }
     return result;
   }, []).filter(([name, value]) => {
@@ -553,7 +543,7 @@ function isOriginPotentiallyTrustworthy(url) {
     return true;
   }
   const hostIp = url.host.replace(/(^\[)|(]$)/g, "");
-  const hostIPVersion = (0, import_net.isIP)(hostIp);
+  const hostIPVersion = (0, import_node_net.isIP)(hostIp);
   if (hostIPVersion === 4 && /^127\./.test(hostIp)) {
     return true;
   }
@@ -685,7 +675,7 @@ async function fetch2(url, options_) {
       abort();
       finalize();
     };
-    const request_ = send2(parsedURL, options);
+    const request_ = send2(parsedURL.toString(), options);
     if (signal) {
       signal.addEventListener("abort", abortAndFinalize);
     }
@@ -722,16 +712,22 @@ async function fetch2(url, options_) {
       const headers = fromRawHeaders(response_.rawHeaders);
       if (isRedirect(response_.statusCode)) {
         const location = headers.get("Location");
-        const locationURL = location === null ? null : new URL(location, request.url);
+        let locationURL = null;
+        try {
+          locationURL = location === null ? null : new URL(location, request.url);
+        } catch {
+          if (request.redirect !== "manual") {
+            reject(new FetchError(`uri requested responds with an invalid redirect URL: ${location}`, "invalid-redirect"));
+            finalize();
+            return;
+          }
+        }
         switch (request.redirect) {
           case "error":
             reject(new FetchError(`uri requested responds with a redirect, redirect mode is set to error: ${request.url}`, "no-redirect"));
             finalize();
             return;
           case "manual":
-            if (locationURL !== null) {
-              headers.set("Location", locationURL);
-            }
             break;
           case "follow": {
             if (locationURL === null) {
@@ -755,6 +751,11 @@ async function fetch2(url, options_) {
               referrer: request.referrer,
               referrerPolicy: request.referrerPolicy
             };
+            if (!isDomainOrSubdomain(request.url, locationURL)) {
+              for (const name of ["authorization", "www-authenticate", "cookie", "cookie2"]) {
+                requestOptions.headers.delete(name);
+              }
+            }
             if (response_.statusCode !== 303 && request.body && options_.body instanceof import_node_stream.default.Readable) {
               reject(new FetchError("Cannot follow redirect with body being a readable stream", "unsupported-redirect"));
               finalize();
@@ -782,7 +783,11 @@ async function fetch2(url, options_) {
           signal.removeEventListener("abort", abortAndFinalize);
         });
       }
-      let body = (0, import_node_stream.pipeline)(response_, new import_node_stream.PassThrough(), reject);
+      let body = (0, import_node_stream.pipeline)(response_, new import_node_stream.PassThrough(), (error2) => {
+        if (error2) {
+          reject(error2);
+        }
+      });
       if (process.version < "v12.10") {
         response_.on("aborted", abortAndFinalize);
       }
@@ -806,22 +811,52 @@ async function fetch2(url, options_) {
         finishFlush: import_node_zlib.default.Z_SYNC_FLUSH
       };
       if (codings === "gzip" || codings === "x-gzip") {
-        body = (0, import_node_stream.pipeline)(body, import_node_zlib.default.createGunzip(zlibOptions), reject);
+        body = (0, import_node_stream.pipeline)(body, import_node_zlib.default.createGunzip(zlibOptions), (error2) => {
+          if (error2) {
+            reject(error2);
+          }
+        });
         response = new Response2(body, responseOptions);
         resolve2(response);
         return;
       }
       if (codings === "deflate" || codings === "x-deflate") {
-        const raw = (0, import_node_stream.pipeline)(response_, new import_node_stream.PassThrough(), reject);
+        const raw = (0, import_node_stream.pipeline)(response_, new import_node_stream.PassThrough(), (error2) => {
+          if (error2) {
+            reject(error2);
+          }
+        });
         raw.once("data", (chunk) => {
-          body = (chunk[0] & 15) === 8 ? (0, import_node_stream.pipeline)(body, import_node_zlib.default.createInflate(), reject) : (0, import_node_stream.pipeline)(body, import_node_zlib.default.createInflateRaw(), reject);
+          if ((chunk[0] & 15) === 8) {
+            body = (0, import_node_stream.pipeline)(body, import_node_zlib.default.createInflate(), (error2) => {
+              if (error2) {
+                reject(error2);
+              }
+            });
+          } else {
+            body = (0, import_node_stream.pipeline)(body, import_node_zlib.default.createInflateRaw(), (error2) => {
+              if (error2) {
+                reject(error2);
+              }
+            });
+          }
           response = new Response2(body, responseOptions);
           resolve2(response);
+        });
+        raw.once("end", () => {
+          if (!response) {
+            response = new Response2(body, responseOptions);
+            resolve2(response);
+          }
         });
         return;
       }
       if (codings === "br") {
-        body = (0, import_node_stream.pipeline)(body, import_node_zlib.default.createBrotliDecompress(), reject);
+        body = (0, import_node_stream.pipeline)(body, import_node_zlib.default.createBrotliDecompress(), (error2) => {
+          if (error2) {
+            reject(error2);
+          }
+        });
         response = new Response2(body, responseOptions);
         resolve2(response);
         return;
@@ -829,11 +864,11 @@ async function fetch2(url, options_) {
       response = new Response2(body, responseOptions);
       resolve2(response);
     });
-    writeToStream(request_, request);
+    writeToStream(request_, request).catch(reject);
   });
 }
 function fixResponseChunkedTransferBadEnding(request, errorCallback) {
-  const LAST_CHUNK = Buffer.from("0\r\n\r\n");
+  const LAST_CHUNK = import_node_buffer.Buffer.from("0\r\n\r\n");
   let isChunkedTransfer = false;
   let properLastChunkReceived = false;
   let previousChunk;
@@ -854,48 +889,35 @@ function fixResponseChunkedTransferBadEnding(request, errorCallback) {
       socket.removeListener("close", onSocketClose);
     });
     socket.on("data", (buf) => {
-      properLastChunkReceived = Buffer.compare(buf.slice(-5), LAST_CHUNK) === 0;
+      properLastChunkReceived = import_node_buffer.Buffer.compare(buf.slice(-5), LAST_CHUNK) === 0;
       if (!properLastChunkReceived && previousChunk) {
-        properLastChunkReceived = Buffer.compare(previousChunk.slice(-3), LAST_CHUNK.slice(0, 3)) === 0 && Buffer.compare(buf.slice(-2), LAST_CHUNK.slice(3)) === 0;
+        properLastChunkReceived = import_node_buffer.Buffer.compare(previousChunk.slice(-3), LAST_CHUNK.slice(0, 3)) === 0 && import_node_buffer.Buffer.compare(buf.slice(-2), LAST_CHUNK.slice(3)) === 0;
       }
       previousChunk = buf;
     });
   });
 }
-function installFetch() {
-  Object.defineProperties(globalThis, {
-    fetch: {
+function installPolyfills() {
+  for (const name in globals) {
+    Object.defineProperty(globalThis, name, {
       enumerable: true,
       configurable: true,
-      value: fetch2
-    },
-    Response: {
-      enumerable: true,
-      configurable: true,
-      value: Response2
-    },
-    Request: {
-      enumerable: true,
-      configurable: true,
-      value: Request2
-    },
-    Headers: {
-      enumerable: true,
-      configurable: true,
-      value: Headers2
-    }
-  });
+      value: globals[name]
+    });
+  }
 }
-var import_node_http, import_node_https, import_node_zlib, import_node_stream, import_node_util, import_node_url, import_net, commonjsGlobal, ponyfill_es2018, POOL_SIZE$1, POOL_SIZE, _Blob, Blob3, Blob$1, _File, File, t, i, h, r, m, f2, e, x, FormData2, FetchBaseError, FetchError, NAME, isURLSearchParameters, isBlob, isAbortSignal, INTERNALS$2, Body, clone, getNonSpecFormDataBoundary, extractContentType, getTotalBytes, writeToStream, validateHeaderName, validateHeaderValue, Headers2, redirectStatus, isRedirect, INTERNALS$1, Response2, getSearch, ReferrerPolicy, DEFAULT_REFERRER_POLICY, INTERNALS, isRequest, Request2, getNodeRequestOptions, AbortError, supportedSchemas;
-var init_install_fetch = __esm({
-  "node_modules/@sveltejs/kit/dist/install-fetch.js"() {
+var import_node_http, import_node_https, import_node_zlib, import_node_stream, import_node_buffer, import_node_util, import_node_url, import_node_net, import_crypto, commonjsGlobal, ponyfill_es2018, POOL_SIZE$1, POOL_SIZE, _Blob, Blob3, Blob$1, _File, File, t, i2, h, r, m, f2, e, x, FormData2, FetchBaseError, FetchError, NAME, isURLSearchParameters, isBlob, isAbortSignal, isDomainOrSubdomain, pipeline, INTERNALS$2, Body, clone, getNonSpecFormDataBoundary, extractContentType, getTotalBytes, writeToStream, validateHeaderName, validateHeaderValue, Headers2, redirectStatus, isRedirect, INTERNALS$1, Response2, getSearch, ReferrerPolicy, DEFAULT_REFERRER_POLICY, INTERNALS, isRequest, doBadDataWarn, Request2, getNodeRequestOptions, AbortError, supportedSchemas, globals;
+var init_polyfills = __esm({
+  "node_modules/@sveltejs/kit/dist/node/polyfills.js"() {
     import_node_http = __toESM(require("node:http"), 1);
     import_node_https = __toESM(require("node:https"), 1);
     import_node_zlib = __toESM(require("node:zlib"), 1);
     import_node_stream = __toESM(require("node:stream"), 1);
+    import_node_buffer = require("node:buffer");
     import_node_util = require("node:util");
     import_node_url = require("node:url");
-    import_net = require("net");
+    import_node_net = require("node:net");
+    import_crypto = require("crypto");
     commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
     ponyfill_es2018 = { exports: {} };
     (function(module2, exports) {
@@ -916,7 +938,7 @@ var init_install_fetch = __esm({
           }
           return void 0;
         }
-        const globals = getGlobals();
+        const globals2 = getGlobals();
         function typeIsObject(x2) {
           return typeof x2 === "object" && x2 !== null || typeof x2 === "function";
         }
@@ -953,7 +975,7 @@ var init_install_fetch = __esm({
           PerformPromiseThen(promise, void 0, rethrowAssertionErrorRejection);
         }
         const queueMicrotask = (() => {
-          const globalQueueMicrotask = globals && globals.queueMicrotask;
+          const globalQueueMicrotask = globals2 && globals2.queueMicrotask;
           if (typeof globalQueueMicrotask === "function") {
             return globalQueueMicrotask;
           }
@@ -1025,20 +1047,20 @@ var init_install_fetch = __esm({
             return element;
           }
           forEach(callback) {
-            let i2 = this._cursor;
+            let i3 = this._cursor;
             let node = this._front;
             let elements = node._elements;
-            while (i2 !== elements.length || node._next !== void 0) {
-              if (i2 === elements.length) {
+            while (i3 !== elements.length || node._next !== void 0) {
+              if (i3 === elements.length) {
                 node = node._next;
                 elements = node._elements;
-                i2 = 0;
+                i3 = 0;
                 if (elements.length === 0) {
                   break;
                 }
               }
-              callback(elements[i2]);
-              ++i2;
+              callback(elements[i3]);
+              ++i3;
             }
           }
           peek() {
@@ -1594,10 +1616,10 @@ var init_install_fetch = __esm({
           [PullSteps](readRequest) {
             const stream = this._controlledReadableByteStream;
             if (this._queueTotalSize > 0) {
-              const entry38 = this._queue.shift();
-              this._queueTotalSize -= entry38.byteLength;
+              const entry41 = this._queue.shift();
+              this._queueTotalSize -= entry41.byteLength;
               ReadableByteStreamControllerHandleQueueDrain(this);
-              const view = new Uint8Array(entry38.buffer, entry38.byteOffset, entry38.byteLength);
+              const view = new Uint8Array(entry41.buffer, entry41.byteOffset, entry41.byteLength);
               readRequest._chunkSteps(view);
               return;
             }
@@ -4074,10 +4096,13 @@ var init_install_fetch = __esm({
         const byteLengthSizeFunction = (chunk) => {
           return chunk.byteLength;
         };
-        Object.defineProperty(byteLengthSizeFunction, "name", {
-          value: "size",
-          configurable: true
-        });
+        try {
+          Object.defineProperty(byteLengthSizeFunction, "name", {
+            value: "size",
+            configurable: true
+          });
+        } catch (_a) {
+        }
         class ByteLengthQueuingStrategy {
           constructor(options) {
             assertRequiredArgument(options, 1, "ByteLengthQueuingStrategy");
@@ -4122,10 +4147,13 @@ var init_install_fetch = __esm({
         const countSizeFunction = () => {
           return 1;
         };
-        Object.defineProperty(countSizeFunction, "name", {
-          value: "size",
-          configurable: true
-        });
+        try {
+          Object.defineProperty(countSizeFunction, "name", {
+            value: "size",
+            configurable: true
+          });
+        } catch (_a) {
+        }
         class CountQueuingStrategy {
           constructor(options) {
             assertRequiredArgument(options, 1, "CountQueuingStrategy");
@@ -4523,6 +4551,7 @@ var init_install_fetch = __esm({
       #parts = [];
       #type = "";
       #size = 0;
+      #endings = "transparent";
       constructor(blobParts = [], options = {}) {
         if (typeof blobParts !== "object" || blobParts === null) {
           throw new TypeError("Failed to construct 'Blob': The provided value cannot be converted to a sequence.");
@@ -4545,11 +4574,15 @@ var init_install_fetch = __esm({
           } else if (element instanceof Blob2) {
             part = element;
           } else {
-            part = encoder2.encode(element);
+            part = encoder2.encode(`${element}`);
           }
-          this.#size += ArrayBuffer.isView(part) ? part.byteLength : part.size;
-          this.#parts.push(part);
+          const size = ArrayBuffer.isView(part) ? part.byteLength : part.size;
+          if (size) {
+            this.#size += size;
+            this.#parts.push(part);
+          }
         }
+        this.#endings = `${options.endings === void 0 ? "transparent" : options.endings}`;
         const type = options.type === void 0 ? "" : String(options.type);
         this.#type = /^[\x20-\x7E]*$/.test(type) ? type : "";
       }
@@ -4664,9 +4697,12 @@ var init_install_fetch = __esm({
       get [Symbol.toStringTag]() {
         return "File";
       }
+      static [Symbol.hasInstance](object) {
+        return !!object && object instanceof Blob$1 && /^(File)$/.test(object[Symbol.toStringTag]);
+      }
     };
     File = _File;
-    ({ toStringTag: t, iterator: i, hasInstance: h } = Symbol);
+    ({ toStringTag: t, iterator: i2, hasInstance: h } = Symbol);
     r = Math.random;
     m = "append,set,get,getAll,delete,keys,values,entries,forEach,constructor".split(",");
     f2 = (a, b, c) => (a += "", /^(Blob|File)$/.test(b && b[t]) ? [(c = c !== void 0 ? c + "" : b[t] == "File" ? b.name : "blob", a), b.name !== c || b[t] == "blob" ? new File([b], c, b) : b] : [a, b + ""]);
@@ -4685,7 +4721,7 @@ var init_install_fetch = __esm({
       get [t]() {
         return "FormData";
       }
-      [i]() {
+      [i2]() {
         return this.entries();
       }
       static [h](o) {
@@ -4779,6 +4815,12 @@ var init_install_fetch = __esm({
     isAbortSignal = (object) => {
       return typeof object === "object" && (object[NAME] === "AbortSignal" || object[NAME] === "EventTarget");
     };
+    isDomainOrSubdomain = (destination, original) => {
+      const orig = new URL(original).hostname;
+      const dest = new URL(destination).hostname;
+      return orig === dest || orig.endsWith(`.${dest}`);
+    };
+    pipeline = (0, import_node_util.promisify)(import_node_stream.default.pipeline);
     INTERNALS$2 = Symbol("Body internals");
     Body = class {
       constructor(body, {
@@ -4788,25 +4830,25 @@ var init_install_fetch = __esm({
         if (body === null) {
           body = null;
         } else if (isURLSearchParameters(body)) {
-          body = Buffer.from(body.toString());
+          body = import_node_buffer.Buffer.from(body.toString());
         } else if (isBlob(body))
           ;
-        else if (Buffer.isBuffer(body))
+        else if (import_node_buffer.Buffer.isBuffer(body))
           ;
         else if (import_node_util.types.isAnyArrayBuffer(body)) {
-          body = Buffer.from(body);
+          body = import_node_buffer.Buffer.from(body);
         } else if (ArrayBuffer.isView(body)) {
-          body = Buffer.from(body.buffer, body.byteOffset, body.byteLength);
+          body = import_node_buffer.Buffer.from(body.buffer, body.byteOffset, body.byteLength);
         } else if (body instanceof import_node_stream.default)
           ;
         else if (body instanceof FormData2) {
           body = formDataToBlob(body);
           boundary = body.type.split("=")[1];
         } else {
-          body = Buffer.from(String(body));
+          body = import_node_buffer.Buffer.from(String(body));
         }
         let stream = body;
-        if (Buffer.isBuffer(body)) {
+        if (import_node_buffer.Buffer.isBuffer(body)) {
           stream = import_node_stream.default.Readable.from(body);
         } else if (isBlob(body)) {
           stream = import_node_stream.default.Readable.from(body.stream());
@@ -4851,18 +4893,18 @@ var init_install_fetch = __esm({
       }
       async blob() {
         const ct = this.headers && this.headers.get("content-type") || this[INTERNALS$2].body && this[INTERNALS$2].body.type || "";
-        const buf = await this.buffer();
+        const buf = await this.arrayBuffer();
         return new Blob$1([buf], {
           type: ct
         });
       }
       async json() {
-        const buffer = await consumeBody(this);
-        return JSON.parse(buffer.toString());
+        const text = await this.text();
+        return JSON.parse(text);
       }
       async text() {
         const buffer = await consumeBody(this);
-        return buffer.toString();
+        return new TextDecoder().decode(buffer);
       }
       buffer() {
         return consumeBody(this);
@@ -4875,7 +4917,9 @@ var init_install_fetch = __esm({
       arrayBuffer: { enumerable: true },
       blob: { enumerable: true },
       json: { enumerable: true },
-      text: { enumerable: true }
+      text: { enumerable: true },
+      data: { get: (0, import_node_util.deprecate)(() => {
+      }, "data doesn't exist, use json(), text(), arrayBuffer(), or body instead", "https://github.com/node-fetch/node-fetch/issues/1000 (response)") }
     });
     clone = (instance, highWaterMark) => {
       let p1;
@@ -4908,7 +4952,7 @@ var init_install_fetch = __esm({
       if (isBlob(body)) {
         return body.type || null;
       }
-      if (Buffer.isBuffer(body) || import_node_util.types.isAnyArrayBuffer(body) || ArrayBuffer.isView(body)) {
+      if (import_node_buffer.Buffer.isBuffer(body) || import_node_util.types.isAnyArrayBuffer(body) || ArrayBuffer.isView(body)) {
         return null;
       }
       if (body instanceof FormData2) {
@@ -4930,7 +4974,7 @@ var init_install_fetch = __esm({
       if (isBlob(body)) {
         return body.size;
       }
-      if (Buffer.isBuffer(body)) {
+      if (import_node_buffer.Buffer.isBuffer(body)) {
         return body.length;
       }
       if (body && typeof body.getLengthSync === "function") {
@@ -4938,11 +4982,11 @@ var init_install_fetch = __esm({
       }
       return null;
     };
-    writeToStream = (dest, { body }) => {
+    writeToStream = async (dest, { body }) => {
       if (body === null) {
         dest.end();
       } else {
-        body.pipe(dest);
+        await pipeline(body, dest);
       }
     };
     validateHeaderName = typeof import_node_http.default.validateHeaderName === "function" ? import_node_http.default.validateHeaderName : (name) => {
@@ -5200,6 +5244,8 @@ var init_install_fetch = __esm({
     isRequest = (object) => {
       return typeof object === "object" && typeof object[INTERNALS] === "object";
     };
+    doBadDataWarn = (0, import_node_util.deprecate)(() => {
+    }, ".data is not a valid RequestInit property, use .body instead", "https://github.com/node-fetch/node-fetch/issues/1000 (request)");
     Request2 = class extends Body {
       constructor(input, init2 = {}) {
         let parsedURL;
@@ -5210,11 +5256,16 @@ var init_install_fetch = __esm({
           input = {};
         }
         if (parsedURL.username !== "" || parsedURL.password !== "") {
-          throw new TypeError(`${parsedURL} is an url with embedded credentails.`);
+          throw new TypeError(`${parsedURL} is an url with embedded credentials.`);
         }
         let method = init2.method || input.method || "GET";
-        method = method.toUpperCase();
-        if ((init2.body != null || isRequest(input)) && input.body !== null && (method === "GET" || method === "HEAD")) {
+        if (/^(delete|get|head|options|post|put)$/i.test(method)) {
+          method = method.toUpperCase();
+        }
+        if ("data" in init2) {
+          doBadDataWarn();
+        }
+        if ((init2.body != null || isRequest(input) && input.body !== null) && (method === "GET" || method === "HEAD")) {
           throw new TypeError("Request with GET/HEAD method cannot have body");
         }
         const inputBody = init2.body ? init2.body : isRequest(input) && input.body !== null ? clone(input) : null;
@@ -5371,7 +5422,22 @@ var init_install_fetch = __esm({
         super(message, type);
       }
     };
+    if (!globalThis.DOMException) {
+      try {
+        const { MessageChannel } = require("worker_threads"), port = new MessageChannel().port1, ab = new ArrayBuffer();
+        port.postMessage(ab, [ab, ab]);
+      } catch (err) {
+        err.constructor.name === "DOMException" && (globalThis.DOMException = err.constructor);
+      }
+    }
     supportedSchemas = /* @__PURE__ */ new Set(["data:", "http:", "https:"]);
+    globals = {
+      crypto: import_crypto.webcrypto,
+      fetch: fetch2,
+      Response: Response2,
+      Request: Request2,
+      Headers: Headers2
+    };
   }
 });
 
@@ -5502,8 +5568,8 @@ function escape_object(obj) {
 }
 function each(items, fn) {
   let str = "";
-  for (let i2 = 0; i2 < items.length; i2 += 1) {
-    str += fn(items[i2], i2);
+  for (let i3 = 0; i3 < items.length; i3 += 1) {
+    str += fn(items[i3], i3);
   }
   return str;
 }
@@ -5540,7 +5606,7 @@ function create_ssr_component(fn) {
       return {
         html,
         css: {
-          code: Array.from(result.css).map((css47) => css47.code).join("\n"),
+          code: Array.from(result.css).map((css51) => css51.code).join("\n"),
           map: null
         },
         head: result.title + result.head
@@ -5622,12 +5688,12 @@ var init_paths_396f020f = __esm({
 var require_cookie = __commonJS({
   "node_modules/cookie/index.js"(exports) {
     "use strict";
-    exports.parse = parse3;
+    exports.parse = parse4;
     exports.serialize = serialize2;
     var decode2 = decodeURIComponent;
     var encode2 = encodeURIComponent;
     var fieldContentRegExp2 = /^[\u0009\u0020-\u007e\u0080-\u00ff]+$/;
-    function parse3(str, options) {
+    function parse4(str, options) {
       if (typeof str !== "string") {
         throw new TypeError("argument str must be a string");
       }
@@ -5635,15 +5701,15 @@ var require_cookie = __commonJS({
       var opt = options || {};
       var pairs = str.split(";");
       var dec = opt.decode || decode2;
-      for (var i2 = 0; i2 < pairs.length; i2++) {
-        var pair = pairs[i2];
-        var index = pair.indexOf("=");
-        if (index < 0) {
+      for (var i3 = 0; i3 < pairs.length; i3++) {
+        var pair = pairs[i3];
+        var index41 = pair.indexOf("=");
+        if (index41 < 0) {
           continue;
         }
-        var key2 = pair.substring(0, index).trim();
+        var key2 = pair.substring(0, index41).trim();
         if (obj[key2] == void 0) {
-          var val = pair.substring(index + 1, pair.length).trim();
+          var val = pair.substring(index41 + 1, pair.length).trim();
           if (val[0] === '"') {
             val = val.slice(1, -1);
           }
@@ -5817,7 +5883,7 @@ var require_version2 = __commonJS({
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.version = void 0;
-    exports.version = "1.22.15";
+    exports.version = "1.22.16";
   }
 });
 
@@ -6055,12 +6121,12 @@ var require_cookies = __commonJS({
       res.setHeader("Set-Cookie", getCookieString(req, res, cookies));
     }
     exports.setCookies = setCookies;
-    function setCookie2(req, res, cookie2) {
+    function setCookie3(req, res, cookie2) {
       setCookies(req, res, [cookie2]);
     }
-    exports.setCookie = setCookie2;
+    exports.setCookie = setCookie3;
     function deleteCookie(req, res, name) {
-      setCookie2(req, res, {
+      setCookie3(req, res, {
         name,
         value: "",
         maxAge: -1
@@ -6174,7 +6240,7 @@ var require_lib = __commonJS({
     conversions["ByteString"] = function(V, opts) {
       const x2 = String(V);
       let c = void 0;
-      for (let i2 = 0; (c = x2.codePointAt(i2)) !== void 0; ++i2) {
+      for (let i3 = 0; (c = x2.codePointAt(i3)) !== void 0; ++i3) {
         if (c > 255) {
           throw new TypeError("Argument is not a valid bytestring");
         }
@@ -6185,22 +6251,22 @@ var require_lib = __commonJS({
       const S2 = String(V);
       const n = S2.length;
       const U = [];
-      for (let i2 = 0; i2 < n; ++i2) {
-        const c = S2.charCodeAt(i2);
+      for (let i3 = 0; i3 < n; ++i3) {
+        const c = S2.charCodeAt(i3);
         if (c < 55296 || c > 57343) {
           U.push(String.fromCodePoint(c));
         } else if (56320 <= c && c <= 57343) {
           U.push(String.fromCodePoint(65533));
         } else {
-          if (i2 === n - 1) {
+          if (i3 === n - 1) {
             U.push(String.fromCodePoint(65533));
           } else {
-            const d = S2.charCodeAt(i2 + 1);
+            const d = S2.charCodeAt(i3 + 1);
             if (56320 <= d && d <= 57343) {
               const a = c & 1023;
               const b = d & 1023;
               U.push(String.fromCodePoint((2 << 15) + (2 << 9) * a + b));
-              ++i2;
+              ++i3;
             } else {
               U.push(String.fromCodePoint(65533));
             }
@@ -6233,8 +6299,8 @@ var require_utils = __commonJS({
     "use strict";
     module2.exports.mixin = function mixin(target, source) {
       const keys = Object.getOwnPropertyNames(source);
-      for (let i2 = 0; i2 < keys.length; ++i2) {
-        Object.defineProperty(target, keys[i2], Object.getOwnPropertyDescriptor(source, keys[i2]));
+      for (let i3 = 0; i3 < keys.length; ++i3) {
+        Object.defineProperty(target, keys[i3], Object.getOwnPropertyDescriptor(source, keys[i3]));
       }
     };
     module2.exports.wrapperSymbol = Symbol("wrapper");
@@ -6294,8 +6360,8 @@ var require_tr46 = __commonJS({
       var hasError = false;
       var processed = "";
       var len = countSymbols(domain_name);
-      for (var i2 = 0; i2 < len; ++i2) {
-        var codePoint = domain_name.codePointAt(i2);
+      for (var i3 = 0; i3 < len; ++i3) {
+        var codePoint = domain_name.codePointAt(i3);
         var status = findStatus(codePoint);
         switch (status[1]) {
           case "disallowed":
@@ -6349,8 +6415,8 @@ var require_tr46 = __commonJS({
         error2 = true;
       }
       var len = countSymbols(label);
-      for (var i2 = 0; i2 < len; ++i2) {
-        var status = findStatus(label.codePointAt(i2));
+      for (var i3 = 0; i3 < len; ++i3) {
+        var status = findStatus(label.codePointAt(i3));
         if (processing === PROCESSING_OPTIONS.TRANSITIONAL && status[1] !== "valid" || processing === PROCESSING_OPTIONS.NONTRANSITIONAL && status[1] !== "valid" && status[1] !== "deviation") {
           error2 = true;
           break;
@@ -6365,10 +6431,10 @@ var require_tr46 = __commonJS({
       var result = mapChars(domain_name, useSTD3, processing_option);
       result.string = normalize2(result.string);
       var labels = result.string.split(".");
-      for (var i2 = 0; i2 < labels.length; ++i2) {
+      for (var i3 = 0; i3 < labels.length; ++i3) {
         try {
-          var validation = validateLabel(labels[i2]);
-          labels[i2] = validation.label;
+          var validation = validateLabel(labels[i3]);
+          labels[i3] = validation.label;
           result.error = result.error || validation.error;
         } catch (e2) {
           result.error = true;
@@ -6395,7 +6461,7 @@ var require_tr46 = __commonJS({
         if (total.length > 253 || total.length === 0) {
           result.error = true;
         }
-        for (var i2 = 0; i2 < labels.length; ++i2) {
+        for (var i3 = 0; i3 < labels.length; ++i3) {
           if (labels.length > 63 || labels.length === 0) {
             result.error = true;
             break;
@@ -6493,22 +6559,22 @@ var require_url_state_machine = __commonJS({
     function utf8PercentEncode(c) {
       const buf = new Buffer(c);
       let str = "";
-      for (let i2 = 0; i2 < buf.length; ++i2) {
-        str += percentEncode(buf[i2]);
+      for (let i3 = 0; i3 < buf.length; ++i3) {
+        str += percentEncode(buf[i3]);
       }
       return str;
     }
     function utf8PercentDecode(str) {
       const input = new Buffer(str);
       const output = [];
-      for (let i2 = 0; i2 < input.length; ++i2) {
-        if (input[i2] !== 37) {
-          output.push(input[i2]);
-        } else if (input[i2] === 37 && isASCIIHex(input[i2 + 1]) && isASCIIHex(input[i2 + 2])) {
-          output.push(parseInt(input.slice(i2 + 1, i2 + 3).toString(), 16));
-          i2 += 2;
+      for (let i3 = 0; i3 < input.length; ++i3) {
+        if (input[i3] !== 37) {
+          output.push(input[i3]);
+        } else if (input[i3] === 37 && isASCIIHex(input[i3 + 1]) && isASCIIHex(input[i3 + 2])) {
+          output.push(parseInt(input.slice(i3 + 1, i3 + 3).toString(), 16));
+          i3 += 2;
         } else {
-          output.push(input[i2]);
+          output.push(input[i3]);
         }
       }
       return new Buffer(output).toString();
@@ -6570,8 +6636,8 @@ var require_url_state_machine = __commonJS({
         }
         numbers.push(n);
       }
-      for (let i2 = 0; i2 < numbers.length - 1; ++i2) {
-        if (numbers[i2] > 255) {
+      for (let i3 = 0; i3 < numbers.length - 1; ++i3) {
+        if (numbers[i3] > 255) {
           return failure;
         }
       }
@@ -6589,9 +6655,9 @@ var require_url_state_machine = __commonJS({
     function serializeIPv4(address) {
       let output = "";
       let n = address;
-      for (let i2 = 1; i2 <= 4; ++i2) {
+      for (let i3 = 1; i3 <= 4; ++i3) {
         output = String(n % 256) + output;
-        if (i2 !== 4) {
+        if (i3 !== 4) {
           output = "." + output;
         }
         n = Math.floor(n / 256);
@@ -6757,8 +6823,8 @@ var require_url_state_machine = __commonJS({
       }
       let output = "";
       const decoded = punycode.ucs2.decode(input);
-      for (let i2 = 0; i2 < decoded.length; ++i2) {
-        output += percentEncodeChar(decoded[i2], isC0ControlPercentEncode);
+      for (let i3 = 0; i3 < decoded.length; ++i3) {
+        output += percentEncodeChar(decoded[i3], isC0ControlPercentEncode);
       }
       return output;
     }
@@ -6767,8 +6833,8 @@ var require_url_state_machine = __commonJS({
       let maxLen = 1;
       let currStart = null;
       let currLen = 0;
-      for (let i2 = 0; i2 < arr.length; ++i2) {
-        if (arr[i2] !== 0) {
+      for (let i3 = 0; i3 < arr.length; ++i3) {
+        if (arr[i3] !== 0) {
           if (currLen > maxLen) {
             maxIdx = currStart;
             maxLen = currLen;
@@ -6777,7 +6843,7 @@ var require_url_state_machine = __commonJS({
           currLen = 0;
         } else {
           if (currStart === null) {
-            currStart = i2;
+            currStart = i3;
           }
           ++currLen;
         }
@@ -7350,11 +7416,11 @@ var require_url_state_machine = __commonJS({
           this.encodingOverride = "utf-8";
         }
         const buffer = new Buffer(this.buffer);
-        for (let i2 = 0; i2 < buffer.length; ++i2) {
-          if (buffer[i2] < 33 || buffer[i2] > 126 || buffer[i2] === 34 || buffer[i2] === 35 || buffer[i2] === 60 || buffer[i2] === 62) {
-            this.url.query += percentEncode(buffer[i2]);
+        for (let i3 = 0; i3 < buffer.length; ++i3) {
+          if (buffer[i3] < 33 || buffer[i3] > 126 || buffer[i3] === 34 || buffer[i3] === 35 || buffer[i3] === 60 || buffer[i3] === 62) {
+            this.url.query += percentEncode(buffer[i3]);
           } else {
-            this.url.query += String.fromCodePoint(buffer[i2]);
+            this.url.query += String.fromCodePoint(buffer[i3]);
           }
         }
         this.buffer = "";
@@ -7462,15 +7528,15 @@ var require_url_state_machine = __commonJS({
     module2.exports.setTheUsername = function(url, username) {
       url.username = "";
       const decoded = punycode.ucs2.decode(username);
-      for (let i2 = 0; i2 < decoded.length; ++i2) {
-        url.username += percentEncodeChar(decoded[i2], isUserinfoPercentEncode);
+      for (let i3 = 0; i3 < decoded.length; ++i3) {
+        url.username += percentEncodeChar(decoded[i3], isUserinfoPercentEncode);
       }
     };
-    module2.exports.setThePassword = function(url, password3) {
+    module2.exports.setThePassword = function(url, password2) {
       url.password = "";
-      const decoded = punycode.ucs2.decode(password3);
-      for (let i2 = 0; i2 < decoded.length; ++i2) {
-        url.password += percentEncodeChar(decoded[i2], isUserinfoPercentEncode);
+      const decoded = punycode.ucs2.decode(password2);
+      for (let i3 = 0; i3 < decoded.length; ++i3) {
+        url.password += percentEncodeChar(decoded[i3], isUserinfoPercentEncode);
       }
     };
     module2.exports.serializeHost = serializeHost;
@@ -7660,8 +7726,8 @@ var require_URL = __commonJS({
         throw new TypeError("Failed to construct 'URL': 1 argument required, but only " + arguments.length + " present.");
       }
       const args = [];
-      for (let i2 = 0; i2 < arguments.length && i2 < 2; ++i2) {
-        args[i2] = arguments[i2];
+      for (let i3 = 0; i3 < arguments.length && i3 < 2; ++i3) {
+        args[i3] = arguments[i3];
       }
       args[0] = conversions["USVString"](args[0]);
       if (args[1] !== void 0) {
@@ -7674,8 +7740,8 @@ var require_URL = __commonJS({
         throw new TypeError("Illegal invocation");
       }
       const args = [];
-      for (let i2 = 0; i2 < arguments.length && i2 < 0; ++i2) {
-        args[i2] = arguments[i2];
+      for (let i3 = 0; i3 < arguments.length && i3 < 0; ++i3) {
+        args[i3] = arguments[i3];
       }
       return this[impl].toJSON.apply(this[impl], args);
     };
@@ -7870,8 +7936,8 @@ var require_lib2 = __commonJS({
         if (blobParts) {
           const a = blobParts;
           const length = Number(a.length);
-          for (let i2 = 0; i2 < length; i2++) {
-            const element = a[i2];
+          for (let i3 = 0; i3 < length; i3++) {
+            const element = a[i3];
             let buffer;
             if (element instanceof Buffer) {
               buffer = element;
@@ -8339,13 +8405,13 @@ var require_lib2 = __commonJS({
       forEach(callback) {
         let thisArg = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : void 0;
         let pairs = getHeaders(this);
-        let i2 = 0;
-        while (i2 < pairs.length) {
-          var _pairs$i = pairs[i2];
+        let i3 = 0;
+        while (i3 < pairs.length) {
+          var _pairs$i = pairs[i3];
           const name = _pairs$i[0], value = _pairs$i[1];
           callback.call(thisArg, value, name, this);
           pairs = getHeaders(this);
-          i2++;
+          i3++;
         }
       }
       set(name, value) {
@@ -8439,18 +8505,18 @@ var require_lib2 = __commonJS({
           throw new TypeError("Value of `this` is not a HeadersIterator");
         }
         var _INTERNAL = this[INTERNAL];
-        const target = _INTERNAL.target, kind = _INTERNAL.kind, index = _INTERNAL.index;
+        const target = _INTERNAL.target, kind = _INTERNAL.kind, index41 = _INTERNAL.index;
         const values = getHeaders(target, kind);
         const len = values.length;
-        if (index >= len) {
+        if (index41 >= len) {
           return {
             value: void 0,
             done: true
           };
         }
-        this[INTERNAL].index = index + 1;
+        this[INTERNAL].index = index41 + 1;
         return {
-          value: values[index],
+          value: values[index41],
           done: false
         };
       }
@@ -8719,7 +8785,7 @@ var require_lib2 = __commonJS({
     AbortError2.prototype.name = "AbortError";
     var URL$1 = Url.URL || whatwgUrl.URL;
     var PassThrough$1 = Stream2.PassThrough;
-    var isDomainOrSubdomain = function isDomainOrSubdomain2(destination, original) {
+    var isDomainOrSubdomain2 = function isDomainOrSubdomain3(destination, original) {
       const orig = new URL$1(original).hostname;
       const dest = new URL$1(destination).hostname;
       return orig === dest || orig[orig.length - dest.length - 1] === "." && orig.endsWith(dest);
@@ -8826,7 +8892,7 @@ var require_lib2 = __commonJS({
                   timeout: request.timeout,
                   size: request.size
                 };
-                if (!isDomainOrSubdomain(request.url, locationURL)) {
+                if (!isDomainOrSubdomain2(request.url, locationURL)) {
                   for (const name of ["authorization", "www-authenticate", "cookie", "cookie2"]) {
                     requestOpts.headers.delete(name);
                   }
@@ -9106,9 +9172,13 @@ var require_GoTrueApi = __commonJS({
         if (options === null || options === void 0 ? void 0 : options.scopes) {
           urlParams.push(`scopes=${encodeURIComponent(options.scopes)}`);
         }
+        if (options === null || options === void 0 ? void 0 : options.queryParams) {
+          const query = new URLSearchParams(options.queryParams);
+          urlParams.push(`${query}`);
+        }
         return `${this.url}/authorize?${urlParams.join("&")}`;
       }
-      signUpWithEmail(email, password3, options = {}) {
+      signUpWithEmail(email, password2, options = {}) {
         return __awaiter(this, void 0, void 0, function* () {
           try {
             const headers = Object.assign({}, this.headers);
@@ -9118,7 +9188,7 @@ var require_GoTrueApi = __commonJS({
             }
             const data2 = yield (0, fetch_1.post)(this.fetch, `${this.url}/signup${queryString}`, {
               email,
-              password: password3,
+              password: password2,
               data: options.data,
               gotrue_meta_security: { hcaptcha_token: options.captchaToken }
             }, { headers });
@@ -9131,7 +9201,7 @@ var require_GoTrueApi = __commonJS({
           }
         });
       }
-      signInWithEmail(email, password3, options = {}) {
+      signInWithEmail(email, password2, options = {}) {
         return __awaiter(this, void 0, void 0, function* () {
           try {
             const headers = Object.assign({}, this.headers);
@@ -9139,7 +9209,7 @@ var require_GoTrueApi = __commonJS({
             if (options.redirectTo) {
               queryString += "&redirect_to=" + encodeURIComponent(options.redirectTo);
             }
-            const data2 = yield (0, fetch_1.post)(this.fetch, `${this.url}/token${queryString}`, { email, password: password3 }, { headers });
+            const data2 = yield (0, fetch_1.post)(this.fetch, `${this.url}/token${queryString}`, { email, password: password2 }, { headers });
             const session2 = Object.assign({}, data2);
             if (session2.expires_in)
               session2.expires_at = (0, helpers_1.expiresAt)(data2.expires_in);
@@ -9149,13 +9219,13 @@ var require_GoTrueApi = __commonJS({
           }
         });
       }
-      signUpWithPhone(phone, password3, options = {}) {
+      signUpWithPhone(phone, password2, options = {}) {
         return __awaiter(this, void 0, void 0, function* () {
           try {
             const headers = Object.assign({}, this.headers);
             const data2 = yield (0, fetch_1.post)(this.fetch, `${this.url}/signup`, {
               phone,
-              password: password3,
+              password: password2,
               data: options.data,
               gotrue_meta_security: { hcaptcha_token: options.captchaToken }
             }, { headers });
@@ -9168,12 +9238,12 @@ var require_GoTrueApi = __commonJS({
           }
         });
       }
-      signInWithPhone(phone, password3) {
+      signInWithPhone(phone, password2) {
         return __awaiter(this, void 0, void 0, function* () {
           try {
             const headers = Object.assign({}, this.headers);
             const queryString = "?grant_type=password";
-            const data2 = yield (0, fetch_1.post)(this.fetch, `${this.url}/token${queryString}`, { phone, password: password3 }, { headers });
+            const data2 = yield (0, fetch_1.post)(this.fetch, `${this.url}/token${queryString}`, { phone, password: password2 }, { headers });
             const session2 = Object.assign({}, data2);
             if (session2.expires_in)
               session2.expires_at = (0, helpers_1.expiresAt)(data2.expires_in);
@@ -9650,14 +9720,14 @@ var require_GoTrueClient = __commonJS({
           });
         }
       }
-      signUp({ email, password: password3, phone }, options = {}) {
+      signUp({ email, password: password2, phone }, options = {}) {
         return __awaiter(this, void 0, void 0, function* () {
           try {
             this._removeSession();
-            const { data: data2, error: error2 } = phone && password3 ? yield this.api.signUpWithPhone(phone, password3, {
+            const { data: data2, error: error2 } = phone && password2 ? yield this.api.signUpWithPhone(phone, password2, {
               data: options.data,
               captchaToken: options.captchaToken
-            }) : yield this.api.signUpWithEmail(email, password3, {
+            }) : yield this.api.signUpWithEmail(email, password2, {
               redirectTo: options.redirectTo,
               data: options.data,
               captchaToken: options.captchaToken
@@ -9685,11 +9755,11 @@ var require_GoTrueClient = __commonJS({
           }
         });
       }
-      signIn({ email, phone, password: password3, refreshToken, provider, oidc }, options = {}) {
+      signIn({ email, phone, password: password2, refreshToken, provider, oidc }, options = {}) {
         return __awaiter(this, void 0, void 0, function* () {
           try {
             this._removeSession();
-            if (email && !password3) {
+            if (email && !password2) {
               const { error: error2 } = yield this.api.sendMagicLinkEmail(email, {
                 redirectTo: options.redirectTo,
                 shouldCreateUser: options.shouldCreateUser,
@@ -9697,20 +9767,20 @@ var require_GoTrueClient = __commonJS({
               });
               return { user: null, session: null, error: error2 };
             }
-            if (email && password3) {
-              return this._handleEmailSignIn(email, password3, {
+            if (email && password2) {
+              return this._handleEmailSignIn(email, password2, {
                 redirectTo: options.redirectTo
               });
             }
-            if (phone && !password3) {
+            if (phone && !password2) {
               const { error: error2 } = yield this.api.sendMobileOTP(phone, {
                 shouldCreateUser: options.shouldCreateUser,
                 captchaToken: options.captchaToken
               });
               return { user: null, session: null, error: error2 };
             }
-            if (phone && password3) {
-              return this._handlePhoneSignIn(phone, password3);
+            if (phone && password2) {
+              return this._handlePhoneSignIn(phone, password2);
             }
             if (refreshToken) {
               const { error: error2 } = yield this._callRefreshToken(refreshToken);
@@ -9725,7 +9795,8 @@ var require_GoTrueClient = __commonJS({
             if (provider) {
               return this._handleProviderSignIn(provider, {
                 redirectTo: options.redirectTo,
-                scopes: options.scopes
+                scopes: options.scopes,
+                queryParams: options.queryParams
               });
             }
             if (oidc) {
@@ -9909,11 +9980,11 @@ var require_GoTrueClient = __commonJS({
           return { data: null, error: e2 };
         }
       }
-      _handleEmailSignIn(email, password3, options = {}) {
+      _handleEmailSignIn(email, password2, options = {}) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
           try {
-            const { data: data2, error: error2 } = yield this.api.signInWithEmail(email, password3, {
+            const { data: data2, error: error2 } = yield this.api.signInWithEmail(email, password2, {
               redirectTo: options.redirectTo
             });
             if (error2 || !data2)
@@ -9928,11 +9999,11 @@ var require_GoTrueClient = __commonJS({
           }
         });
       }
-      _handlePhoneSignIn(phone, password3) {
+      _handlePhoneSignIn(phone, password2) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
           try {
-            const { data: data2, error: error2 } = yield this.api.signInWithPhone(phone, password3);
+            const { data: data2, error: error2 } = yield this.api.signInWithPhone(phone, password2);
             if (error2 || !data2)
               return { data: null, user: null, session: null, error: error2 };
             if ((_a = data2 === null || data2 === void 0 ? void 0 : data2.user) === null || _a === void 0 ? void 0 : _a.phone_confirmed_at) {
@@ -9948,7 +10019,8 @@ var require_GoTrueClient = __commonJS({
       _handleProviderSignIn(provider, options = {}) {
         const url = this.api.getUrlForProvider(provider, {
           redirectTo: options.redirectTo,
-          scopes: options.scopes
+          scopes: options.scopes,
+          queryParams: options.queryParams
         });
         try {
           if ((0, helpers_1.isBrowser)()) {
@@ -10256,6 +10328,7 @@ var require_types2 = __commonJS({
         }
         this.fetch = (...args) => _fetch(...args);
         this.shouldThrowOnError = builder.shouldThrowOnError || false;
+        this.allowEmpty = builder.allowEmpty || false;
       }
       throwOnError(throwOnError) {
         if (throwOnError === null || throwOnError === void 0) {
@@ -10280,10 +10353,12 @@ var require_types2 = __commonJS({
           body: JSON.stringify(this.body),
           signal: this.signal
         }).then((res2) => __awaiter(this, void 0, void 0, function* () {
-          var _a, _b, _c;
+          var _a, _b, _c, _d;
           let error2 = null;
           let data2 = null;
           let count2 = null;
+          let status = res2.status;
+          let statusText = res2.statusText;
           if (res2.ok) {
             const isReturnMinimal = (_a = this.headers["Prefer"]) === null || _a === void 0 ? void 0 : _a.split(",").includes("return=minimal");
             if (this.method !== "HEAD" && !isReturnMinimal) {
@@ -10304,10 +10379,15 @@ var require_types2 = __commonJS({
             const body = yield res2.text();
             try {
               error2 = JSON.parse(body);
-            } catch (_d) {
+            } catch (_e) {
               error2 = {
                 message: body
               };
+            }
+            if (error2 && this.allowEmpty && ((_d = error2 === null || error2 === void 0 ? void 0 : error2.details) === null || _d === void 0 ? void 0 : _d.includes("Results contain 0 rows"))) {
+              error2 = null;
+              status = 200;
+              statusText = "OK";
             }
             if (error2 && this.shouldThrowOnError) {
               throw error2;
@@ -10317,8 +10397,8 @@ var require_types2 = __commonJS({
             error: error2,
             data: data2,
             count: count2,
-            status: res2.status,
-            statusText: res2.statusText,
+            status,
+            statusText,
             body: data2
           };
           return postgrestResponse;
@@ -10394,22 +10474,8 @@ var require_PostgrestTransformBuilder = __commonJS({
       }
       maybeSingle() {
         this.headers["Accept"] = "application/vnd.pgrst.object+json";
-        const _this = new PostgrestTransformBuilder(this);
-        _this.then = (onfulfilled, onrejected) => this.then((res) => {
-          var _a, _b;
-          if ((_b = (_a = res.error) === null || _a === void 0 ? void 0 : _a.details) === null || _b === void 0 ? void 0 : _b.includes("Results contain 0 rows")) {
-            return onfulfilled({
-              error: null,
-              data: null,
-              count: res.count,
-              status: 200,
-              statusText: "OK",
-              body: null
-            });
-          }
-          return onfulfilled(res);
-        }, onrejected);
-        return _this;
+        this.allowEmpty = true;
+        return this;
       }
       csv() {
         this.headers["Accept"] = "text/csv";
@@ -10750,7 +10816,7 @@ var require_version3 = __commonJS({
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.version = void 0;
-    exports.version = "0.37.2";
+    exports.version = "0.37.3";
   }
 });
 
@@ -10995,13 +11061,13 @@ var require_ms = __commonJS({
       options = options || {};
       var type = typeof val;
       if (type === "string" && val.length > 0) {
-        return parse3(val);
+        return parse4(val);
       } else if (type === "number" && isNaN(val) === false) {
         return options.long ? fmtLong(val) : fmtShort(val);
       }
       throw new Error("val is not a non-empty string or a valid number. val=" + JSON.stringify(val));
     };
-    function parse3(str) {
+    function parse4(str) {
       str = String(str);
       if (str.length > 100) {
         return;
@@ -11095,9 +11161,9 @@ var require_debug = __commonJS({
     exports.formatters = {};
     var prevTime;
     function selectColor(namespace) {
-      var hash2 = 0, i2;
-      for (i2 in namespace) {
-        hash2 = (hash2 << 5) - hash2 + namespace.charCodeAt(i2);
+      var hash2 = 0, i3;
+      for (i3 in namespace) {
+        hash2 = (hash2 << 5) - hash2 + namespace.charCodeAt(i3);
         hash2 |= 0;
       }
       return exports.colors[Math.abs(hash2) % exports.colors.length];
@@ -11114,24 +11180,24 @@ var require_debug = __commonJS({
         self2.curr = curr;
         prevTime = curr;
         var args = new Array(arguments.length);
-        for (var i2 = 0; i2 < args.length; i2++) {
-          args[i2] = arguments[i2];
+        for (var i3 = 0; i3 < args.length; i3++) {
+          args[i3] = arguments[i3];
         }
         args[0] = exports.coerce(args[0]);
         if (typeof args[0] !== "string") {
           args.unshift("%O");
         }
-        var index = 0;
+        var index41 = 0;
         args[0] = args[0].replace(/%([a-zA-Z%])/g, function(match, format2) {
           if (match === "%%")
             return match;
-          index++;
+          index41++;
           var formatter = exports.formatters[format2];
           if (typeof formatter === "function") {
-            var val = args[index];
+            var val = args[index41];
             match = formatter.call(self2, val);
-            args.splice(index, 1);
-            index--;
+            args.splice(index41, 1);
+            index41--;
           }
           return match;
         });
@@ -11154,10 +11220,10 @@ var require_debug = __commonJS({
       exports.skips = [];
       var split = (typeof namespaces === "string" ? namespaces : "").split(/[\s,]+/);
       var len = split.length;
-      for (var i2 = 0; i2 < len; i2++) {
-        if (!split[i2])
+      for (var i3 = 0; i3 < len; i3++) {
+        if (!split[i3])
           continue;
-        namespaces = split[i2].replace(/\*/g, ".*?");
+        namespaces = split[i3].replace(/\*/g, ".*?");
         if (namespaces[0] === "-") {
           exports.skips.push(new RegExp("^" + namespaces.substr(1) + "$"));
         } else {
@@ -11169,14 +11235,14 @@ var require_debug = __commonJS({
       exports.enable("");
     }
     function enabled(name) {
-      var i2, len;
-      for (i2 = 0, len = exports.skips.length; i2 < len; i2++) {
-        if (exports.skips[i2].test(name)) {
+      var i3, len;
+      for (i3 = 0, len = exports.skips.length; i3 < len; i3++) {
+        if (exports.skips[i3].test(name)) {
           return false;
         }
       }
-      for (i2 = 0, len = exports.names.length; i2 < len; i2++) {
-        if (exports.names[i2].test(name)) {
+      for (i3 = 0, len = exports.names.length; i3 < len; i3++) {
+        if (exports.names[i3].test(name)) {
           return true;
         }
       }
@@ -11228,14 +11294,14 @@ var require_browser = __commonJS({
         return;
       var c = "color: " + this.color;
       args.splice(1, 0, c, "color: inherit");
-      var index = 0;
+      var index41 = 0;
       var lastC = 0;
       args[0].replace(/%[a-zA-Z%]/g, function(match) {
         if (match === "%%")
           return;
-        index++;
+        index41++;
         if (match === "%c") {
-          lastC = index;
+          lastC = index41;
         }
       });
       args.splice(lastC, 0, c);
@@ -11390,8 +11456,8 @@ var require_node = __commonJS({
     function init2(debug) {
       debug.inspectOpts = {};
       var keys = Object.keys(exports.inspectOpts);
-      for (var i2 = 0; i2 < keys.length; i2++) {
-        debug.inspectOpts[keys[i2]] = exports.inspectOpts[keys[i2]];
+      for (var i3 = 0; i3 < keys.length; i3++) {
+        debug.inspectOpts[keys[i3]] = exports.inspectOpts[keys[i3]];
       }
     }
     exports.enable(load3());
@@ -11459,9 +11525,9 @@ var require_utils2 = __commonJS({
         logFunction = this.logFunction;
       }
       var uniqueID = this.uniqueID;
-      this.buffer.forEach(function(entry38) {
-        var date = entry38[0].toLocaleString();
-        var args = entry38[1].slice();
+      this.buffer.forEach(function(entry41) {
+        var date = entry41[0].toLocaleString();
+        var args = entry41[1].slice();
         var formatString = args[0];
         if (formatString !== void 0 && formatString !== null) {
           formatString = "%s - %s - " + formatString.toString();
@@ -11587,8 +11653,8 @@ var require_node_gyp_build = __commonJS({
       var tags = { file, specificity: 0 };
       if (extension !== "node")
         return;
-      for (var i2 = 0; i2 < arr.length; i2++) {
-        var tag = arr[i2];
+      for (var i3 = 0; i3 < arr.length; i3++) {
+        var tag = arr[i3];
         if (tag === "node" || tag === "electron" || tag === "node-webkit") {
           tags.runtime = tag;
         } else if (tag === "napi") {
@@ -11668,14 +11734,14 @@ var require_fallback = __commonJS({
   "node_modules/bufferutil/fallback.js"(exports, module2) {
     "use strict";
     var mask = (source, mask2, output, offset, length) => {
-      for (var i2 = 0; i2 < length; i2++) {
-        output[offset + i2] = source[i2] ^ mask2[i2 & 3];
+      for (var i3 = 0; i3 < length; i3++) {
+        output[offset + i3] = source[i3] ^ mask2[i3 & 3];
       }
     };
     var unmask = (buffer, mask2) => {
       const length = buffer.length;
-      for (var i2 = 0; i2 < length; i2++) {
-        buffer[i2] ^= mask2[i2 & 3];
+      for (var i3 = 0; i3 < length; i3++) {
+        buffer[i3] ^= mask2[i3 & 3];
       }
     };
     module2.exports = { mask, unmask };
@@ -12056,25 +12122,25 @@ var require_fallback2 = __commonJS({
     "use strict";
     function isValidUTF8(buf) {
       const len = buf.length;
-      let i2 = 0;
-      while (i2 < len) {
-        if ((buf[i2] & 128) === 0) {
-          i2++;
-        } else if ((buf[i2] & 224) === 192) {
-          if (i2 + 1 === len || (buf[i2 + 1] & 192) !== 128 || (buf[i2] & 254) === 192) {
+      let i3 = 0;
+      while (i3 < len) {
+        if ((buf[i3] & 128) === 0) {
+          i3++;
+        } else if ((buf[i3] & 224) === 192) {
+          if (i3 + 1 === len || (buf[i3 + 1] & 192) !== 128 || (buf[i3] & 254) === 192) {
             return false;
           }
-          i2 += 2;
-        } else if ((buf[i2] & 240) === 224) {
-          if (i2 + 2 >= len || (buf[i2 + 1] & 192) !== 128 || (buf[i2 + 2] & 192) !== 128 || buf[i2] === 224 && (buf[i2 + 1] & 224) === 128 || buf[i2] === 237 && (buf[i2 + 1] & 224) === 160) {
+          i3 += 2;
+        } else if ((buf[i3] & 240) === 224) {
+          if (i3 + 2 >= len || (buf[i3 + 1] & 192) !== 128 || (buf[i3 + 2] & 192) !== 128 || buf[i3] === 224 && (buf[i3 + 1] & 224) === 128 || buf[i3] === 237 && (buf[i3 + 1] & 224) === 160) {
             return false;
           }
-          i2 += 3;
-        } else if ((buf[i2] & 248) === 240) {
-          if (i2 + 3 >= len || (buf[i2 + 1] & 192) !== 128 || (buf[i2 + 2] & 192) !== 128 || (buf[i2 + 3] & 192) !== 128 || buf[i2] === 240 && (buf[i2 + 1] & 240) === 128 || buf[i2] === 244 && buf[i2 + 1] > 143 || buf[i2] > 244) {
+          i3 += 3;
+        } else if ((buf[i3] & 248) === 240) {
+          if (i3 + 3 >= len || (buf[i3 + 1] & 192) !== 128 || (buf[i3 + 2] & 192) !== 128 || (buf[i3 + 3] & 192) !== 128 || buf[i3] === 240 && (buf[i3 + 1] & 240) === 128 || buf[i3] === 244 && buf[i3 + 1] > 143 || buf[i3] > 244) {
             return false;
           }
-          i2 += 4;
+          i3 += 4;
         } else {
           return false;
         }
@@ -12708,12 +12774,12 @@ var require_WebSocketConnection = __commonJS({
           cb();
         }
       };
-      for (var i2 = 1; i2 <= numFragments; i2++) {
+      for (var i3 = 1; i3 <= numFragments; i3++) {
         var currentFrame = new WebSocketFrame(this.maskBytes, this.frameHeader, this.config);
-        currentFrame.opcode = i2 === 1 ? frame.opcode : 0;
-        currentFrame.fin = i2 === numFragments;
-        var currentLength = i2 === numFragments ? length - threshold * (i2 - 1) : threshold;
-        var sliceStart = threshold * (i2 - 1);
+        currentFrame.opcode = i3 === 1 ? frame.opcode : 0;
+        currentFrame.fin = i3 === numFragments;
+        var currentLength = i3 === numFragments ? length - threshold * (i3 - 1) : threshold;
+        var sliceStart = threshold * (i3 - 1);
         currentFrame.binaryPayload = frame.binaryPayload.slice(sliceStart, sliceStart + currentLength);
         this.sendFrame(currentFrame, sentCallback);
       }
@@ -12813,10 +12879,10 @@ var require_WebSocketRequest = __commonJS({
       String.fromCharCode(9)
     ];
     var controlChars = [String.fromCharCode(127)];
-    for (i2 = 0; i2 < 31; i2++) {
-      controlChars.push(String.fromCharCode(i2));
+    for (i3 = 0; i3 < 31; i3++) {
+      controlChars.push(String.fromCharCode(i3));
     }
-    var i2;
+    var i3;
     var cookieNameValidateRegEx = /([\x00-\x20\x22\x28\x29\x2c\x2f\x3a-\x3f\x40\x5b-\x5e\x7b\x7d\x7f])/;
     var cookieValueValidateRegEx = /[^\x21\x23-\x2b\x2d-\x3a\x3c-\x5b\x5d-\x7e]/;
     var cookieValueDQuoteValidateRegEx = /^"[^"]*"$/;
@@ -12946,23 +13012,23 @@ var require_WebSocketRequest = __commonJS({
         return [];
       }
       var extensions = extensionsString.toLocaleLowerCase().split(headerValueSplitRegExp);
-      extensions.forEach(function(extension, index, array) {
+      extensions.forEach(function(extension, index41, array2) {
         var params = extension.split(headerParamSplitRegExp);
         var extensionName = params[0];
         var extensionParams = params.slice(1);
-        extensionParams.forEach(function(rawParam, index2, array2) {
+        extensionParams.forEach(function(rawParam, index42, array3) {
           var arr = rawParam.split("=");
           var obj2 = {
             name: arr[0],
             value: arr[1]
           };
-          array2.splice(index2, 1, obj2);
+          array3.splice(index42, 1, obj2);
         });
         var obj = {
           name: extensionName,
           params: extensionParams
         };
-        array.splice(index, 1, obj);
+        array2.splice(index41, 1, obj);
       });
       return extensions;
     };
@@ -13010,9 +13076,9 @@ var require_WebSocketRequest = __commonJS({
       var acceptKey = sha1.digest("base64");
       var response = "HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: " + acceptKey + "\r\n";
       if (protocolFullCase) {
-        for (var i3 = 0; i3 < protocolFullCase.length; i3++) {
-          var charCode = protocolFullCase.charCodeAt(i3);
-          var character = protocolFullCase.charAt(i3);
+        for (var i4 = 0; i4 < protocolFullCase.length; i4++) {
+          var charCode = protocolFullCase.charCodeAt(i4);
+          var character = protocolFullCase.charAt(i4);
           if (charCode < 33 || charCode > 126 || separators.indexOf(character) !== -1) {
             this.reject(500);
             throw new Error('Illegal character "' + String.fromCharCode(character) + '" in subprotocol.');
@@ -13318,16 +13384,16 @@ var require_WebSocketServer = __commonJS({
       this.emit("connect", connection);
     };
     WebSocketServer.prototype.handleConnectionClose = function(connection, closeReason, description) {
-      var index = this.connections.indexOf(connection);
-      if (index !== -1) {
-        this.connections.splice(index, 1);
+      var index41 = this.connections.indexOf(connection);
+      if (index41 !== -1) {
+        this.connections.splice(index41, 1);
       }
       this.emit("close", connection, closeReason, description);
     };
     WebSocketServer.prototype.handleRequestResolved = function(request) {
-      var index = this.pendingRequests.indexOf(request);
-      if (index !== -1) {
-        this.pendingRequests.splice(index, 1);
+      var index41 = this.pendingRequests.indexOf(request);
+      if (index41 !== -1) {
+        this.pendingRequests.splice(index41, 1);
       }
     };
     module2.exports = WebSocketServer;
@@ -13430,9 +13496,9 @@ var require_WebSocketClient = __commonJS({
       }
       this.secure = this.url.protocol === "wss:";
       this.protocols.forEach(function(protocol) {
-        for (var i3 = 0; i3 < protocol.length; i3++) {
-          var charCode = protocol.charCodeAt(i3);
-          var character = protocol.charAt(i3);
+        for (var i4 = 0; i4 < protocol.length; i4++) {
+          var charCode = protocol.charCodeAt(i4);
+          var character = protocol.charAt(i4);
           if (charCode < 33 || charCode > 126 || protocolSeparators.indexOf(character) !== -1) {
             throw new Error('Protocol list contains invalid character "' + String.fromCharCode(charCode) + '"');
           }
@@ -13446,8 +13512,8 @@ var require_WebSocketClient = __commonJS({
         this.url.port = defaultPorts[this.url.protocol];
       }
       var nonce = bufferAllocUnsafe(16);
-      for (var i2 = 0; i2 < 16; i2++) {
-        nonce[i2] = Math.round(Math.random() * 255);
+      for (var i3 = 0; i3 < 16; i3++) {
+        nonce[i3] = Math.round(Math.random() * 255);
       }
       this.base64nonce = nonce.toString("base64");
       var hostHeaderValue = this.url.hostname;
@@ -13699,19 +13765,19 @@ var require_WebSocketRouter = __commonJS({
       });
     };
     WebSocketRouter.prototype.unmount = function(path, protocol) {
-      var index = this.findHandlerIndex(this.pathToRegExp(path).toString(), protocol);
-      if (index !== -1) {
-        this.handlers.splice(index, 1);
+      var index41 = this.findHandlerIndex(this.pathToRegExp(path).toString(), protocol);
+      if (index41 !== -1) {
+        this.handlers.splice(index41, 1);
       } else {
         throw new Error("Unable to find a route matching the specified path and protocol.");
       }
     };
     WebSocketRouter.prototype.findHandlerIndex = function(pathString, protocol) {
       protocol = protocol.toLocaleLowerCase();
-      for (var i2 = 0, len = this.handlers.length; i2 < len; i2++) {
-        var handler = this.handlers[i2];
+      for (var i3 = 0, len = this.handlers.length; i3 < len; i3++) {
+        var handler = this.handlers[i3];
         if (handler.pathString === pathString && handler.protocol === protocol) {
-          return i2;
+          return i3;
         }
       }
       return -1;
@@ -13732,8 +13798,8 @@ var require_WebSocketRouter = __commonJS({
       if (requestedProtocols.length === 0) {
         requestedProtocols = ["____no_protocol____"];
       }
-      for (var i2 = 0; i2 < requestedProtocols.length; i2++) {
-        var requestedProtocol = requestedProtocols[i2].toLocaleLowerCase();
+      for (var i3 = 0; i3 < requestedProtocols.length; i3++) {
+        var requestedProtocol = requestedProtocols[i3].toLocaleLowerCase();
         for (var j = 0, len = this.handlers.length; j < len; j++) {
           var handler = this.handlers[j];
           if (handler.path.test(request.resourceURL.pathname)) {
@@ -13820,7 +13886,7 @@ var require_EventTarget = __commonJS({
       }
     });
     function _addEventListener(type, newListener) {
-      var listenersType, i2, listener;
+      var listenersType, i3, listener;
       if (!type || !newListener) {
         return;
       }
@@ -13828,7 +13894,7 @@ var require_EventTarget = __commonJS({
       if (listenersType === void 0) {
         this._listeners[type] = listenersType = [];
       }
-      for (i2 = 0; !!(listener = listenersType[i2]); i2++) {
+      for (i3 = 0; !!(listener = listenersType[i3]); i3++) {
         if (listener === newListener) {
           return;
         }
@@ -13836,7 +13902,7 @@ var require_EventTarget = __commonJS({
       listenersType.push(newListener);
     }
     function _removeEventListener(type, oldListener) {
-      var listenersType, i2, listener;
+      var listenersType, i3, listener;
       if (!type || !oldListener) {
         return;
       }
@@ -13844,9 +13910,9 @@ var require_EventTarget = __commonJS({
       if (listenersType === void 0) {
         return;
       }
-      for (i2 = 0; !!(listener = listenersType[i2]); i2++) {
+      for (i3 = 0; !!(listener = listenersType[i3]); i3++) {
         if (listener === oldListener) {
-          listenersType.splice(i2, 1);
+          listenersType.splice(i3, 1);
           break;
         }
       }
@@ -13855,7 +13921,7 @@ var require_EventTarget = __commonJS({
       }
     }
     function _dispatchEvent(event) {
-      var type, listenersType, dummyListener, stopImmediatePropagation = false, i2, listener;
+      var type, listenersType, dummyListener, stopImmediatePropagation = false, i3, listener;
       if (!event || typeof event.type !== "string") {
         throw new Error("`event` must have a valid `type` property");
       }
@@ -13875,7 +13941,7 @@ var require_EventTarget = __commonJS({
       if (typeof dummyListener === "function") {
         dummyListener.call(this, event);
       }
-      for (i2 = 0; !!(listener = listenersType[i2]); i2++) {
+      for (i3 = 0; !!(listener = listenersType[i3]); i3++) {
         if (stopImmediatePropagation) {
           break;
         }
@@ -14074,8 +14140,8 @@ var require_W3CWebSocket = __commonJS({
           var buffer = message.binaryData;
           var arraybuffer = new ArrayBuffer(buffer.length);
           var view = new Uint8Array(arraybuffer);
-          for (var i2 = 0, len = buffer.length; i2 < len; ++i2) {
-            view[i2] = buffer[i2];
+          for (var i3 = 0, len = buffer.length; i3 < len; ++i3) {
+            view[i3] = buffer[i3];
           }
           this.dispatchEvent(createMessageEvent(arraybuffer));
         }
@@ -15025,9 +15091,9 @@ var require_RealtimeClient = __commonJS({
         if (Object.prototype.hasOwnProperty.call(s3, p) && e2.indexOf(p) < 0)
           t2[p] = s3[p];
       if (s3 != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i2 = 0, p = Object.getOwnPropertySymbols(s3); i2 < p.length; i2++) {
-          if (e2.indexOf(p[i2]) < 0 && Object.prototype.propertyIsEnumerable.call(s3, p[i2]))
-            t2[p[i2]] = s3[p[i2]];
+        for (var i3 = 0, p = Object.getOwnPropertySymbols(s3); i3 < p.length; i3++) {
+          if (e2.indexOf(p[i3]) < 0 && Object.prototype.propertyIsEnumerable.call(s3, p[i3]))
+            t2[p[i3]] = s3[p[i3]];
         }
       return t2;
     };
@@ -16137,12 +16203,12 @@ var require_SupabaseClient = __commonJS({
       headers: constants_1.DEFAULT_HEADERS
     };
     var SupabaseClient = class {
-      constructor(supabaseUrl, supabaseKey2, options) {
+      constructor(supabaseUrl, supabaseKey, options) {
         this.supabaseUrl = supabaseUrl;
-        this.supabaseKey = supabaseKey2;
+        this.supabaseKey = supabaseKey;
         if (!supabaseUrl)
           throw new Error("supabaseUrl is required.");
-        if (!supabaseKey2)
+        if (!supabaseKey)
           throw new Error("supabaseKey is required.");
         const _supabaseUrl = (0, helpers_1.stripTrailingSlash)(supabaseUrl);
         const settings = Object.assign(Object.assign({}, DEFAULT_OPTIONS), options);
@@ -16204,9 +16270,9 @@ var require_SupabaseClient = __commonJS({
           const allSubs = this.getSubscriptions().slice();
           const allSubPromises = allSubs.map((sub) => this.removeSubscription(sub));
           const allRemovedSubs = yield Promise.all(allSubPromises);
-          return allRemovedSubs.map(({ error: error2 }, i2) => {
+          return allRemovedSubs.map(({ error: error2 }, i3) => {
             return {
-              data: { subscription: allSubs[i2] },
+              data: { subscription: allSubs[i3] },
               error: error2
             };
           });
@@ -16368,21 +16434,19 @@ var require_main6 = __commonJS({
     exports.SupabaseClient = SupabaseClient_1.default;
     __exportStar(require_main(), exports);
     __exportStar(require_main3(), exports);
-    var createClient2 = (supabaseUrl, supabaseKey2, options) => {
-      return new SupabaseClient_1.default(supabaseUrl, supabaseKey2, options);
+    var createClient2 = (supabaseUrl, supabaseKey, options) => {
+      return new SupabaseClient_1.default(supabaseUrl, supabaseKey, options);
     };
     exports.createClient = createClient2;
   }
 });
 
-// .svelte-kit/output/server/chunks/dbClient-ca7c14e1.js
-var import_supabase_js, supabaseRedirectBase, supabaseKey, supabaseURL, db;
-var init_dbClient_ca7c14e1 = __esm({
-  ".svelte-kit/output/server/chunks/dbClient-ca7c14e1.js"() {
+// .svelte-kit/output/server/chunks/dbClient-c24cb89a.js
+var import_supabase_js, supabaseRedirectBase, db;
+var init_dbClient_c24cb89a = __esm({
+  ".svelte-kit/output/server/chunks/dbClient-c24cb89a.js"() {
     import_supabase_js = __toESM(require_main6(), 1);
     supabaseRedirectBase = "http://localhost:3000".toString();
-    supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pd2JhbW91cG1vdWRxd2F1dGhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDg5NTg2NDAsImV4cCI6MTk2NDUzNDY0MH0.2awNuDa8ez1mjEz9wwX6lGyz-5Z5SR6n_ejrMWHTees".toString();
-    supabaseURL = "https://oiwbamoupmoudqwautha.supabase.co".toString();
     db = (0, import_supabase_js.createClient)("https://oiwbamoupmoudqwautha.supabase.co".toString(), "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pd2JhbW91cG1vdWRxd2F1dGhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDg5NTg2NDAsImV4cCI6MTk2NDUzNDY0MH0.2awNuDa8ez1mjEz9wwX6lGyz-5Z5SR6n_ejrMWHTees".toString());
   }
 });
@@ -16447,10 +16511,10 @@ var logo, Logo, css$1, Navbar, css, _layout;
 var init_layout_svelte = __esm({
   ".svelte-kit/output/server/entries/pages/__layout.svelte.js"() {
     init_index_5e953619();
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
     init_stores_0a4a4291();
     init_paths_396f020f();
-    logo = "/_app/assets/hall_logo_image_90px-c8a9d17c.png";
+    logo = "/_app/immutable/assets/hall_logo_image_90px-c8a9d17c.png";
     Logo = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       return `<div><a class="${"absolute top-0"}" aria-label="${"Hall photo"}" href="${"https://www.facebook.com/Burrell-Creek-Youth-and-Community-Association-Inc-1584955455117833/?__tn__=-UC*F"}"><img class="${"rounded-full p-1"}"${add_attribute("src", logo, 0)} alt="${"BCYCA Inc"}"></a></div>`;
     });
@@ -16522,16 +16586,18 @@ var __exports = {};
 __export(__exports, {
   css: () => css2,
   entry: () => entry,
+  index: () => index,
   js: () => js,
   module: () => layout_svelte_exports
 });
-var entry, js, css2;
+var index, entry, js, css2;
 var init__ = __esm({
   ".svelte-kit/output/server/nodes/0.js"() {
     init_layout_svelte();
-    entry = "pages/__layout.svelte-ea0cab02.js";
-    js = ["pages/__layout.svelte-ea0cab02.js", "chunks/index-27e8d48c.js", "chunks/dbClient-f8d02c03.js", "chunks/_commonjsHelpers-7d66b65f.js", "chunks/stores-619a4aad.js", "chunks/paths-396f020f.js"];
-    css2 = ["assets/pages/__layout.svelte-40acadf5.css"];
+    index = 0;
+    entry = "pages/__layout.svelte-db3676ce.js";
+    js = ["pages/__layout.svelte-db3676ce.js", "chunks/index-574d3e5d.js", "chunks/dbClient-c8a5cf69.js", "chunks/_commonjsHelpers-7d66b65f.js", "chunks/stores-e24d1d4b.js", "chunks/paths-396f020f.js"];
+    css2 = ["assets/pages/__layout.svelte-e0a20162.css"];
   }
 });
 
@@ -16572,15 +16638,17 @@ var __exports2 = {};
 __export(__exports2, {
   css: () => css3,
   entry: () => entry2,
+  index: () => index2,
   js: () => js2,
   module: () => error_svelte_exports
 });
-var entry2, js2, css3;
+var index2, entry2, js2, css3;
 var init__2 = __esm({
   ".svelte-kit/output/server/nodes/1.js"() {
     init_error_svelte();
-    entry2 = "error.svelte-2a312c12.js";
-    js2 = ["error.svelte-2a312c12.js", "chunks/index-27e8d48c.js"];
+    index2 = 1;
+    entry2 = "error.svelte-69e02b01.js";
+    js2 = ["error.svelte-69e02b01.js", "chunks/index-574d3e5d.js"];
     css3 = [];
   }
 });
@@ -16618,20 +16686,22 @@ var init_index_svelte = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/11.js
+// .svelte-kit/output/server/nodes/13.js
 var __exports3 = {};
 __export(__exports3, {
   css: () => css5,
   entry: () => entry3,
+  index: () => index3,
   js: () => js3,
   module: () => index_svelte_exports
 });
-var entry3, js3, css5;
+var index3, entry3, js3, css5;
 var init__3 = __esm({
-  ".svelte-kit/output/server/nodes/11.js"() {
+  ".svelte-kit/output/server/nodes/13.js"() {
     init_index_svelte();
-    entry3 = "pages/about/index.svelte-eb8a2f3d.js";
-    js3 = ["pages/about/index.svelte-eb8a2f3d.js", "chunks/index-27e8d48c.js", "chunks/preload-helper-e4860ae8.js"];
+    index3 = 13;
+    entry3 = "pages/about/index.svelte-f75dedc6.js";
+    js3 = ["pages/about/index.svelte-f75dedc6.js", "chunks/index-574d3e5d.js", "chunks/preload-helper-60cab3ee.js"];
     css5 = ["assets/pages/about/index.svelte-49341910.css"];
   }
 });
@@ -17452,9 +17522,9 @@ function sendQuery(config2, payload, query, done) {
     resetTimer();
     clearQueue();
     if (!config2.random) {
-      const index = config2.resources.indexOf(item.resource);
-      if (index !== -1 && index !== config2.index) {
-        config2.index = index;
+      const index41 = config2.resources.indexOf(item.resource);
+      if (index41 !== -1 && index41 !== config2.index) {
+        config2.index = index41;
       }
     }
     status = "completed";
@@ -17537,8 +17607,8 @@ function initRedundancy(cfg) {
   const instance = {
     query,
     find,
-    setIndex: (index) => {
-      config2.index = index;
+    setIndex: (index41) => {
+      config2.index = index41;
     },
     getIndex: () => config2.index,
     cleanup
@@ -17718,8 +17788,8 @@ function initCache(storage2, key2) {
 function destroyCache(storage2) {
   try {
     const total = getCount(storage2);
-    for (let i2 = 0; i2 < total; i2++) {
-      storage2.removeItem(cachePrefix + i2.toString());
+    for (let i3 = 0; i3 < total; i3++) {
+      storage2.removeItem(cachePrefix + i3.toString());
     }
   } catch (err) {
   }
@@ -18100,9 +18170,9 @@ var init_layout_svelte2 = __esm({
         icons: []
       };
       let length = 0;
-      icons.forEach((name, index) => {
+      icons.forEach((name, index41) => {
         length += name.length + 1;
-        if (length >= maxLength && index > 0) {
+        if (length >= maxLength && index41 > 0) {
           results.push(item);
           item = {
             type,
@@ -18286,8 +18356,8 @@ var init_layout_svelte2 = __esm({
         if (!func) {
           return;
         }
-        const getItem = (index) => {
-          const name = cachePrefix + index.toString();
+        const getItem = (index41) => {
+          const name = cachePrefix + index41.toString();
           const item = func.getItem(name);
           if (typeof item !== "string") {
             return false;
@@ -18321,12 +18391,12 @@ var init_layout_svelte2 = __esm({
             return;
           }
           let total = getCount(func);
-          for (let i2 = total - 1; i2 >= 0; i2--) {
-            if (!getItem(i2)) {
-              if (i2 === total - 1) {
+          for (let i3 = total - 1; i3 >= 0; i3--) {
+            if (!getItem(i3)) {
+              if (i3 === total - 1) {
                 total--;
               } else {
-                emptyList[key2].push(i2);
+                emptyList[key2].push(i3);
               }
             }
           }
@@ -18350,10 +18420,10 @@ var init_layout_svelte2 = __esm({
         if (!func) {
           return false;
         }
-        let index = emptyList[key2].shift();
-        if (index === void 0) {
-          index = count[key2];
-          if (!setCount(func, key2, index + 1)) {
+        let index41 = emptyList[key2].shift();
+        if (index41 === void 0) {
+          index41 = count[key2];
+          if (!setCount(func, key2, index41 + 1)) {
             return false;
           }
         }
@@ -18363,7 +18433,7 @@ var init_layout_svelte2 = __esm({
             provider,
             data: data2
           };
-          func.setItem(cachePrefix + index.toString(), JSON.stringify(item));
+          func.setItem(cachePrefix + index41.toString(), JSON.stringify(item));
         } catch (err) {
           return false;
         }
@@ -18500,15 +18570,15 @@ var init_layout_svelte2 = __esm({
           });
         }
       }
-      return `<ul id="${"breadcrumb"}" class="${"svelte-1pgkfr8"}">${each(crumbs, (c, i2) => {
-        return `${i2 == crumbs.length - 1 ? `<li class="${"svelte-1pgkfr8"}"><a class="${"flex items-center svelte-1pgkfr8"}"${add_attribute("href", c.href, 0)}><span class="${"svelte-1pgkfr8"}">${validate_component(Icon, "Icon").$$render($$result, { icon: c.icon, style: "padding-right:4px" }, {}, {})}${escape(c.label)}</span></a>
+      return `<ul id="${"breadcrumb"}" class="${"svelte-1pgkfr8"}">${each(crumbs, (c, i3) => {
+        return `${i3 == crumbs.length - 1 ? `<li class="${"svelte-1pgkfr8"}"><a class="${"flex items-center svelte-1pgkfr8"}"${add_attribute("href", c.href, 0)}><span class="${"svelte-1pgkfr8"}">${validate_component(Icon, "Icon").$$render($$result, { icon: c.icon, style: "padding-right:4px" }, {}, {})}${escape(c.label)}</span></a>
 			</li>` : `<li class="${"svelte-1pgkfr8"}"><a class="${"flex items-center svelte-1pgkfr8"}"${add_attribute("href", c.href, 0)}><span class="${"svelte-1pgkfr8"}">${validate_component(Icon, "Icon").$$render($$result, { icon: c.icon, style: "padding-right:4px" }, {}, {})}${escape(c.label)}</span></a>;
 			</li>`}`;
       })}
 </ul>`;
     });
     css6 = {
-      code: ".main-head.svelte-9vabfd{grid-area:header}.content.svelte-9vabfd{grid-area:content}.crumbs.svelte-9vabfd{grid-area:crumbs}.side.svelte-9vabfd{grid-area:sidebar}.messaging.svelte-9vabfd{grid-area:messaging}.wrapper.svelte-9vabfd{display:grid;grid-auto-rows:min-content;grid-template-areas:'header'\r\n			'sidebar'\r\n			'crumbs'\r\n			'content'\r\n			'messaging'}@media(min-width: 640px){.wrapper.svelte-9vabfd{grid-template-columns:1fr 3fr;grid-template-rows:45px auto 1fr 1fr 45px;grid-template-areas:'header  header'\r\n				'sidebar     crumbs'\r\n				'sidebar content'\r\n				'messaging      content'\r\n				'messaging  content'}}@media(min-width: 1024px){.wrapper.svelte-9vabfd{grid-template-columns:1fr 4fr 1fr;grid-template-rows:45px auto 1fr 1fr 45px;grid-template-areas:'header header header'\r\n				'sidebar crumbs messaging'\r\n				'sidebar content messaging'\r\n				'sidebar content messaging'\r\n				'sidebar content messaging'}}",
+      code: ".main-head.svelte-niwpah{grid-area:header}.crumbs.svelte-niwpah{grid-area:crumbs}.side.svelte-niwpah{grid-area:sidebar}.messaging.svelte-niwpah{grid-area:messaging}.wrapper.svelte-niwpah{display:grid;grid-auto-rows:min-content;grid-template-areas:'header'\r\n			'sidebar'\r\n			'crumbs'\r\n			'content'\r\n			'messaging'}@media(min-width: 640px){.wrapper.svelte-niwpah{grid-template-columns:1fr 3fr;grid-template-rows:45px auto 1fr 1fr 45px;grid-template-areas:'header  header'\r\n				'sidebar     crumbs'\r\n				'sidebar content'\r\n				'messaging      content'\r\n				'messaging  content'}}@media(min-width: 1024px){.wrapper.svelte-niwpah{grid-template-columns:1fr 4fr 1fr;grid-template-rows:45px auto 1fr 1fr 45px;grid-template-areas:'header header header'\r\n				'sidebar crumbs messaging'\r\n				'sidebar content messaging'\r\n				'sidebar content messaging'\r\n				'sidebar content messaging'}}",
       map: null
     };
     _layout2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
@@ -18516,13 +18586,11 @@ var init_layout_svelte2 = __esm({
       $$unsubscribe_page = subscribe(page, (value) => $page = value);
       $$result.css.add(css6);
       $$unsubscribe_page();
-      return `<div class="${"wrapper grid min-h-full bg-orange-100 svelte-9vabfd"}"><header class="${"main-head grid grid-cols-1 max-h-[45px] min-h-[45px] place-items-center  svelte-9vabfd"}"><div class="${"text-orange-900"}">Burrell Creek Youth &amp; Community Association Inc.
-		</div>
-		<button ${"hidden"} type="${"submit"}" form="${"profileForm"}">Save My Answers</button></header>
-	<section class="${"crumbs p-0 max-h-[35px] bg-stone-200 svelte-9vabfd"}">${validate_component(Breadcrumbs, "Breadcrumbs").$$render($$result, { path: $page.url.pathname }, {}, {})}</section>
-	<section class="${"content min-h-full text-orange-900 bg-orange-300 svelte-9vabfd"}">${``}
-		${slots.default ? slots.default({}) : ``}</section>
-	<aside class="${"side p-1 flex flex-col bg-stone-200 svelte-9vabfd"}"><div class="${"flex flex-row justify-around pt-2 text-xl"}">Profile Menu</div>
+      return `<div class="${"wrapper grid min-h-full bg-orange-100 svelte-niwpah"}"><header class="${"main-head grid grid-cols-1 max-h-[45px] min-h-[45px] place-items-center  svelte-niwpah"}"><div class="${"text-orange-900"}">Burrell Creek Youth &amp; Community Association Inc.
+		</div></header>
+	<section class="${"crumbs p-0 max-h-[35px] bg-stone-200 svelte-niwpah"}">${validate_component(Breadcrumbs, "Breadcrumbs").$$render($$result, { path: $page.url.pathname }, {}, {})}</section>
+	<section class="${"min-h-full text-orange-900 bg-orange-300"}">${slots.default ? slots.default({}) : ``}</section>
+	<aside class="${"side p-1 flex flex-col bg-stone-200 svelte-niwpah"}"><div class="${"flex flex-row justify-around pt-2 text-xl"}">Profile Menu</div>
 		<div class="${"flex flex-col rounded-lg bg-orange-600"}"><ul class="${"flex flex-row justify-around mx-0 px-2 sm:flex-1 sm:flex-nowrap sm:flex-col list-none"}" id="${"mainMenu"}"><li class="${"sm:mt-2 hover:bg-orange-300 rounded items-center"}"><div class="${"flex flex-row items-center justify-start"}"><a class="${"flex items-center"}" href="${"/profile/aboutme"}">${validate_component(Icon, "Icon").$$render($$result, {
         icon: "carbon:user",
         style: "font-size: 24px"
@@ -18552,7 +18620,7 @@ var init_layout_svelte2 = __esm({
         style: "font-size: 24px"
       }, {}, {})}
 							<span class="${"hidden px-2 mt-1 font-semibold sm:inline"}">Settings</span></a></div></li></ul></div></aside>
-	<div class="${"messaging bg-stone-200 svelte-9vabfd"}"><div class="${"flex flex-row justify-around pt-2 text-xl"}">Messages</div>
+	<div class="${"messaging bg-stone-200 svelte-niwpah"}"><div class="${"flex flex-row justify-around pt-2 text-xl"}">Messages</div>
 		<div class="${"flex flex-col my-4 mx-4"}"><h3>Please make sure you click every heading in the menu on the left <br>
 				AND <br>
 				answer all the questions.
@@ -18568,16 +18636,18 @@ var __exports4 = {};
 __export(__exports4, {
   css: () => css7,
   entry: () => entry4,
+  index: () => index4,
   js: () => js4,
   module: () => layout_svelte_exports2
 });
-var entry4, js4, css7;
+var index4, entry4, js4, css7;
 var init__4 = __esm({
   ".svelte-kit/output/server/nodes/2.js"() {
     init_layout_svelte2();
-    entry4 = "pages/profile/__layout.svelte-083c40f6.js";
-    js4 = ["pages/profile/__layout.svelte-083c40f6.js", "chunks/index-27e8d48c.js", "chunks/stores-619a4aad.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css7 = ["assets/pages/profile/__layout.svelte-ce89e211.css", "assets/Modal-186ac193.css"];
+    index4 = 2;
+    entry4 = "pages/profile/__layout.svelte-6ee12555.js";
+    js4 = ["pages/profile/__layout.svelte-6ee12555.js", "chunks/index-574d3e5d.js", "chunks/stores-e24d1d4b.js"];
+    css7 = ["assets/pages/profile/__layout.svelte-bbe045d6.css"];
   }
 });
 
@@ -18627,28 +18697,178 @@ var init_index_svelte2 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/24.js
+// .svelte-kit/output/server/nodes/26.js
 var __exports5 = {};
 __export(__exports5, {
   css: () => css8,
   entry: () => entry5,
+  index: () => index5,
   js: () => js5,
   module: () => index_svelte_exports2
 });
-var entry5, js5, css8;
+var index5, entry5, js5, css8;
 var init__5 = __esm({
-  ".svelte-kit/output/server/nodes/24.js"() {
+  ".svelte-kit/output/server/nodes/26.js"() {
     init_index_svelte2();
-    entry5 = "pages/profile/index.svelte-b9b67ecd.js";
-    js5 = ["pages/profile/index.svelte-b9b67ecd.js", "chunks/index-27e8d48c.js"];
+    index5 = 26;
+    entry5 = "pages/profile/index.svelte-4a635c57.js";
+    js5 = ["pages/profile/index.svelte-4a635c57.js", "chunks/index-574d3e5d.js"];
     css8 = ["assets/pages/profile/index.svelte-2967f023.css"];
   }
 });
 
-// .svelte-kit/output/server/chunks/surveyOptions-2d8b3438.js
-var residencyOptions, yesNoOptions, yesNoMaybeOptions, fireFightingAssets, staticWaterOptions, siteHazardsOptions, fireHazardReductionOptions, fireFightingExperienceOptions, yesNoSendOptions, stayGoOptions, communityWorkshopOptions, informationSheetOptions, communityMeetingOptions, stayInTouchOptions, accessOptions, surveyData;
-var init_surveyOptions_2d8b3438 = __esm({
-  ".svelte-kit/output/server/chunks/surveyOptions-2d8b3438.js"() {
+// .svelte-kit/output/server/chunks/NumberInput-1d0cf689.js
+var NumberInput;
+var init_NumberInput_1d0cf689 = __esm({
+  ".svelte-kit/output/server/chunks/NumberInput-1d0cf689.js"() {
+    init_index_5e953619();
+    NumberInput = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { name } = $$props;
+      let { lable } = $$props;
+      let { inputClass } = $$props;
+      let { lableClass } = $$props;
+      let { inputValue } = $$props;
+      if ($$props.name === void 0 && $$bindings.name && name !== void 0)
+        $$bindings.name(name);
+      if ($$props.lable === void 0 && $$bindings.lable && lable !== void 0)
+        $$bindings.lable(lable);
+      if ($$props.inputClass === void 0 && $$bindings.inputClass && inputClass !== void 0)
+        $$bindings.inputClass(inputClass);
+      if ($$props.lableClass === void 0 && $$bindings.lableClass && lableClass !== void 0)
+        $$bindings.lableClass(lableClass);
+      if ($$props.inputValue === void 0 && $$bindings.inputValue && inputValue !== void 0)
+        $$bindings.inputValue(inputValue);
+      return `<div class="${"flex flex-col justify-items-center mx-auto"}"><label${add_attribute("class", lableClass, 0)}${add_attribute("for", name, 0)}>${escape(lable)}</label>
+	<input type="${"number"}"${add_attribute("id", name, 0)}${add_attribute("name", name, 0)}${add_attribute("class", inputClass, 0)}${add_attribute("value", inputValue, 0)} min="${"0"}"></div>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/TextAreaInput-2189c9ee.js
+var TextAreaInput;
+var init_TextAreaInput_2189c9ee = __esm({
+  ".svelte-kit/output/server/chunks/TextAreaInput-2189c9ee.js"() {
+    init_index_5e953619();
+    TextAreaInput = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { lableClass } = $$props;
+      let { headingText } = $$props;
+      let { nameText } = $$props;
+      let { divClass } = $$props;
+      let { textAreaClass } = $$props;
+      let { inputValue } = $$props;
+      if ($$props.lableClass === void 0 && $$bindings.lableClass && lableClass !== void 0)
+        $$bindings.lableClass(lableClass);
+      if ($$props.headingText === void 0 && $$bindings.headingText && headingText !== void 0)
+        $$bindings.headingText(headingText);
+      if ($$props.nameText === void 0 && $$bindings.nameText && nameText !== void 0)
+        $$bindings.nameText(nameText);
+      if ($$props.divClass === void 0 && $$bindings.divClass && divClass !== void 0)
+        $$bindings.divClass(divClass);
+      if ($$props.textAreaClass === void 0 && $$bindings.textAreaClass && textAreaClass !== void 0)
+        $$bindings.textAreaClass(textAreaClass);
+      if ($$props.inputValue === void 0 && $$bindings.inputValue && inputValue !== void 0)
+        $$bindings.inputValue(inputValue);
+      return `<div class="${"w-full"}"><label${add_attribute("class", lableClass, 0)}${add_attribute("for", nameText, 0)}>${escape(headingText)}</label>
+	<div${add_attribute("class", divClass, 0)}><textarea${add_attribute("id", nameText, 0)}${add_attribute("name", nameText, 0)}${add_attribute("class", textAreaClass, 0)}>${escape(inputValue)}</textarea></div></div>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/chunks/ProgressBar-dbc366a0.js
+var css9, ProgressBar;
+var init_ProgressBar_dbc366a0 = __esm({
+  ".svelte-kit/output/server/chunks/ProgressBar-dbc366a0.js"() {
+    init_index_5e953619();
+    css9 = {
+      code: ".progress-container.svelte-95ggu7{display:flex;justify-content:space-between;position:relative;margin-top:30px;margin-bottom:10px}.progress-container.svelte-95ggu7::before{content:'';background-color:#e0e0e0;position:absolute;top:50%;left:0;transform:translateY(-50%);height:4px;width:100%;z-index:-1}.progress.svelte-95ggu7{background-color:#fdba74;position:absolute;top:50%;left:0;transform:translateY(-50%);height:4px;width:0%;z-index:-1;transition:0.4s ease}.circle.svelte-95ggu7{background-color:#fff;color:#999;border-radius:50%;height:15px;width:15px;display:flex;align-items:center;justify-content:center;border:3px solid #e0e0e0;transition:0.4s ease;cursor:pointer}.circle.svelte-95ggu7::after{content:attr(data-title) ' ';position:absolute;bottom:20px;color:#999;transition:0.4s ease}.circle.active.svelte-95ggu7::after{color:#f97316}.circle.active.svelte-95ggu7{border-color:#f97316}",
+      map: null
+    };
+    ProgressBar = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { steps = [] } = $$props;
+      let { currentActive = 1 } = $$props;
+      let circles, progress;
+      const handleProgress = (stepIncrement) => {
+        circles = document.querySelectorAll(".circle");
+        if (stepIncrement == 1) {
+          currentActive++;
+          if (currentActive > circles.length) {
+            currentActive = circles.length;
+          }
+        } else {
+          currentActive--;
+          if (currentActive < 1) {
+            currentActive = 1;
+          }
+        }
+        update();
+      };
+      function update() {
+        circles.forEach((circle, idx) => {
+          if (idx < currentActive) {
+            circle.classList.add("active");
+          } else {
+            circle.classList.remove("active");
+          }
+        });
+        const actives = document.querySelectorAll(".active");
+        progress.style.width = (actives.length - 1) / (circles.length - 1) * 100 + "%";
+      }
+      const skipTo = (e2) => {
+        circles = document.querySelectorAll(".circle");
+        currentActive = e2.currentTarget.attributes["data-title"].value;
+        update();
+      };
+      if ($$props.steps === void 0 && $$bindings.steps && steps !== void 0)
+        $$bindings.steps(steps);
+      if ($$props.currentActive === void 0 && $$bindings.currentActive && currentActive !== void 0)
+        $$bindings.currentActive(currentActive);
+      if ($$props.handleProgress === void 0 && $$bindings.handleProgress && handleProgress !== void 0)
+        $$bindings.handleProgress(handleProgress);
+      if ($$props.skipTo === void 0 && $$bindings.skipTo && skipTo !== void 0)
+        $$bindings.skipTo(skipTo);
+      $$result.css.add(css9);
+      return `<div class="${"progress-container z-50 svelte-95ggu7"}"><div class="${"progress svelte-95ggu7"}"${add_attribute("this", progress, 0)}></div>
+	${each(steps, (step, i3) => {
+        return `<div class="${"circle " + escape(i3 == 0 ? "active" : "") + " svelte-95ggu7"}"${add_attribute("data-title", step, 0)}>.
+		</div>`;
+      })}
+</div>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/entries/pages/survey/index.svelte.js
+var index_svelte_exports3 = {};
+__export(index_svelte_exports3, {
+  default: () => Survey
+});
+var Step1, residencyOptions, yesNoOptions, yesNoMaybeOptions, fireFightingAssets, staticWaterOptions, siteHazardsOptions, fireHazardReductionOptions, fireFightingExperienceOptions, yesNoSendOptions, stayGoOptions, communityWorkshopOptions, informationSheetOptions, communityMeetingOptions, stayInTouchOptions, accessOptions, Step2, Step3, css10, Step4, Step5, Step6, Step7, Step8, Step9, Step10, Step11, Step12, SurveyFormContainer, Survey;
+var init_index_svelte3 = __esm({
+  ".svelte-kit/output/server/entries/pages/survey/index.svelte.js"() {
+    init_index_5e953619();
+    init_NumberInput_1d0cf689();
+    init_TextAreaInput_2189c9ee();
+    init_ProgressBar_dbc366a0();
+    Step1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<div><h1>Strengthening Our Community<br>
+		Project Survey
+	</h1>
+	<h2 class="${"mb-1 sm:text-lg"}">Prepare Connect Rebound</h2>
+	<p class="${"m-0 sm:text-lg"}">The project evolved from feedback provided by the community following the
+		2019 bushfires and is funded through the state and federal Bushfire
+		Community Resilience Recovery Fund.
+	</p>
+	<p class="${"pt-2 m-0 sm:text-lg"}">Your answers to this survey will provide an accurate image of our community,
+		identifying areas of strength and also areas that need additional support.
+	</p>
+	<p class="${"pt-2 m-0 sm:text-lg"}">This information is confidential and will be owned and updated by you.
+	</p>
+	<p class="${"pt-2 m-0 sm:text-lg"}">Please complete this survey in one sitting; it should take about 10 minutes.
+	</p>
+	<p class="${"pt-2 m-0 sm:text-lg"}">With your help we can build a safer, connected community for us all.
+	</p>
+	<p class="${"pt-2 sm:text-lg"}">Thanks for your time and comments.</p></div>`;
+    });
     residencyOptions = [
       { value: 1, lable: "Resident at the property fulltime " },
       { value: 2, lable: "Present large proportion of time" },
@@ -18756,213 +18976,88 @@ var init_surveyOptions_2d8b3438 = __esm({
       { value: "No", lable: "No" },
       { value: "Other", lable: "Other" }
     ];
-    surveyData = {
-      first_name: "",
-      family_name: "",
-      property_address: "",
-      home_address: "",
-      contact_address: "",
-      residency_profile: "",
-      sign_posted: true,
-      truck_access: "",
-      truck_access_other: "",
-      mobile: "",
-      phone: "",
-      mobile_reception: "",
-      residents0_18: "",
-      residents19_50: "",
-      residents51_70: "",
-      residents71_: "",
-      vulnerable_residents: false,
-      number_dogs: "",
-      number_cats: "",
-      number_birds: "",
-      number_other_pets: "",
-      live_stock_present: false,
-      live_stock_safe_area: "",
-      share_livestock_safe_area: "",
-      static_water_available: [],
-      have_stortz: "",
-      stortz_size: "",
-      fire_fighting_assets: [],
-      site_hazards: [],
-      other_site_hazards: "",
-      fire_hazard_reduction: [],
-      land_adjacent_hazard: "",
-      other_hazards: "",
-      rfs_survival_plan: "",
-      fire_fighting_experience: "",
-      fire_trauma: false,
-      plan_to_leave_before_fire: "",
-      plan_to_leave_before_flood: "",
-      community_workshop_choices: [],
-      other_community_workshop: "",
-      will_run_community_workshops: "",
-      information_sheet_choices: [],
-      other_information_sheet: "",
-      community_meeting_choices: [],
-      other_community_meeting: "",
-      stay_in_touch_choices: [],
-      other_comments: ""
-    };
-  }
-});
-
-// .svelte-kit/output/server/chunks/NumberInput-4ff76850.js
-var NumberInput;
-var init_NumberInput_4ff76850 = __esm({
-  ".svelte-kit/output/server/chunks/NumberInput-4ff76850.js"() {
-    init_index_5e953619();
-    NumberInput = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let { name } = $$props;
-      let { lable } = $$props;
-      let { inputClass } = $$props;
-      let { lableClass } = $$props;
-      let { inputValue } = $$props;
-      if ($$props.name === void 0 && $$bindings.name && name !== void 0)
-        $$bindings.name(name);
-      if ($$props.lable === void 0 && $$bindings.lable && lable !== void 0)
-        $$bindings.lable(lable);
-      if ($$props.inputClass === void 0 && $$bindings.inputClass && inputClass !== void 0)
-        $$bindings.inputClass(inputClass);
-      if ($$props.lableClass === void 0 && $$bindings.lableClass && lableClass !== void 0)
-        $$bindings.lableClass(lableClass);
-      if ($$props.inputValue === void 0 && $$bindings.inputValue && inputValue !== void 0)
-        $$bindings.inputValue(inputValue);
-      return `<div class="${"flex flex-col justify-items-center m-4 "}"><label${add_attribute("class", lableClass, 0)}${add_attribute("for", name, 0)}>${escape(lable)}</label>
-	<input type="${"number"}"${add_attribute("id", name, 0)}${add_attribute("name", name, 0)}${add_attribute("class", inputClass, 0)}${add_attribute("value", inputValue, 0)} min="${"0"}"></div>`;
-    });
-  }
-});
-
-// .svelte-kit/output/server/chunks/TextAreaInput-366ae8ef.js
-var TextAreaInput;
-var init_TextAreaInput_366ae8ef = __esm({
-  ".svelte-kit/output/server/chunks/TextAreaInput-366ae8ef.js"() {
-    init_index_5e953619();
-    TextAreaInput = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let { lableClass } = $$props;
-      let { headingText } = $$props;
-      let { nameText } = $$props;
-      let { divClass } = $$props;
-      let { textAreaClass } = $$props;
-      let { inputValue } = $$props;
-      if ($$props.lableClass === void 0 && $$bindings.lableClass && lableClass !== void 0)
-        $$bindings.lableClass(lableClass);
-      if ($$props.headingText === void 0 && $$bindings.headingText && headingText !== void 0)
-        $$bindings.headingText(headingText);
-      if ($$props.nameText === void 0 && $$bindings.nameText && nameText !== void 0)
-        $$bindings.nameText(nameText);
-      if ($$props.divClass === void 0 && $$bindings.divClass && divClass !== void 0)
-        $$bindings.divClass(divClass);
-      if ($$props.textAreaClass === void 0 && $$bindings.textAreaClass && textAreaClass !== void 0)
-        $$bindings.textAreaClass(textAreaClass);
-      if ($$props.inputValue === void 0 && $$bindings.inputValue && inputValue !== void 0)
-        $$bindings.inputValue(inputValue);
-      return `<div class="${"w-11/12"}"><label${add_attribute("class", lableClass, 0)}${add_attribute("for", nameText, 0)}>${escape(headingText)}</label>
-	<div${add_attribute("class", divClass, 0)}><textarea${add_attribute("id", nameText, 0)}${add_attribute("name", nameText, 0)}${add_attribute("class", textAreaClass, 0)}>${escape(inputValue)}</textarea></div></div>`;
-    });
-  }
-});
-
-// .svelte-kit/output/server/entries/pages/survey/index.svelte.js
-var index_svelte_exports3 = {};
-__export(index_svelte_exports3, {
-  default: () => Survey
-});
-var Step1, css$6, Step2, css$5, Step3, css$4, Step4, css$3, Step5, css$2, Step6, css$13, Step7, Step8, Step9, Step10, Step11, Step12, SurveyFormContainer, css9, ProgressBar, Survey;
-var init_index_svelte3 = __esm({
-  ".svelte-kit/output/server/entries/pages/survey/index.svelte.js"() {
-    init_index_5e953619();
-    init_surveyOptions_2d8b3438();
-    init_NumberInput_4ff76850();
-    init_TextAreaInput_366ae8ef();
-    Step1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<div class="${"contianer"}"><h1>Strengthening Our Community<br>
-		Project Survey
-	</h1>
-	<h2 class="${"mb-1 sm:text-lg"}">Prepare Connect Rebound</h2>
-	<p class="${"m-0 sm:text-lg"}">The project evolved from feedback provided by the community following the
-		2019 bushfires and is funded through the state and federal Bushfire
-		Community Resilience Recovery Fund.
-	</p>
-	<p class="${"pt-2 m-0 sm:text-lg"}">Your answers to this survey will provide an accurate image of our community,
-		identifying areas of strength and also areas that need additional support.
-	</p>
-	<p class="${"pt-2 m-0 sm:text-lg"}">This information is confidential and will be owned and updated by you.
-	</p>
-	<p class="${"pt-2 m-0 sm:text-lg"}">Please complete this survey in one sitting; it should take about 10 minutes.
-	</p>
-	<p class="${"pt-2 m-0 sm:text-lg"}">With your help we can build a safer, connected community for us all.
-	</p>
-	<p class="${"pt-2 sm:text-lg"}">Thanks for your time and comments.</p></div>`;
-    });
-    css$6 = {
-      code: "ul.svelte-v4x3zk{margin-block-start:10px;margin-block-end:10px;padding-inline-start:20px}",
-      map: null
-    };
     Step2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      $$result.css.add(css$6);
-      return `<div><div class="${"py-5"}"><h3>What is your property address?</h3>
-		<div class="${"p-2 rounded-lg bg-orange-300"}"><input type="${"text"}" id="${"property_address"}" name="${"property_address"}" class="${"block border w-full border-orange-700 rounded sm:text-xl"}" placeholder="${"Property Address"}" autocomplete="${"street-address"}" style="${"text-transform:uppercase sm:text-xl"}"${add_attribute("value", surveyData.property_address, 0)}></div></div>
-	<div><h3>Are you:</h3>
-		<ul class="${"list-none p-3 rounded-lg bg-orange-300 sm:text-xl svelte-v4x3zk"}">${each(residencyOptions, ({ value, lable }) => {
-        return `<li><input name="${"residency_profile"}" type="${"radio"}" class="${"m-1"}"${add_attribute("value", value, 0)}${value === surveyData.residency_profile ? add_attribute("checked", true, 1) : ""}>
-					<label for="${"residency_profile"}">${escape(lable)}</label>
-				</li>`;
-      })}</ul></div>
+      let { surveyData } = $$props;
+      if ($$props.surveyData === void 0 && $$bindings.surveyData && surveyData !== void 0)
+        $$bindings.surveyData(surveyData);
+      return `<h3 class="${"mt-9 text-base sm:text-xl"}">What is your name?</h3>
+<div class="${"p-2 pr-4 rounded-lg bg-orange-300"}"><div class="${"flex flex-wrap w-full"}"><input type="${"text"}" id="${"first_name"}" name="${"first_name"}" class="${"w-5/12 mt-1 border-2 border-orange-500 rounded sm:text-xl"}" placeholder="${"First Name"}" autocomplete="${"given-name"}" style="${"text-transform:uppercase"}"${add_attribute("value", surveyData.first_name, 0)}>
+		<input type="${"text"}" id="${"family_name"}" name="${"family_name"}" class="${"w-6/12 ml-2 mt-1 border-2 border-orange-500 rounded sm:text-xl"}" placeholder="${"Family Name"}" autocomplete="${"family_name"}" style="${"text-transform:uppercase"}"${add_attribute("value", surveyData.family_name, 0)}></div></div>
 
-	<div><h3>Is your property well sign_posted and numbered clearly from the road?
-		</h3>
-		<ul class="${"list-none p-3 flex justify-start rounded-lg bg-orange-300 sm:text-xl svelte-v4x3zk"}">${each(yesNoOptions, ({ value, lable }) => {
-        return `<li class="${"flex-none px-3"}"><input name="${"sign_posted"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.sign_posted ? add_attribute("checked", true, 1) : ""}>
-					<label for="${"sign_posted"}">${escape(lable)}</label>
-				</li>`;
-      })}</ul></div>
-	<div><h3>Is there easy access to property and paddocks?</h3>
-		<ul class="${"list-none p-3 rounded-lg bg-orange-300 sm:text-xl svelte-v4x3zk"}">${each(accessOptions, ({ value, lable }) => {
-        return `${lable === "Other" ? `<li class="${"justify-start place-items-center"}"><input class="${"m-1"}" name="${"truck_access"}" type="${"radio"}"${add_attribute("value", value, 0)}>
-						<label class="${"flex-none px-1"}" for="${"truck_access"}">${escape(lable)}</label>
+<h3 class="${"text-base sm:text-xl"}">What is your property address?</h3>
+<div class="${"p-2 pr-4 rounded-lg bg-orange-300"}"><input type="${"text"}" id="${"property_address_street"}" name="${"property_address_street"}" class="${"w-full border-2 border-orange-500 rounded sm:text-xl"}" placeholder="${"Street Address"}" autocomplete="${"street-address"}" style="${"text-transform:uppercase"}"${add_attribute("value", surveyData.property_address_street, 0)}>
+	<div class="${"flex flex-wrap w-full"}"><input type="${"text"}" id="${"property_address_suburb"}" name="${"property_address_suburb"}" class="${"w-8/12 mt-1 border-2 border-orange-500 rounded sm:text-xl"}" placeholder="${"Suburb"}" autocomplete="${"address-level2"}" style="${"text-transform:uppercase"}"${add_attribute("value", surveyData.property_address_suburb, 0)}>
+		<input type="${"text"}" id="${"property_address_postcode"}" name="${"property_address_postcode"}" class="${"w-3/12 mt-1 border-2 border-orange-500 rounded sm:text-xl"}" placeholder="${"Postcode"}" autocomplete="${"postal-code"}" style="${"text-transform:uppercase"}"${add_attribute("value", surveyData.property_address_postcode, 0)}></div></div>
 
-						<input type="${"text"}" class="${"flex-1 border w-auto border-orange-700 rounded mb-1"}" id="${"truck_access_other"}" name="${"truck_access_other"}" ${"hidden"}>
-					</li>` : `<li><input name="${"truck_access"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.truck_access ? add_attribute("checked", true, 1) : ""}>
+<h3 class="${"text-base sm:text-xl"}">Are you renting this property?</h3>
+<div class="${"p-2 pr-4 flex flex-col justify-start rounded-lg bg-orange-300"}"><div class="${"p-2 pr-4 flex flex-row"}">${each(yesNoOptions, ({ value, lable }) => {
+        return `${lable === "Yes" ? `<li class="${"list-none sm:text-xl pr-3"}"><input name="${"property_owned"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.property_owned ? add_attribute("checked", true, 1) : ""}>
+					<label for="${"property_owned"}">${escape(lable)}</label>
+				</li>` : `<li class="${"sm:text-xl pr-3"}"><input name="${"property_owned"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.property_owned ? add_attribute("checked", true, 1) : ""}>
+					<label for="${"property_owned"}">${escape(lable)}</label>
+				</li>`}`;
+      })}</div>
+	<div class="${"flex flex-row sm:text-xl"}"><label class="${"p-2"}" for="${"agent_name"}" ${"hidden"}>Agent Name</label>
+		<input type="${"text"}" class="${"border basis-7/12 border-orange-700 rounded mb-1"}" id="${"agent_name"}" name="${"agent_name"}" ${"hidden"}${add_attribute("value", surveyData.agent_name, 0)}>
+		<label class="${"p-2"}" for="${"agent_phone"}" ${"hidden"}>Agent Phone</label>
+		<input type="${"text"}" class="${"border basis-1/12 border-orange-700 rounded mb-1"}" id="${"agent_phone"}" name="${"agent_phone"}" ${"hidden"}${add_attribute("value", surveyData.agent_phone, 0)}></div></div>
+<h3 class="${"text-base sm:text-xl"}">Is your property well sign-posted and numbered clearly from the road?
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}">${each(yesNoOptions, ({ value, lable }) => {
+        return `<li class="${"list-none sm:text-xl pr-3"}"><input name="${"sign_posted"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.sign_posted ? add_attribute("checked", true, 1) : ""}>
+			<label for="${"sign_posted"}">${escape(lable)}</label>
+		</li>`;
+      })}</div>
+<h3 class="${"text-base sm:text-xl"}">Is there easy truck access to the property and paddocks?
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}"><ul class="${"list-none w-full pl-0"}">${each(accessOptions, ({ value, lable }) => {
+        return `${lable === "Other" ? `<li class="${"sm:text-xl pr-3"}"><div class="${"flex flex-row "}"><input name="${"truck_access"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.truck_access ? add_attribute("checked", true, 1) : ""}>
 						<label for="${"truck_access"}">${escape(lable)}</label>
-					</li>`}`;
+						<input type="${"text"}" class="${"border w-full border-orange-700 rounded ml-2 pt-1 sm:text-xl"}" id="${"other_access_information"}" name="${"other_access_information"}" ${"hidden"}${add_attribute("value", surveyData.other_access_information, 0)}></div>
+				</li>` : `<li class="${"sm:text-xl pr-3"}"><input name="${"truck_access"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.truck_access ? add_attribute("checked", true, 1) : ""}>
+					<label for="${"truck_access"}">${escape(lable)}</label>
+				</li>`}`;
       })}</ul></div>
-</div>`;
+<h3 class="${"text-base sm:text-xl"}">What is your phone number?</h3>
+<div class="${"p-2 pr-4 rounded-lg bg-orange-300"}"><div class="${"flex flex-row sm:text-xl"}"><label class="${"p-2"}" for="${"mobile"}">Mobile</label>
+		<input type="${"tel"}" class="${"border basis-5/12 border-orange-700 rounded mb-1 sm:text-xl"}" id="${"mobile"}" name="${"mobile"}" placeholder="${"Mobile 0XXX XXX XXX"}"${add_attribute("value", surveyData.mobile, 0)}>
+		<label class="${"p-2"}" for="${"phone"}">Landline</label>
+		<input type="${"tel"}" class="${"border basis-5/12 border-orange-700 rounded mb-1 sm:text-xl"}" id="${"phone"}" name="${"phone"}" placeholder="${"Landline XXXX XXXX"}" autocomplete="${"tel-area-code"}"${add_attribute("value", surveyData.phone, 0)}></div></div>
+<h3 class="${"text-base sm:text-xl"}">What is the quality of your mobile reception at the property?
+</h3>
+<div class="${"p-2 pr-4 rounded-lg bg-orange-300"}"><ul class="${"flex my-0 items-center list-none sm:text-xl sm:w-1/2 sm:mx-auto"}"><div class="${"flex-auto font-semibold text-sm sm:text-base text-orange-700"}">Poor
+		</div>
+		${each(Array(5), (_, i3) => {
+        return `<li class="${"flex-auto"}"><input name="${"mobile_reception"}" type="${"radio"}"${add_attribute("value", i3 + 1, 0)}${i3 + 1 === surveyData.mobile_reception ? add_attribute("checked", true, 1) : ""}>
+				<label class="${"inline-block"}" for="${"mobile_reception"}">${escape(i3 + 1)}</label>
+			</li>`;
+      })}
+		<div class="${"flex-auto font-semibold text-sm sm:text-base text-orange-700"}">Excellent
+		</div></ul></div>`;
     });
-    css$5 = {
-      code: "ul.svelte-v4x3zk{margin-block-start:10px;margin-block-end:10px;padding-inline-start:20px}",
-      map: null
-    };
     Step3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      $$result.css.add(css$5);
+      let { surveyData } = $$props;
+      if ($$props.surveyData === void 0 && $$bindings.surveyData && surveyData !== void 0)
+        $$bindings.surveyData(surveyData);
       let $$settled;
       let $$rendered;
       do {
         $$settled = true;
-        $$rendered = `<div><div class="${"py-5"}"><h3>What is your phone number?</h3>
-		<div class="${"p-2 rounded-lg bg-orange-300"}"><input type="${"tel"}" id="${"mobile"}" name="${"mobile"}" class="${"flex-none w-1/4 border border-orange-700 min-w-[145px] rounded sm:text-xl"}" placeholder="${"Mobile 0XXX XXX XXX"}"${add_attribute("value", surveyData.mobile, 0)}>
-			<input type="${"tel"}" id="${"phone"}" name="${"phone"}" class="${"flex-none w-1/4 ml-2 border border-orange-700 min-w-[145px] rounded sm:text-xl"}" placeholder="${"Landline XXXX XXXX"}" autocomplete="${"tel-area-code"}"${add_attribute("value", surveyData.phoneNumber, 0)}></div></div>
+        $$rendered = `<h3 class="${"mt-9 text-base sm:text-xl"}">Are you:</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}"><ul class="${"list-none w-full pl-0"}">${each(residencyOptions, ({ value, lable }) => {
+          return `<li class="${"sm:text-xl pr-3"}"><input name="${"residency_profile"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.residency_profile ? add_attribute("checked", true, 1) : ""}>
+				<label for="${"residency_profile"}">${escape(lable)}</label>
+			</li>`;
+        })}</ul></div>
 
-	<h3>What is the quality of your mobile reception at your property?</h3>
-	<div class="${"p-1 rounded-lg bg-orange-300"}"><ul class="${"flex justify-center list-none sm:text-xl svelte-v4x3zk"}"><div class="${"flex-auto font-semibold text-sm sm:text-base text-orange-700"}">Poor
-			</div>
-			${each(Array(5), (_, i2) => {
-          return `<li class="${"flex-auto"}"><label class="${""}" for="${"mobile_reception"}">${escape(i2 + 1)}<br>
-						<input name="${"mobile_reception"}" type="${"radio"}"${add_attribute("value", i2 + 1, 0)}${i2 + 1 === surveyData.mobile_reception ? add_attribute("checked", true, 1) : ""}></label>
-				</li>`;
-        })}
-			<div class="${"flex-auto font-semibold text-sm sm:text-base text-orange-700"}">Excellent
-			</div></ul></div>
-	<h3 class="${"pt-3"}">Please record the number of people who usually live at this property:
-	</h3>
-	<div class="${"p-1 rounded-lg bg-orange-300"}"><ul class="${"list-none svelte-v4x3zk"}">${validate_component(NumberInput, "NumberInput").$$render($$result, {
+<h3 class="${"text-base sm:text-xl"}">Please record the number of people who usually live at this property:
+</h3>
+<div class="${"py-2 pr-4 rounded-lg bg-orange-300"}"><ul class="${"flex pl-0 justify-start list-none sm:text-xl"}">${validate_component(NumberInput, "NumberInput").$$render($$result, {
           name: "residents0_18",
           listClass: "",
           lable: "0-18 years",
           lableClass: "sm:text-xl",
-          inputClass: "border border-orange-700 w-20 rounded mb-1 ml-5 sm:text-xl",
+          inputClass: "border border-orange-700 w-20 rounded sm:text-xl",
           value: surveyData.residents0_18
         }, {
           value: ($$value) => {
@@ -18970,12 +19065,12 @@ var init_index_svelte3 = __esm({
             $$settled = false;
           }
         }, {})}
-			${validate_component(NumberInput, "NumberInput").$$render($$result, {
+		${validate_component(NumberInput, "NumberInput").$$render($$result, {
           name: "residents19_50",
           listClass: "",
           lable: "19-50 years",
           lableClass: "sm:text-xl",
-          inputClass: "border border-orange-700 w-20 rounded mb-1 ml-2 sm:text-xl",
+          inputClass: "border border-orange-700 w-20 rounded sm:text-xl",
           value: surveyData.residents19_50
         }, {
           value: ($$value) => {
@@ -18983,12 +19078,12 @@ var init_index_svelte3 = __esm({
             $$settled = false;
           }
         }, {})}
-			${validate_component(NumberInput, "NumberInput").$$render($$result, {
+		${validate_component(NumberInput, "NumberInput").$$render($$result, {
           name: "residents51_70",
           listClass: "",
           lable: "51-70 years",
           lableClass: "sm:text-xl",
-          inputClass: "border border-orange-700 w-20 rounded mb-1 ml-2 sm:text-xl",
+          inputClass: "border border-orange-700 w-20 rounded sm:text-xl",
           value: surveyData.residents51_70
         }, {
           value: ($$value) => {
@@ -18996,12 +19091,12 @@ var init_index_svelte3 = __esm({
             $$settled = false;
           }
         }, {})}
-			${validate_component(NumberInput, "NumberInput").$$render($$result, {
+		${validate_component(NumberInput, "NumberInput").$$render($$result, {
           name: "residents71_",
           listClass: "",
           lable: "71 years +",
           lableClass: "sm:text-xl",
-          inputClass: "border border-orange-700 w-20 rounded mb-1 ml-5 sm:text-xl",
+          inputClass: "border border-orange-700 w-20 rounded sm:text-xl",
           value: surveyData.residents71_
         }, {
           value: ($$value) => {
@@ -19009,34 +19104,37 @@ var init_index_svelte3 = __esm({
             $$settled = false;
           }
         }, {})}</ul></div>
-	<div><h3 class="${"pt-3"}">Do you consider any person on the property to be vulnerable?
-		</h3>
-		<div class="${"flex flex-row rounded-lg bg-orange-50 p-1 mx-2"}">${each(yesNoOptions, ({ value, lable }) => {
-          return `<li class="${"flex-none px-3"}"><input name="${"sign_posted"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.sign_posted ? add_attribute("checked", true, 1) : ""}>
-					<label for="${"sign_posted"}">${escape(lable)}</label>
-				</li>`;
-        })}</div></div>
-</div>`;
+<div><h3 class="${"text-base sm:text-xl"}">Do you consider any person on the property to be vulnerable?
+	</h3>
+	<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}">${each(yesNoOptions, ({ value, lable }) => {
+          return `<li class="${"list-none sm:text-xl pr-3"}"><input name="${"vulnerable_residents"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.vulnerable_residents ? add_attribute("checked", true, 1) : ""}>
+				<label for="${"vulnerable_residents"}">${escape(lable)}</label>
+			</li>`;
+        })}</div></div>`;
       } while (!$$settled);
       return $$rendered;
     });
-    css$4 = {
+    css10 = {
       code: "ul.svelte-v4x3zk{margin-block-start:10px;margin-block-end:10px;padding-inline-start:20px}",
       map: null
     };
     Step4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      $$result.css.add(css$4);
+      let { surveyData } = $$props;
+      if ($$props.surveyData === void 0 && $$bindings.surveyData && surveyData !== void 0)
+        $$bindings.surveyData(surveyData);
+      $$result.css.add(css10);
       let $$settled;
       let $$rendered;
       do {
         $$settled = true;
-        $$rendered = `<div><div class="${"pt-5"}"><h3>Please record the number of pets you have on this property</h3>
-		<div class="${"p-2 rounded-lg bg-orange-300"}"><ul class="${"list-none svelte-v4x3zk"}">${validate_component(NumberInput, "NumberInput").$$render($$result, {
+        $$rendered = `<h3 class="${"mt-9 text-base sm:text-xl"}">Please record the number of pets you have on this property
+</h3>
+<div class="${"py-2 pr-4 rounded-lg bg-orange-300"}"><ul class="${"flex pl-0 justify-start list-none sm:text-xl svelte-v4x3zk"}">${validate_component(NumberInput, "NumberInput").$$render($$result, {
           name: "number_dogs",
           listClass: "",
           lable: "Dogs",
           lableClass: "sm:text-xl",
-          inputClass: "border border-orange-700 w-20 rounded mb-1 ml-[10px] col-span-1 sm:text-xl",
+          inputClass: "border border-orange-700 w-20 rounded sm:text-xl",
           value: surveyData.number_dogs
         }, {
           value: ($$value) => {
@@ -19044,12 +19142,12 @@ var init_index_svelte3 = __esm({
             $$settled = false;
           }
         }, {})}
-				${validate_component(NumberInput, "NumberInput").$$render($$result, {
+		${validate_component(NumberInput, "NumberInput").$$render($$result, {
           name: "number_cats",
           listClass: "",
           lable: "Cats",
           lableClass: "sm:text-xl",
-          inputClass: "border border-orange-700 w-20 rounded mb-1 ml-[15px] col-span-1 sm:text-xl",
+          inputClass: "border border-orange-700 w-20 rounded sm:text-xl",
           value: surveyData.number_cats
         }, {
           value: ($$value) => {
@@ -19057,12 +19155,12 @@ var init_index_svelte3 = __esm({
             $$settled = false;
           }
         }, {})}
-				${validate_component(NumberInput, "NumberInput").$$render($$result, {
+		${validate_component(NumberInput, "NumberInput").$$render($$result, {
           name: "number_birds",
           listClass: "",
           lable: "Birds",
           lableClass: "sm:text-xl",
-          inputClass: "border border-orange-700 w-20 rounded mb-1 ml-[12px] col-span-1 sm:text-xl",
+          inputClass: "border border-orange-700 w-20 rounded sm:text-xl",
           value: surveyData.number_birds
         }, {
           value: ($$value) => {
@@ -19070,199 +19168,294 @@ var init_index_svelte3 = __esm({
             $$settled = false;
           }
         }, {})}
-				${validate_component(NumberInput, "NumberInput").$$render($$result, {
+		${validate_component(NumberInput, "NumberInput").$$render($$result, {
           name: "number_other_pets",
           listClass: "",
           lable: "Other",
           lableClass: "sm:text-xl",
-          inputClass: "border border-orange-700 w-20 rounded mb-1 ml-[8px] col-span-1 sm:text-xl",
+          inputClass: "border border-orange-700 w-20 rounded sm:text-xl",
           value: surveyData.number_other_pets
         }, {
           value: ($$value) => {
             surveyData.number_other_pets = $$value;
             $$settled = false;
           }
-        }, {})}</ul></div></div>
-	<div><h3>Do you have livestock?</h3>
-		<ul class="${"list-none p-3 flex justify-start rounded-lg bg-orange-300 sm:text-xl svelte-v4x3zk"}">${each(yesNoOptions, ({ value, lable }) => {
-          return `<li class="${"flex-none px-3"}"><input name="${"live_stock_present"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.live_stock_present ? add_attribute("checked", true, 1) : ""}>
-					<label for="${"live_stock_present"}">${escape(lable)}</label>
-				</li>`;
-        })}</ul>
+        }, {})}</ul></div>
+<h3 class="${"text-base sm:text-xl"}">Do you have livestock?</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}">${each(yesNoOptions, ({ value, lable }) => {
+          return `<li class="${"list-none sm:text-xl pr-3"}"><input name="${"live_stock_present"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.live_stock_present ? add_attribute("checked", true, 1) : ""}>
+			<label for="${"live_stock_present"}">${escape(lable)}</label>
+		</li>`;
+        })}</div>
 
-		${``}</div>
-</div>`;
+${``}`;
       } while (!$$settled);
       return $$rendered;
     });
-    css$3 = {
-      code: "ul.svelte-v4x3zk{margin-block-start:10px;margin-block-end:10px;padding-inline-start:20px}",
-      map: null
-    };
     Step5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      $$result.css.add(css$3);
-      return `<div><div class="${"pt-5"}"><h3>Are there any static water supplies on the property?</h3>
-		<div class="${"p-1 rounded-lg bg-orange-300"}"><ul class="${"list-none sm:text-xl svelte-v4x3zk"}">${each(staticWaterOptions, ({ value, lable }) => {
-        return `${value < 5 ? `<li><input name="${"static_water_available"}" type="${"checkbox"}"${add_attribute("value", value, 0)}>
-							<label for="${"static_water_available"}">${escape(lable)}</label>
-						</li>` : `<li><input name="${"static_water_available"}" type="${"checkbox"}"${add_attribute("value", value, 0)} ${""}>
-							<label for="${"static_water_available"}">${escape(lable)}</label>
-						</li>`}`;
-      })}</ul></div></div>
-	<div><h3>Do you have a Stortz fitting attached to a water tank?</h3>
-		<ul class="${"list-none p-2 flex justify-start rounded-lg bg-orange-300 sm:text-xl svelte-v4x3zk"}">${each(yesNoMaybeOptions, ({ value, lable }) => {
-        return `<li class="${"flex-none px-3"}"><input name="${"have_stortz"}" type="${"radio"}"${add_attribute("value", value, 0)}>
-					<label for="${"have_stortz"}">${escape(lable)}</label>
-				</li>`;
-      })}</ul>
-		${``}</div>
-	<div><h3>Do you have any of the following at this property?</h3>
-		<div class="${"flex rounded-lg bg-orange-300"}"><ul class="${"list-none rounded-lg bg-orange-300 sm:text-xl svelte-v4x3zk"}">${each(fireFightingAssets, ({ value, lable }) => {
-        return `<li><input name="${"fire_fighting_assets"}" type="${"checkbox"}"${add_attribute("value", value, 0)}>
-						<label for="${"fire_fighting_assets"}">${escape(lable)}</label>
-					</li>`;
-      })}</ul></div></div>
-</div>`;
+      let { surveyData } = $$props;
+      if ($$props.surveyData === void 0 && $$bindings.surveyData && surveyData !== void 0)
+        $$bindings.surveyData(surveyData);
+      return `<h3 class="${"mt-9 text-base sm:text-xl"}">Are there any static water supplies on the property?
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}"><ul class="${"list-none w-full pl-0"}">${each(staticWaterOptions, ({ value, lable }) => {
+        return `${value < 5 ? `<li class="${"sm:text-xl pr-3"}"><input name="${"static_water_available"}" type="${"checkbox"}"${add_attribute("value", value, 0)}${~surveyData.static_water_available.indexOf(value) ? add_attribute("checked", true, 1) : ""}>
+					<label for="${"static_water_available"}">${escape(lable)}</label>
+				</li>` : `<li class="${"sm:text-xl pr-3"}"><input name="${"static_water_available"}" type="${"checkbox"}"${add_attribute("value", value, 0)} ${""}${~surveyData.static_water_available.indexOf(value) ? add_attribute("checked", true, 1) : ""}>
+					<label for="${"static_water_available"}">${escape(lable)}</label>
+				</li>`}`;
+      })}</ul></div>
+<h3 class="${"text-base sm:text-xl"}">Do you have a Stortz fitting attached to a water tank?
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}">${each(yesNoMaybeOptions, ({ value, lable }) => {
+        return `<li class="${"list-none sm:text-xl pr-3"}"><input name="${"have_stortz"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.have_stortz ? add_attribute("checked", true, 1) : ""}>
+			<label for="${"have_stortz"}">${escape(lable)}</label>
+		</li>`;
+      })}</div>
+${``}
+<h3 class="${"text-base sm:text-xl"}">Do you have any of the following at this property?
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}"><ul class="${"list-none w-full pl-0"}">${each(fireFightingAssets, ({ value, lable }) => {
+        return `<li class="${"sm:text-xl pr-3"}"><input name="${"fire_fighting_assets"}" type="${"checkbox"}"${add_attribute("value", value, 0)}${~surveyData.fire_fighting_assets.indexOf(value) ? add_attribute("checked", true, 1) : ""}>
+				<label for="${"fire_fighting_assets"}">${escape(lable)}</label>
+			</li>`;
+      })}</ul></div>`;
     });
-    css$2 = {
-      code: "ul.svelte-v4x3zk{margin-block-start:10px;margin-block-end:10px;padding-inline-start:20px}",
-      map: null
-    };
     Step6 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      $$result.css.add(css$2);
-      return `<div><div class="${"pt-5"}"><h3>Do you have any of the following on your property?</h3>
-		<div class="${"p-2 rounded-lg bg-orange-300"}"><ul class="${"list-none sm:text-xl svelte-v4x3zk"}">${each(siteHazardsOptions, ({ value, lable }) => {
-        return `<li><input name="${"site_hazards"}" type="${"checkbox"}"${add_attribute("value", value, 0)}>
-						<label for="${"site_hazards"}">${escape(lable)}</label>
-					</li>`;
-      })}</ul></div></div>
-	${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
-        headingText: "Are there any other hazards on the property that should be noted?",
-        divClass: "p-2 rounded-lg bg-orange-300 sm:text-xl",
-        nameText: "other_site_hazards",
-        textAreaClass: "w-full resize-y sm:text-xl"
-      }, {}, {})}
-	<div><h3>Does your property have?</h3>
-		<div class="${"flex rounded-lg bg-orange-300"}"><ul class="${"list-none sm:text-xl svelte-v4x3zk"}">${each(fireHazardReductionOptions, ({ value, lable }) => {
-        return `<li><input name="${"fire_hazard_reduction"}" type="${"checkbox"}"${add_attribute("value", value, 0)}>
-						<label for="${"fire_hazard_reduction"}">${escape(lable)}</label>
-					</li>`;
-      })}</ul></div></div>
-	<div><h3>Does any adjoining land represent a hazard?</h3>
-		<ul class="${"list-none p-2 flex justify-start rounded-lg bg-orange-300 sm:text-xl svelte-v4x3zk"}">${each(yesNoMaybeOptions, ({ value, lable }) => {
-        return `<li class="${"flex-none px-3"}"><input name="${"land_adjacent_hazard"}" type="${"radio"}"${add_attribute("value", value, 0)}>
-					<label for="${"land_adjacent_hazard"}">${escape(lable)}</label>
-				</li>`;
-      })}</ul></div>
-	${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
-        headingText: "Are there other areas that concern you or represent a potential threat?",
-        divClass: "p-2 rounded-lg bg-orange-300 sm:text-xl",
-        nameText: "other_hazards",
-        textAreaClass: "w-full resize-y sm:text-xl"
-      }, {}, {})}
-</div>`;
+      let { surveyData } = $$props;
+      if ($$props.surveyData === void 0 && $$bindings.surveyData && surveyData !== void 0)
+        $$bindings.surveyData(surveyData);
+      let $$settled;
+      let $$rendered;
+      do {
+        $$settled = true;
+        $$rendered = `<h3 class="${"mt-9 text-base sm:text-xl"}">Do you have any of the following on your property?
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}"><ul class="${"list-none w-full pl-0"}">${each(siteHazardsOptions, ({ value, lable }) => {
+          return `<li class="${"sm:text-xl pr-3"}"><input name="${"site_hazards"}" type="${"checkbox"}"${add_attribute("value", value, 0)}>
+				<label for="${"site_hazards"}">${escape(lable)}</label>
+			</li>`;
+        })}</ul></div>
+${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
+          lableClass: "font-bold text-base sm:text-xl",
+          headingText: "Are there any other hazards on the property that should be noted?",
+          divClass: "p-2 rounded-lg bg-orange-300 sm:text-xl",
+          nameText: "other_site_hazards",
+          textAreaClass: "w-full resize-y sm:text-xl",
+          inputValue: surveyData.other_site_hazards
+        }, {
+          inputValue: ($$value) => {
+            surveyData.other_site_hazards = $$value;
+            $$settled = false;
+          }
+        }, {})}
+<h3 class="${"text-base sm:text-xl"}">Does your property have?</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}"><ul class="${"list-none w-full pl-0"}">${each(fireHazardReductionOptions, ({ value, lable }) => {
+          return `<li class="${"sm:text-xl pr-3"}"><input name="${"fire_hazard_reduction"}" type="${"checkbox"}"${add_attribute("value", value, 0)}${~surveyData.fire_hazard_reduction.indexOf(value) ? add_attribute("checked", true, 1) : ""}>
+				<label for="${"fire_hazard_reduction"}">${escape(lable)}</label>
+			</li>`;
+        })}</ul></div>
+<h3 class="${"text-base sm:text-xl"}">Does any adjoining land represent a hazard?
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}">${each(yesNoMaybeOptions, ({ value, lable }) => {
+          return `<li class="${"list-none sm:text-xl pr-3"}"><input name="${"land_adjacent_hazard"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.land_adjacent_hazard ? add_attribute("checked", true, 1) : ""}>
+			<label for="${"land_adjacent_hazard"}">${escape(lable)}</label>
+		</li>`;
+        })}</div>
+${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
+          lableClass: "font-bold text-base sm:text-xl",
+          headingText: "Are there other areas that concern you or represent a potential threat?",
+          divClass: "p-2 rounded-lg bg-orange-300 sm:text-xl",
+          nameText: "other_hazards",
+          textAreaClass: "w-full resize-y sm:text-xl",
+          inputValue: surveyData.other_hazards
+        }, {
+          inputValue: ($$value) => {
+            surveyData.other_hazards = $$value;
+            $$settled = false;
+          }
+        }, {})}`;
+      } while (!$$settled);
+      return $$rendered;
     });
-    css$13 = {
-      code: "ul.svelte-v4x3zk{margin-block-start:10px;margin-block-end:10px;padding-inline-start:20px}",
-      map: null
-    };
     Step7 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      $$result.css.add(css$13);
-      return `<div><div class="${"pt-5"}"><h3>Have you completed a RFS Bushfire survival plan?</h3>
-		<ul class="${"list-none p-3 justify-start rounded-lg bg-orange-300 sm:text-xl svelte-v4x3zk"}">${each(yesNoSendOptions, ({ value, lable }) => {
-        return `<li class="${"flex-none px-3"}"><input name="${"rfs_survival_plan"}" type="${"radio"}"${add_attribute("value", value, 0)}>
-					<label for="${"rfs_survival_plan"}">${escape(lable)}</label>
-				</li>`;
+      let { surveyData } = $$props;
+      if ($$props.surveyData === void 0 && $$bindings.surveyData && surveyData !== void 0)
+        $$bindings.surveyData(surveyData);
+      return `<h3 class="${"mt-9 text-base sm:text-xl"}">Have you completed a RFS Bushfire survival plan?
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}">${each(yesNoSendOptions, ({ value, lable }) => {
+        return `<li class="${"list-none sm:text-xl pr-3"}"><input name="${"rfs_survival_plan"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.rfs_survival_plan ? add_attribute("checked", true, 1) : ""}>
+			<label for="${"rfs_survival_plan"}">${escape(lable)}</label>
+		</li>`;
+      })}</div>
+<h3 class="${"text-base sm:text-xl"}">What is your level of firefighting experience?
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}"><ul class="${"list-none w-full pl-0"}">${each(fireFightingExperienceOptions, ({ value, lable }) => {
+        return `<li class="${"sm:text-xl pr-3"}"><input name="${"fire_fighting_experience"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.fire_fighting_experience ? add_attribute("checked", true, 1) : ""}>
+				<label for="${"fire_fighting_experience"}">${escape(lable)}</label>
+			</li>`;
       })}</ul></div>
-	<div><h3>What is your level of firefighting experience?</h3>
-		<div class="${"flex rounded-lg bg-orange-300"}"><ul class="${"list-none sm:text-xl svelte-v4x3zk"}">${each(fireFightingExperienceOptions, ({ value, lable }) => {
-        return `<li><input name="${"fire_fighting_experience"}" type="${"radio"}"${add_attribute("value", value, 0)}>
-						<label for="${"fire_fighting_experience"}">${escape(lable)}</label>
-					</li>`;
-      })}</ul></div></div>
-	<div><h3>Have you had unpleasant traumatic experience of bushfire?</h3>
-		<ul class="${"list-none p-3 flex justify-start rounded-lg bg-orange-300 sm:text-xl svelte-v4x3zk"}">${each(yesNoOptions, ({ value, lable }) => {
-        return `<li class="${"flex-none px-3"}"><input name="${"fire_trauma"}" type="${"radio"}"${add_attribute("value", value, 0)}>
-					<label for="${"fire_trauma"}">${escape(lable)}</label>
-				</li>`;
+<h3 class="${"text-base sm:text-xl"}">Have you had unpleasant traumatic experience of bushfire?
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}">${each(yesNoOptions, ({ value, lable }) => {
+        return `<li class="${"list-none sm:text-xl pr-3"}"><input name="${"fire_trauma"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.fire_trauma ? add_attribute("checked", true, 1) : ""}>
+			<label for="${"fire_trauma"}">${escape(lable)}</label>
+		</li>`;
+      })}</div>
+<h3 class="${"text-base sm:text-xl"}">If your property is threatened by fire, are you:
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}"><ul class="${"list-none w-full pl-0"}">${each(stayGoOptions, ({ value, lable }) => {
+        return `<li class="${"sm:text-xl pr-3"}"><input name="${"plan_to_leave_before_fire"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.plan_to_leave_before_fire ? add_attribute("checked", true, 1) : ""}>
+				<label for="${"plan_to_leave_before_fire"}">${escape(lable)}</label>
+			</li>`;
       })}</ul></div>
-
-	<div><h3>If your property is threatened by fire, are you:</h3>
-		<div class="${"flex rounded-lg bg-orange-300"}"><ul class="${"list-none sm:text-xl svelte-v4x3zk"}">${each(stayGoOptions, ({ value, lable }) => {
-        return `<li><input name="${"plan_to_leave_before_fire"}" type="${"radio"}"${add_attribute("value", value, 0)}>
-						<label for="${"plan_to_leave_before_fire"}">${escape(lable)}</label>
-					</li>`;
-      })}</ul></div></div>
-	<div><h3>If your property is threatened by flood, are you:</h3>
-		<div class="${"flex rounded-lg bg-orange-300"}"><ul class="${"list-none sm:text-xl svelte-v4x3zk"}">${each(stayGoOptions, ({ value, lable }) => {
-        return `<li><input name="${"plan_to_leave_before_flood"}" type="${"radio"}"${add_attribute("value", value, 0)}>
-						<label for="${"plan_to_leave_before_flood"}">${escape(lable)}</label>
-					</li>`;
-      })}</ul></div></div>
-</div>`;
+<h3 class="${"text-base sm:text-xl"}">If your property is threatened by flood, are you:
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}"><ul class="${"list-none w-full pl-0"}">${each(stayGoOptions, ({ value, lable }) => {
+        return `<li class="${"sm:text-xl pr-3"}"><input name="${"plan_to_leave_before_flood"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === surveyData.plan_to_leave_before_flood ? add_attribute("checked", true, 1) : ""}>
+				<label for="${"plan_to_leave_before_flood"}">${escape(lable)}</label>
+			</li>`;
+      })}</ul></div>`;
     });
     Step8 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<div><div class="${"pt-5"}"><h3>Which of these community initiated workshops would be useful to you?
-		</h3>
-		<div class="${"rounded-lg bg-orange-300"}"><ul class="${"list-none sm:text-xl"}">${each(communityWorkshopOptions, ({ value, lable }) => {
-        return `<li><input name="${"community_workshop_choices"}" type="${"checkbox"}"${add_attribute("value", value, 0)}>
-						<label for="${"community_workshop_choices"}">${escape(lable)}</label>
-					</li>`;
-      })}</ul></div></div>
-	${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
-        headingText: "If there are other workshops that you would like to see run, please add\r\n			the details here",
-        divClass: "p-3 rounded-lg bg-orange-300 sm:text-xl",
-        nameText: "other_community_workshop",
-        textAreaClass: "w-full resize-y sm:text-xl"
-      }, {}, {})}
-	${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
-        headingText: "If you would like to help run any of the workshops, please indicate which\r\n			ones below.",
-        divClass: "p-3 rounded-lg bg-orange-300 sm:text-xl",
-        nameText: "will_run_community_workshops",
-        textAreaClass: "w-full resize-y sm:text-xl"
-      }, {}, {})}</div>`;
+      let { surveyData } = $$props;
+      if ($$props.surveyData === void 0 && $$bindings.surveyData && surveyData !== void 0)
+        $$bindings.surveyData(surveyData);
+      let $$settled;
+      let $$rendered;
+      do {
+        $$settled = true;
+        $$rendered = `<h3 class="${"mt-9 text-base sm:text-xl"}">Which of these community initiated workshops would be useful to you?
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}"><ul class="${"list-none w-full pl-0"}">${each(communityWorkshopOptions, ({ value, lable }) => {
+          return `<li class="${"sm:text-xl pr-3"}"><input name="${"community_workshop_choices"}" type="${"checkbox"}"${add_attribute("value", value, 0)}${~surveyData.community_workshop_choices.indexOf(value) ? add_attribute("checked", true, 1) : ""}>
+				<label for="${"community_workshop_choices"}">${escape(lable)}</label>
+			</li>`;
+        })}</ul></div>
+${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
+          lableClass: "font-bold text-base sm:text-xl",
+          headingText: "If there are other workshops that you would like to see run, please add\r\n			the details here",
+          divClass: "p-3 rounded-lg bg-orange-300 sm:text-xl",
+          nameText: "other_community_workshop",
+          textAreaClass: "w-full resize-y sm:text-xl",
+          inputValue: surveyData.other_community_workshop
+        }, {
+          inputValue: ($$value) => {
+            surveyData.other_community_workshop = $$value;
+            $$settled = false;
+          }
+        }, {})}
+${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
+          lableClass: "font-bold text-base sm:text-xl",
+          headingText: "If you would like to help run any of the workshops, please indicate which\r\n			ones below.",
+          divClass: "p-3 rounded-lg bg-orange-300 sm:text-xl",
+          nameText: "will_run_community_workshops",
+          textAreaClass: "w-full resize-y sm:text-xl",
+          inputValue: surveyData.will_run_community_workshops
+        }, {
+          inputValue: ($$value) => {
+            surveyData.will_run_community_workshops = $$value;
+            $$settled = false;
+          }
+        }, {})}`;
+      } while (!$$settled);
+      return $$rendered;
     });
     Step9 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<div><div class="${"pt-5"}"><h3>What information sheets would be useful to you?</h3>
-		<div class="${"rounded-lg bg-orange-300"}"><ul class="${"list-none sm:text-xl"}">${each(informationSheetOptions, ({ value, lable }) => {
-        return `<li><input name="${"information_sheet_choices"}" type="${"checkbox"}"${add_attribute("value", value, 0)}>
-						<label for="${"information_sheet_choices"}">${escape(lable)}</label>
-					</li>`;
-      })}</ul></div></div>
-	${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
-        headingText: "Are there other information sheets that you would find useful?",
-        divClass: "p-3 rounded-lg bg-orange-300 sm:text-xl",
-        nameText: "other_information_sheet",
-        textAreaClass: "w-full resize-y sm:text-xl"
-      }, {}, {})}</div>`;
+      let { surveyData } = $$props;
+      if ($$props.surveyData === void 0 && $$bindings.surveyData && surveyData !== void 0)
+        $$bindings.surveyData(surveyData);
+      let $$settled;
+      let $$rendered;
+      do {
+        $$settled = true;
+        $$rendered = `<h3 class="${"mt-9 text-base sm:text-xl"}">What information sheets would be useful to you?
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}"><ul class="${"list-none w-full pl-0"}">${each(informationSheetOptions, ({ value, lable }) => {
+          return `<li class="${"sm:text-xl pr-3"}"><input name="${"information_sheet_choices"}" type="${"checkbox"}"${add_attribute("value", value, 0)}${~surveyData.information_sheet_choices.indexOf(value) ? add_attribute("checked", true, 1) : ""}>
+				<label for="${"information_sheet_choices"}">${escape(lable)}</label>
+			</li>`;
+        })}</ul></div>
+
+${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
+          lableClass: "font-bold text-base sm:text-xl",
+          headingText: "Are there other information sheets that you would find useful?",
+          divClass: "p-3 rounded-lg bg-orange-300 sm:text-xl",
+          nameText: "other_information_sheet",
+          textAreaClass: "w-full resize-y sm:text-xl",
+          inputValue: surveyData.other_information_sheet
+        }, {
+          inputValue: ($$value) => {
+            surveyData.other_information_sheet = $$value;
+            $$settled = false;
+          }
+        }, {})}`;
+      } while (!$$settled);
+      return $$rendered;
     });
     Step10 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<div><div class="${"pt-5"}"><h3>What community meetings would be useful to you?</h3>
-		<div class="${"rounded-lg bg-orange-300"}"><ul class="${"list-none sm:text-xl"}">${each(communityMeetingOptions, ({ value, lable }) => {
-        return `<li><input name="${"community_meeting_choices"}" type="${"checkbox"}"${add_attribute("value", value, 0)}>
-						<label for="${"community_meeting_choices"}">${escape(lable)}</label>
-					</li>`;
-      })}</ul></div></div>
-	${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
-        headingText: "If there are other events you would be interested in, please add them\r\n			below.",
-        divClass: "p-3 rounded-lg bg-orange-300 sm:text-xl",
-        nameText: "other_community_meeting",
-        textAreaClass: "w-full resize-y sm:text-xl"
-      }, {}, {})}</div>`;
+      let { surveyData } = $$props;
+      if ($$props.surveyData === void 0 && $$bindings.surveyData && surveyData !== void 0)
+        $$bindings.surveyData(surveyData);
+      let $$settled;
+      let $$rendered;
+      do {
+        $$settled = true;
+        $$rendered = `<h3 class="${"mt-9 text-base sm:text-xl"}">What community meetings would be useful to you?
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}"><ul class="${"list-none w-full pl-0"}">${each(communityMeetingOptions, ({ value, lable }) => {
+          return `<li class="${"sm:text-xl pr-3"}"><input name="${"community_meeting_choices"}" type="${"checkbox"}"${add_attribute("value", value, 0)}${~surveyData.community_meeting_choices.indexOf(value) ? add_attribute("checked", true, 1) : ""}>
+				<label for="${"community_meeting_choices"}">${escape(lable)}</label>
+			</li>`;
+        })}</ul></div>
+${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
+          lableClass: "font-bold text-base sm:text-xl",
+          headingText: "If there are other events you would be interested in, please add them\r\n			below.",
+          divClass: "p-3 rounded-lg bg-orange-300 sm:text-xl",
+          nameText: "other_community_meeting",
+          textAreaClass: "w-full resize-y sm:text-xl",
+          inputValue: surveyData.other_community_meeting
+        }, {
+          inputValue: ($$value) => {
+            surveyData.other_community_meeting = $$value;
+            $$settled = false;
+          }
+        }, {})}`;
+      } while (!$$settled);
+      return $$rendered;
     });
     Step11 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<div><div class="${"pt-5"}"><h3>How would you prefer to stay in touch?</h3>
-		<div class="${"rounded-lg bg-orange-300"}"><ul class="${"list-none sm:text-xl"}">${each(stayInTouchOptions, ({ value, lable }) => {
-        return `<li><input name="${"stay_in_touch_choices"}" type="${"checkbox"}"${add_attribute("value", value, 0)}>
-						<label for="${"stay_in_touch_choices"}">${escape(lable)}</label>
-					</li>`;
-      })}</ul></div></div>
-	${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
-        headingText: "Do you have any other comments that you would like to add?",
-        divClass: "p-3 rounded-lg bg-orange-300 sm:text-xl",
-        nameText: "other_comments",
-        textAreaClass: "w-full resize-y sm:text-xl"
-      }, {}, {})}</div>`;
+      let { surveyData } = $$props;
+      if ($$props.surveyData === void 0 && $$bindings.surveyData && surveyData !== void 0)
+        $$bindings.surveyData(surveyData);
+      let $$settled;
+      let $$rendered;
+      do {
+        $$settled = true;
+        $$rendered = `<h3 class="${"mt-9 text-base sm:text-xl"}">How would you prefer to stay in touch?
+</h3>
+<div class="${"p-2 pr-4 flex justify-start rounded-lg bg-orange-300"}"><ul class="${"list-none w-full pl-0"}">${each(stayInTouchOptions, ({ value, lable }) => {
+          return `<li class="${"sm:text-xl pr-3"}"><input name="${"stay_in_touch_choices"}" type="${"checkbox"}"${add_attribute("value", value, 0)}${~surveyData.stay_in_touch_choices.indexOf(value) ? add_attribute("checked", true, 1) : ""}>
+				<label for="${"stay_in_touch_choices"}">${escape(lable)}</label>
+			</li>`;
+        })}</ul></div>
+
+${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
+          lableClass: "font-bold text-base sm:text-xl",
+          headingText: "Do you have any other comments that you would like to add?",
+          divClass: "p-3 rounded-lg bg-orange-300 sm:text-xl",
+          nameText: "other_comments",
+          textAreaClass: "w-full resize-y sm:text-xl",
+          inputValue: surveyData.other_comments
+        }, {
+          inputValue: ($$value) => {
+            surveyData.other_comments = $$value;
+            $$settled = false;
+          }
+        }, {})}`;
+      } while (!$$settled);
+      return $$rendered;
     });
     Step12 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       return `<div class="${"pt-5 lg:ml-10 lg:mr-10 md:ml-30 md:mr-30 lg:ml-50 lg:mr-50"}"><h2 class="${"text-center sm:text-lg"}">Thank you for completing the questionnaire.
@@ -19283,86 +19476,40 @@ var init_index_svelte3 = __esm({
     });
     SurveyFormContainer = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { active_step } = $$props;
+      let { surveyData } = $$props;
       if ($$props.active_step === void 0 && $$bindings.active_step && active_step !== void 0)
         $$bindings.active_step(active_step);
-      return `<div${add_classes((active_step != "1" ? "hidden" : "").trim())}>${validate_component(Step1, "Step1").$$render($$result, {}, {}, {})}</div>
-<div${add_classes((active_step != "13" ? "hidden" : "").trim())}>${validate_component(Step12, "Step12").$$render($$result, {}, {}, {})}</div>
-<form method="${"post"}" action="${"/api/userdata/survey"}"><div${add_classes((active_step != "2" ? "hidden" : "").trim())}>${validate_component(Step2, "Step2").$$render($$result, {}, {}, {})}</div>
-	<div${add_classes((active_step != "3" ? "hidden" : "").trim())}>${validate_component(Step3, "Step3").$$render($$result, {}, {}, {})}</div>
-	<div${add_classes((active_step != "4" ? "hidden" : "").trim())}>${validate_component(Step4, "Step4").$$render($$result, {}, {}, {})}</div>
-	<div${add_classes((active_step != "5" ? "hidden" : "").trim())}>${validate_component(Step5, "Step5").$$render($$result, {}, {}, {})}</div>
-	<div${add_classes((active_step != "6" ? "hidden" : "").trim())}>${validate_component(Step6, "Step6").$$render($$result, {}, {}, {})}</div>
-	<div${add_classes((active_step != "7" ? "hidden" : "").trim())}>${validate_component(Step7, "Step7").$$render($$result, {}, {}, {})}</div>
-	<div${add_classes((active_step != "8" ? "hidden" : "").trim())}>${validate_component(Step8, "Step8").$$render($$result, {}, {}, {})}</div>
-	<div${add_classes((active_step != "9" ? "hidden" : "").trim())}>${validate_component(Step9, "Step9").$$render($$result, {}, {}, {})}</div>
-	<div${add_classes((active_step != "10" ? "hidden" : "").trim())}>${validate_component(Step10, "Step10").$$render($$result, {}, {}, {})}</div>
-	<div${add_classes((active_step != "11" ? "hidden" : "").trim())}>${validate_component(Step11, "Step11").$$render($$result, {}, {}, {})}</div>
-	<div${add_classes((active_step != "12" ? "hidden" : "").trim())}>${validate_component(Step12, "Step12").$$render($$result, {}, {}, {})}</div></form>`;
-    });
-    css9 = {
-      code: ".progress-container.svelte-jb1ve4{display:flex;justify-content:space-between;position:relative;margin-top:30px;margin-bottom:10px}.progress-container.svelte-jb1ve4::before{content:'';background-color:#e0e0e0;position:absolute;top:50%;left:0;transform:translateY(-50%);height:4px;width:100%;z-index:-1}.progress.svelte-jb1ve4{background-color:#fdba74;position:absolute;top:50%;left:0;transform:translateY(-50%);height:4px;width:0%;z-index:-1;transition:0.4s ease}.circle.svelte-jb1ve4{background-color:#fff;color:#999;border-radius:50%;height:15px;width:15px;display:flex;align-items:center;justify-content:center;border:3px solid #e0e0e0;transition:0.4s ease;cursor:pointer}.circle.svelte-jb1ve4::after{content:attr(data-title) ' ';position:absolute;bottom:20px;color:#999;transition:0.4s ease}.circle.active.svelte-jb1ve4::after{color:#f97316}.circle.active.svelte-jb1ve4{border-color:#f97316}",
-      map: null
-    };
-    ProgressBar = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let { steps = [] } = $$props;
-      let { currentActive = 1 } = $$props;
-      let circles, progress;
-      const handleProgress = (stepIncrement) => {
-        circles = document.querySelectorAll(".circle");
-        if (stepIncrement == 1) {
-          currentActive++;
-          if (currentActive > circles.length) {
-            currentActive = circles.length;
-          }
-        } else {
-          currentActive--;
-          if (currentActive < 1) {
-            currentActive = 1;
-          }
-        }
-        update();
-      };
-      function update() {
-        circles.forEach((circle, idx) => {
-          if (idx < currentActive) {
-            circle.classList.add("active");
-          } else {
-            circle.classList.remove("active");
-          }
-        });
-        const actives = document.querySelectorAll(".active");
-        progress.style.width = (actives.length - 1) / (circles.length - 1) * 100 + "%";
-      }
-      const skipTo = (e2) => {
-        circles = document.querySelectorAll(".circle");
-        currentActive = e2.currentTarget.attributes["data-title"].value;
-        update();
-      };
-      if ($$props.steps === void 0 && $$bindings.steps && steps !== void 0)
-        $$bindings.steps(steps);
-      if ($$props.currentActive === void 0 && $$bindings.currentActive && currentActive !== void 0)
-        $$bindings.currentActive(currentActive);
-      if ($$props.handleProgress === void 0 && $$bindings.handleProgress && handleProgress !== void 0)
-        $$bindings.handleProgress(handleProgress);
-      if ($$props.skipTo === void 0 && $$bindings.skipTo && skipTo !== void 0)
-        $$bindings.skipTo(skipTo);
-      $$result.css.add(css9);
-      return `<div class="${"progress-container z-50 svelte-jb1ve4"}"><div class="${"progress svelte-jb1ve4"}"${add_attribute("this", progress, 0)}></div>
-	${each(steps, (step, i2) => {
-        return `<div class="${"circle " + escape(i2 == 0 ? "active" : "") + " svelte-jb1ve4"}"${add_attribute("data-title", step, 0)}>.
-		</div>`;
-      })}
-</div>`;
+      if ($$props.surveyData === void 0 && $$bindings.surveyData && surveyData !== void 0)
+        $$bindings.surveyData(surveyData);
+      return `<form method="${"post"}" action="${"/api/userdata/survey"}" id="${"surveyForm"}"><div ${active_step != "1" ? "hidden" : ""}>${validate_component(Step1, "Step1").$$render($$result, {}, {}, {})}</div>
+	<div ${active_step != "2" ? "hidden" : ""}>${validate_component(Step2, "Step2").$$render($$result, { surveyData }, {}, {})}</div>
+	<div ${active_step != "3" ? "hidden" : ""}>${validate_component(Step3, "Step3").$$render($$result, { surveyData }, {}, {})}</div>
+	<div ${active_step != "4" ? "hidden" : ""}>${validate_component(Step4, "Step4").$$render($$result, { surveyData }, {}, {})}</div>
+	<div ${active_step != "5" ? "hidden" : ""}>${validate_component(Step5, "Step5").$$render($$result, { surveyData }, {}, {})}</div>
+	<div ${active_step != "6" ? "hidden" : ""}>${validate_component(Step6, "Step6").$$render($$result, { surveyData }, {}, {})}</div>
+	<div ${active_step != "7" ? "hidden" : ""}>${validate_component(Step7, "Step7").$$render($$result, { surveyData }, {}, {})}</div>
+	<div ${active_step != "8" ? "hidden" : ""}>${validate_component(Step8, "Step8").$$render($$result, { surveyData }, {}, {})}</div>
+	<div ${active_step != "9" ? "hidden" : ""}>${validate_component(Step9, "Step9").$$render($$result, { surveyData }, {}, {})}</div>
+	<div ${active_step != "10" ? "hidden" : ""}>${validate_component(Step10, "Step10").$$render($$result, { surveyData }, {}, {})}</div>
+	<div ${active_step != "11" ? "hidden" : ""}>${validate_component(Step11, "Step11").$$render($$result, { surveyData }, {}, {})}</div>
+	<div ${active_step != "12" ? "hidden" : ""}>${validate_component(Step12, "Step12").$$render($$result, { surveyData }, {}, {})}</div>
+	<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${active_step != "11" ? "hidden" : ""} type="${"submit"}" form="${"surveyForm"}">Save My Answers</button></form>`;
     });
     Survey = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let steps = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
       let currentActive = 1;
       let progressBar;
+      let { surveyData } = $$props;
+      if ($$props.surveyData === void 0 && $$bindings.surveyData && surveyData !== void 0)
+        $$bindings.surveyData(surveyData);
       let $$settled;
       let $$rendered;
       do {
         $$settled = true;
-        $$rendered = `<section class="${"flex flex-col items-center mt-5 sm:mt-1 mx-auto h-full w-full sm:w-11/12 text-gray-800"}">${validate_component(SurveyFormContainer, "SurveyFormContainer").$$render($$result, { active_step: steps[currentActive - 1] }, {}, {})}
+        $$rendered = `<section class="${"container mx-auto h-full w-full sm:w-11/12 text-gray-800"}">${validate_component(SurveyFormContainer, "SurveyFormContainer").$$render($$result, {
+          active_step: steps[currentActive - 1],
+          surveyData
+        }, {}, {})}
 	${validate_component(ProgressBar, "ProgressBar").$$render($$result, { steps, currentActive, this: progressBar }, {
           currentActive: ($$value) => {
             currentActive = $$value;
@@ -19381,21 +19528,23 @@ var init_index_svelte3 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/35.js
+// .svelte-kit/output/server/nodes/37.js
 var __exports6 = {};
 __export(__exports6, {
-  css: () => css10,
+  css: () => css11,
   entry: () => entry6,
+  index: () => index6,
   js: () => js6,
   module: () => index_svelte_exports3
 });
-var entry6, js6, css10;
+var index6, entry6, js6, css11;
 var init__6 = __esm({
-  ".svelte-kit/output/server/nodes/35.js"() {
+  ".svelte-kit/output/server/nodes/37.js"() {
     init_index_svelte3();
-    entry6 = "pages/survey/index.svelte-f878f819.js";
-    js6 = ["pages/survey/index.svelte-f878f819.js", "chunks/index-27e8d48c.js", "chunks/utils-b80a401c.js", "chunks/NumberInput-b447724c.js", "chunks/TextAreaInput-0ce753bd.js"];
-    css10 = ["assets/pages/survey/index.svelte-8a3a8c22.css", "assets/NumberInput-920921e1.css", "assets/TextAreaInput-1766c24c.css"];
+    index6 = 37;
+    entry6 = "pages/survey/index.svelte-87f7e1ba.js";
+    js6 = ["pages/survey/index.svelte-87f7e1ba.js", "chunks/index-574d3e5d.js", "chunks/utils-b80a401c.js", "chunks/NumberInput-1d7adc92.js", "chunks/TextAreaInput-f555b11d.js", "chunks/ProgressBar-6aea2a62.js"];
+    css11 = ["assets/pages/survey/index.svelte-909d89a3.css", "assets/NumberInput-097731fa.css", "assets/TextAreaInput-cd7da125.css", "assets/ProgressBar-f826fca1.css"];
   }
 });
 
@@ -19404,16 +19553,16 @@ var index_svelte_exports4 = {};
 __export(index_svelte_exports4, {
   default: () => Work
 });
-var css11, Work;
+var css12, Work;
 var init_index_svelte4 = __esm({
   ".svelte-kit/output/server/entries/pages/work/index.svelte.js"() {
     init_index_5e953619();
-    css11 = {
+    css12 = {
       code: "input[type='number'].svelte-afvmy3.svelte-afvmy3{position:absolute;left:-1000em}input[type='number'].svelte-afvmy3+label.svelte-afvmy3:before{cursor:pointer;background-color:red;flex:auto}input[type='number'].svelte-afvmy3:checked+label.svelte-afvmy3:before{background-color:blue}.radio_container.svelte-afvmy3.svelte-afvmy3{height:6rem;width:100%;background-color:green;display:flex;flex-direction:row;text-align:center;align-items:center}label.svelte-afvmy3.svelte-afvmy3{flex:1;display:block}",
       map: null
     };
     Work = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      $$result.css.add(css11);
+      $$result.css.add(css12);
       return `<div class="${"radio_container svelte-afvmy3"}"><input type="${"number"}" name="${"citizenship"}" placeholder="${"Citizenship"}" value="${"yes"}" id="${"citizenship1"}" class="${"svelte-afvmy3"}">
 	<label for="${"citizenship1"}" value="${"yes"}" class="${"svelte-afvmy3"}">yes</label>
 	<input type="${"number"}" name="${"citizenship"}" placeholder="${"Citizenship"}" value="${"no"}" id="${"citizenship2"}" class="${"svelte-afvmy3"}">
@@ -19423,21 +19572,23 @@ var init_index_svelte4 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/37.js
+// .svelte-kit/output/server/nodes/40.js
 var __exports7 = {};
 __export(__exports7, {
-  css: () => css12,
+  css: () => css13,
   entry: () => entry7,
+  index: () => index7,
   js: () => js7,
   module: () => index_svelte_exports4
 });
-var entry7, js7, css12;
+var index7, entry7, js7, css13;
 var init__7 = __esm({
-  ".svelte-kit/output/server/nodes/37.js"() {
+  ".svelte-kit/output/server/nodes/40.js"() {
     init_index_svelte4();
-    entry7 = "pages/work/index.svelte-9a49263c.js";
-    js7 = ["pages/work/index.svelte-9a49263c.js", "chunks/index-27e8d48c.js"];
-    css12 = ["assets/pages/work/index.svelte-02e858fa.css"];
+    index7 = 40;
+    entry7 = "pages/work/index.svelte-cee9a705.js";
+    js7 = ["pages/work/index.svelte-cee9a705.js", "chunks/index-574d3e5d.js"];
+    css13 = ["assets/pages/work/index.svelte-02e858fa.css"];
   }
 });
 
@@ -19461,21 +19612,23 @@ var init_checkyouremail_svelte = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/12.js
+// .svelte-kit/output/server/nodes/14.js
 var __exports8 = {};
 __export(__exports8, {
-  css: () => css13,
+  css: () => css14,
   entry: () => entry8,
+  index: () => index8,
   js: () => js8,
   module: () => checkyouremail_svelte_exports
 });
-var entry8, js8, css13;
+var index8, entry8, js8, css14;
 var init__8 = __esm({
-  ".svelte-kit/output/server/nodes/12.js"() {
+  ".svelte-kit/output/server/nodes/14.js"() {
     init_checkyouremail_svelte();
-    entry8 = "pages/auth/checkyouremail.svelte-778a2517.js";
-    js8 = ["pages/auth/checkyouremail.svelte-778a2517.js", "chunks/index-27e8d48c.js"];
-    css13 = ["assets/pages/auth/checkyouremail.svelte-9b79cbc1.css"];
+    index8 = 14;
+    entry8 = "pages/auth/checkyouremail.svelte-60c94e92.js";
+    js8 = ["pages/auth/checkyouremail.svelte-60c94e92.js", "chunks/index-574d3e5d.js"];
+    css14 = ["assets/pages/auth/checkyouremail.svelte-9b79cbc1.css"];
   }
 });
 
@@ -19484,39 +19637,39 @@ var redirect_svelte_exports = {};
 __export(redirect_svelte_exports, {
   default: () => Redirect
 });
-var css14, PasswordEntry, Redirect;
+var css15, PasswordEntry, Redirect;
 var init_redirect_svelte = __esm({
   ".svelte-kit/output/server/entries/pages/auth/redirect.svelte.js"() {
     init_index_5e953619();
     init_stores_0a4a4291();
-    css14 = {
+    css15 = {
       code: ".strength.svelte-tnumgw{display:flex;height:15px;width:100%}.bar.svelte-tnumgw{margin-right:2px;border-radius:5px;height:100%;width:25%;transition:box-shadow 500ms;box-shadow:inset 0px 20px #f2f1f1}.bar-show.svelte-tnumgw{box-shadow:none}.bar-1.svelte-tnumgw{background:linear-gradient(to right, red, orangered)}.bar-2.svelte-tnumgw{background:linear-gradient(to right, orangered, yellow)}.bar-3.svelte-tnumgw{background:linear-gradient(to right, yellow, yellowgreen)}.bar-4.svelte-tnumgw{background:linear-gradient(to right, yellowgreen, green)}.bar.svelte-tnumgw:last-child{margin-right:0}",
       map: null
     };
     PasswordEntry = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let password3;
-      let confirmPassword2;
+      let password2;
+      let confirmPassword;
       let canGo;
       let { redirectType } = $$props;
       let strength = 0;
-      let heading = "";
-      let submitText = "";
+      let heading2 = "";
+      let submitText2 = "";
       if (redirectType == "invite") {
-        heading = "Please Set a Password";
-        submitText = "Set Password";
+        heading2 = "Please Set a Password";
+        submitText2 = "Set Password";
       }
       if ($$props.redirectType === void 0 && $$bindings.redirectType && redirectType !== void 0)
         $$bindings.redirectType(redirectType);
-      $$result.css.add(css14);
-      password3 = "";
-      confirmPassword2 = "";
-      canGo = password3 === confirmPassword2 && strength === 4;
-      return `<div class="${"container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"}"><div class="${"bg-white px-6 py-8 rounded shadow-md text-black w-full"}"><h1 class="${"mb-8 text-3xl text-center"}">${escape(heading)}</h1>
+      $$result.css.add(css15);
+      password2 = "";
+      confirmPassword = "";
+      canGo = password2 === confirmPassword && strength === 4;
+      return `<div class="${"container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"}"><div class="${"bg-white px-6 py-8 rounded shadow-md text-black w-full"}"><h1 class="${"mb-8 text-3xl text-center"}">${escape(heading2)}</h1>
 		<form action="${"/api/auth/updateuser"}" method="${"POST"}"><label class="${"inline uppercase tracking-wide text-orange-500 text-xs font-bold"}" for="${"password"}">Password:<span class="${"toggle-password text-3xl text-gray-700 font-normal ml-3 align-middle "}">${escape("\u{1F441}")}</span></label>
-			<input id="${"password"}"${add_attribute("type", "password", 0)} class="${"block border border-orange-700 w-full py-3 rounded mb-4"}" name="${"password"}" ${"required"} placeholder="${"New Password"}"${add_attribute("value", password3, 0)}>
+			<input id="${"password"}"${add_attribute("type", "password", 0)} class="${"block border border-orange-700 w-full py-3 rounded mb-4"}" name="${"password"}" ${"required"} placeholder="${"New Password"}"${add_attribute("value", password2, 0)}>
 			<label class="${"inline uppercase tracking-wide text-orange-500 text-xs font-bold"}" for="${"confirmPassword"}">Confirm Password:<span class="${"toggle-password text-3xl text-gray-700 font-normal ml-3 align-middle "}">${escape("\u{1F441}")}</span></label>
 
-			<input id="${"confirmPassword"}"${add_attribute("type", "password", 0)} class="${"block border border-orange-700 w-full py-3 rounded mb-4"}" name="${"confirmPassword"}" ${"required"} placeholder="${"Confirm New Password"}"${add_attribute("value", confirmPassword2, 0)}>
+			<input id="${"confirmPassword"}"${add_attribute("type", "password", 0)} class="${"block border border-orange-700 w-full py-3 rounded mb-4"}" name="${"confirmPassword"}" ${"required"} placeholder="${"Confirm New Password"}"${add_attribute("value", confirmPassword, 0)}>
 			<div class="${"strength svelte-tnumgw"}"><span class="${["bar bar-1 svelte-tnumgw", ""].join(" ").trim()}"></span>
 				<span class="${["bar bar-2 svelte-tnumgw", ""].join(" ").trim()}"></span>
 				<span class="${["bar bar-3 svelte-tnumgw", ""].join(" ").trim()}"></span>
@@ -19532,7 +19685,7 @@ var init_redirect_svelte = __esm({
 					<span class="${"text-sm"}">must contain one symbol ($&amp;+,:;=?#^!)</span></li></ul>
 
 			
-			<button type="${"submit"}" class="${"w-full text-center py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"}" ${!canGo ? "disabled" : ""}>${escape(submitText)}</button></form></div>
+			<button type="${"submit"}" class="${"w-full text-center py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"}" ${!canGo ? "disabled" : ""}>${escape(submitText2)}</button></form></div>
 </div>`;
     });
     Redirect = create_ssr_component(($$result, $$props, $$bindings, slots) => {
@@ -19541,27 +19694,29 @@ var init_redirect_svelte = __esm({
       const supabaseRedirectType = new URLSearchParams($page.url.hash.substring(1)).get("type");
       $$unsubscribe_page();
       return `
-${escape(supabaseRedirectType)}
+
 ${supabaseRedirectType === "invite" ? `${validate_component(PasswordEntry, "PasswordEntry").$$render($$result, {}, {}, {})}` : ``}`;
     });
   }
 });
 
-// .svelte-kit/output/server/nodes/13.js
+// .svelte-kit/output/server/nodes/15.js
 var __exports9 = {};
 __export(__exports9, {
-  css: () => css15,
+  css: () => css16,
   entry: () => entry9,
+  index: () => index9,
   js: () => js9,
   module: () => redirect_svelte_exports
 });
-var entry9, js9, css15;
+var index9, entry9, js9, css16;
 var init__9 = __esm({
-  ".svelte-kit/output/server/nodes/13.js"() {
+  ".svelte-kit/output/server/nodes/15.js"() {
     init_redirect_svelte();
-    entry9 = "pages/auth/redirect.svelte-0565bfd9.js";
-    js9 = ["pages/auth/redirect.svelte-0565bfd9.js", "chunks/index-27e8d48c.js", "chunks/stores-619a4aad.js"];
-    css15 = ["assets/pages/auth/redirect.svelte-43c90b95.css"];
+    index9 = 15;
+    entry9 = "pages/auth/redirect.svelte-9a402c53.js";
+    js9 = ["pages/auth/redirect.svelte-9a402c53.js", "chunks/index-574d3e5d.js", "chunks/stores-e24d1d4b.js"];
+    css16 = ["assets/pages/auth/redirect.svelte-43c90b95.css"];
   }
 });
 
@@ -19574,9 +19729,9 @@ var Requestresetpassword;
 var init_requestresetpassword_svelte = __esm({
   ".svelte-kit/output/server/entries/pages/auth/requestresetpassword.svelte.js"() {
     init_index_5e953619();
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
     Requestresetpassword = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<div class="${"container max-w-sm max-w-screen-xsm mx-auto"}"><div class="${"bg-white p-6 ml-1.5 sm:ml-0 rounded shadow-md text-black w-5/6 sm:w-full"}"><form action="${"/api/auth/resetpassword"}" method="${"POST"}">
+      return `<div class="${"flex flex-col items-center max-w-sm max-w-screen-xsm mx-auto"}"><div class="${"bg-white p-6 ml-1.5 sm:ml-0 rounded shadow-md text-black w-5/6 sm:w-full"}"><form action="${"/api/auth/resetpassword"}" method="${"POST"}">
 			<h1 class="${"mb-8 text-3xl text-center"}">Reset Password</h1>
 			<input id="${"email"}" type="${"email"}" class="${"block text-xl border border-orange-700 w-full py-3 rounded mb-4"}" name="${"email"}" ${"required"} placeholder="${"Email"}" autocomplete="${"email"}">
 			${`<button type="${"submit"}" class="${"w-full text-center py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1"}">Send Password Reset Link</button>`}</form></div></div>`;
@@ -19584,21 +19739,23 @@ var init_requestresetpassword_svelte = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/14.js
+// .svelte-kit/output/server/nodes/16.js
 var __exports10 = {};
 __export(__exports10, {
-  css: () => css16,
+  css: () => css17,
   entry: () => entry10,
+  index: () => index10,
   js: () => js10,
   module: () => requestresetpassword_svelte_exports
 });
-var entry10, js10, css16;
+var index10, entry10, js10, css17;
 var init__10 = __esm({
-  ".svelte-kit/output/server/nodes/14.js"() {
+  ".svelte-kit/output/server/nodes/16.js"() {
     init_requestresetpassword_svelte();
-    entry10 = "pages/auth/requestresetpassword.svelte-910810da.js";
-    js10 = ["pages/auth/requestresetpassword.svelte-910810da.js", "chunks/index-27e8d48c.js", "chunks/dbClient-f8d02c03.js", "chunks/_commonjsHelpers-7d66b65f.js"];
-    css16 = ["assets/pages/auth/requestresetpassword.svelte-e97dda26.css"];
+    index10 = 16;
+    entry10 = "pages/auth/requestresetpassword.svelte-fd532af5.js";
+    js10 = ["pages/auth/requestresetpassword.svelte-fd532af5.js", "chunks/index-574d3e5d.js", "chunks/dbClient-c8a5cf69.js", "chunks/_commonjsHelpers-7d66b65f.js"];
+    css17 = ["assets/pages/auth/requestresetpassword.svelte-c1c662fa.css"];
   }
 });
 
@@ -19622,7 +19779,7 @@ var init_signin_svelte = __esm({
       let $session, $$unsubscribe_session;
       $$unsubscribe_session = subscribe(session, (value) => $session = value);
       $$unsubscribe_session();
-      return `<div class="${"container max-w-sm max-w-screen-xsm mx-auto"}"><div class="${"bg-white p-6 sm:ml-0 rounded shadow-md text-black w-5/6 sm:w-full"}"><h1 class="${"text-2xl text-center"}">Welcome Back</h1>
+      return `<div class="${"flex flex-col items-center max-w-sm max-w-screen-xsm mx-auto"}"><div class="${"bg-white p-6 sm:ml-0 rounded shadow-md text-black w-5/6 sm:w-full"}"><h1 class="${"text-2xl text-center"}">Welcome Back</h1>
 		<form action="${"/api/auth/signin"}" method="${"POST"}">
 			<input id="${"email"}" type="${"email"}" class="${"block text-xl border border-orange-700 w-full py-3 rounded mb-4"}" name="${"email"}" ${"required"} placeholder="${"Email"}" autocomplete="${"email"}">
 			<input id="${"password"}" type="${"password"}" class="${"block text-xl border border-orange-700 w-full py-3 rounded mb-4"}" name="${"password"}" ${"required"} placeholder="${"Password"}">
@@ -19639,21 +19796,23 @@ var init_signin_svelte = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/15.js
+// .svelte-kit/output/server/nodes/17.js
 var __exports11 = {};
 __export(__exports11, {
-  css: () => css17,
+  css: () => css18,
   entry: () => entry11,
+  index: () => index11,
   js: () => js11,
   module: () => signin_svelte_exports
 });
-var entry11, js11, css17;
+var index11, entry11, js11, css18;
 var init__11 = __esm({
-  ".svelte-kit/output/server/nodes/15.js"() {
+  ".svelte-kit/output/server/nodes/17.js"() {
     init_signin_svelte();
-    entry11 = "pages/auth/signin.svelte-9b686e0c.js";
-    js11 = ["pages/auth/signin.svelte-9b686e0c.js", "chunks/index-27e8d48c.js", "chunks/stores-619a4aad.js", "chunks/AddressChallenge-c8f9a1ff.js", "chunks/utils-b80a401c.js", "chunks/Modal-7232ca99.js"];
-    css17 = ["assets/pages/auth/signin.svelte-9c1651a0.css", "assets/AddressChallenge-b65205e8.css", "assets/Modal-186ac193.css"];
+    index11 = 17;
+    entry11 = "pages/auth/signin.svelte-2d06f814.js";
+    js11 = ["pages/auth/signin.svelte-2d06f814.js", "chunks/index-574d3e5d.js", "chunks/stores-e24d1d4b.js", "chunks/AddressChallenge-36588023.js", "chunks/utils-b80a401c.js", "chunks/Modal-3706472a.js"];
+    css18 = ["assets/pages/auth/signin.svelte-1be517f0.css", "assets/Modal.svelte_svelte_type_style_lang-425b700c.css", "assets/AddressChallenge-0d33c795.css", "assets/Modal-74a8bea9.css"];
   }
 });
 
@@ -19666,34 +19825,36 @@ var Signout;
 var init_signout_svelte = __esm({
   ".svelte-kit/output/server/entries/pages/auth/signout.svelte.js"() {
     init_index_5e953619();
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
     init_stores_0a4a4291();
     Signout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let $$unsubscribe_session;
       $$unsubscribe_session = subscribe(session, (value) => value);
       $$unsubscribe_session();
-      return `<div class="${"container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"}"><div class="${"bg-white px-6 py-8 rounded shadow-md text-black w-full"}"><h1 class="${"mb-8 text-3xl text-center"}">Thankyou for Participating</h1>
-		
-		<form><button type="${"submit"}" class="${"w-full text-center py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"}">Sign Out</button></form></div></div>`;
+      return `<div class="${"flex flex-col items-center bg-white p-6 max-w-sm max-w-screen-xsm mx-auto"}"><h1 class="${"mb-8 text-3xl text-center"}">Thankyou for Participating</h1>
+	
+	<form><button type="${"submit"}" class="${"min-w-full w-80 text-center py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"}">Sign Out</button></form></div>`;
     });
   }
 });
 
-// .svelte-kit/output/server/nodes/16.js
+// .svelte-kit/output/server/nodes/18.js
 var __exports12 = {};
 __export(__exports12, {
-  css: () => css18,
+  css: () => css19,
   entry: () => entry12,
+  index: () => index12,
   js: () => js12,
   module: () => signout_svelte_exports
 });
-var entry12, js12, css18;
+var index12, entry12, js12, css19;
 var init__12 = __esm({
-  ".svelte-kit/output/server/nodes/16.js"() {
+  ".svelte-kit/output/server/nodes/18.js"() {
     init_signout_svelte();
-    entry12 = "pages/auth/signout.svelte-2f54e889.js";
-    js12 = ["pages/auth/signout.svelte-2f54e889.js", "chunks/index-27e8d48c.js", "chunks/dbClient-f8d02c03.js", "chunks/_commonjsHelpers-7d66b65f.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/stores-619a4aad.js"];
-    css18 = ["assets/pages/auth/signout.svelte-d8f03bb5.css"];
+    index12 = 18;
+    entry12 = "pages/auth/signout.svelte-fb9f2444.js";
+    js12 = ["pages/auth/signout.svelte-fb9f2444.js", "chunks/index-574d3e5d.js", "chunks/dbClient-c8a5cf69.js", "chunks/_commonjsHelpers-7d66b65f.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/stores-e24d1d4b.js"];
+    css19 = ["assets/pages/auth/signout.svelte-aba223c2.css"];
   }
 });
 
@@ -19702,80 +19863,86 @@ var updateuser_svelte_exports = {};
 __export(updateuser_svelte_exports, {
   default: () => Updateuser
 });
-var css19, password2, confirmPassword, Updateuser;
+function validateEmail(email) {
+  var emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return emailRegEx.test(String(email).toLowerCase());
+}
+var css20, Updateuser;
 var init_updateuser_svelte = __esm({
   ".svelte-kit/output/server/entries/pages/auth/updateuser.svelte.js"() {
     init_index_5e953619();
-    init_dbClient_ca7c14e1();
-    css19 = {
+    init_dbClient_c24cb89a();
+    css20 = {
       code: ".strength.svelte-1nr3gt{display:flex;height:20px;width:100%}.bar.svelte-1nr3gt{margin-right:5px;height:100%;width:25%;transition:box-shadow 500ms;box-shadow:inset 0px 20px #1f1f1f}.bar-show.svelte-1nr3gt{box-shadow:none}.bar-1.svelte-1nr3gt{background:linear-gradient(to right, red, orangered)}.bar-2.svelte-1nr3gt{background:linear-gradient(to right, orangered, yellow)}.bar-3.svelte-1nr3gt{background:linear-gradient(to right, yellow, yellowgreen)}.bar-4.svelte-1nr3gt{background:linear-gradient(to right, yellowgreen, green)}.bar.svelte-1nr3gt:last-child{margin-right:0}",
       map: null
     };
-    password2 = "";
-    confirmPassword = "";
     Updateuser = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let email;
+      let password2;
+      let confirmPassword;
+      let canGo;
+      let validEmail;
       let { redirectType } = $$props;
-      db.auth.onAuthStateChange(async (event, _session) => {
-        email = _session.user.email;
-        console.log("Supabase event: ", event);
-      });
-      let heading = "";
-      let submitText = "";
+      let email = "";
+      let strength = 0;
       if (redirectType == "invite") {
         heading = "Please Set a Password";
         submitText = "Set Password";
       }
+      db.auth.onAuthStateChange(async (event, _session) => {
+        email = _session.user.email;
+        console.log("Supabase event: ", event);
+      });
       if ($$props.redirectType === void 0 && $$bindings.redirectType && redirectType !== void 0)
         $$bindings.redirectType(redirectType);
-      $$result.css.add(css19);
-      email = "";
-      return `
-<div class="${"container max-w-sm max-w-screen-xsm mx-auto"}"><div class="${"bg-white p-6 ml-1.5 sm:ml-0 rounded shadow-md text-black w-5/6 sm:w-full"}"><form action="${"/api/auth/updateuser"}" method="${"POST"}">
-			<h1 class="${"mb-8 text-3xl text-center"}">${escape(heading)}</h1>
-			<label class="${"inline uppercase tracking-wide text-orange-500 text-xs font-bold"}" for="${"email"}">Email:</label>
-			<input id="${"email"}" type="${"email"}" class="${"block text-xl border border-orange-700 w-full py-3 rounded mb-4"}" name="${"email"}" ${"required"} placeholder="${"Email"}" autocomplete="${"email"}"${add_attribute("value", email, 0)}>
-			<label class="${"inline uppercase tracking-wide text-orange-500 text-xs font-bold"}" for="${"password"}">Confirm Password:<span class="${"toggle-password text-3xl text-gray-700 font-normal ml-3 align-middle "}">${escape("\u{1F441}")}</span></label>
-			<input id="${"password"}"${add_attribute("type", "password", 0)} class="${"block text-xl border border-orange-700 w-full py-3 rounded mb-4"}" name="${"password"}" ${"required"} placeholder="${"New Password"}"${add_attribute("value", password2, 0)}>
-			<label class="${"inline uppercase tracking-wide text-orange-500 text-xs font-bold"}" for="${"confirmPassword"}">Confirm Password:<span class="${"toggle-password text-3xl text-gray-700 font-normal ml-3 align-middle "}">${escape("\u{1F441}")}</span></label>
+      $$result.css.add(css20);
+      password2 = "";
+      confirmPassword = "";
+      validEmail = validateEmail(email);
+      canGo = validEmail && password2 === confirmPassword && strength === 4;
+      return `<div class="${"flex flex-col items-center bg-white p-6 max-w-sm max-w-screen-xsm mx-auto"}"><form action="${"/api/auth/updateuser"}" method="${"POST"}"><label class="${"inline uppercase tracking-wide text-orange-500 text-xs font-bold"}" for="${"email"}">Email:</label>
+		<input id="${"email"}" type="${"email"}" class="${"block border border-orange-700 w-full py-3 rounded mb-4"}" name="${"email"}" ${"required"} placeholder="${"Email"}" autocomplete="${"email"}"${add_attribute("value", email, 0)}>
+		<label class="${"inline uppercase tracking-wide text-orange-500 text-xs font-bold"}" for="${"password"}">Password:<span class="${"toggle-password text-3xl text-gray-700 font-normal ml-3 align-middle "}">${escape("\u{1F441}")}</span></label>
+		<input id="${"password"}"${add_attribute("type", "password", 0)} class="${"block border border-orange-700 w-full py-3 rounded mb-4"}" name="${"password"}" ${"required"} placeholder="${"New Password"}"${add_attribute("value", password2, 0)}>
+		<label class="${"inline uppercase tracking-wide text-orange-500 text-xs font-bold"}" for="${"confirmPassword"}">Confirm Password:<span class="${"toggle-password text-3xl text-gray-700 font-normal ml-3 align-middle "}">${escape("\u{1F441}")}</span></label>
 
-			<input id="${"confirmPassword"}"${add_attribute("type", "password", 0)} class="${"block text-xl border border-orange-700 w-full py-3 rounded mb-4"}" name="${"confirmPassword"}" ${"required"} placeholder="${"Confirm New Password"}"${add_attribute("value", confirmPassword, 0)}>
-			<div class="${"strength svelte-1nr3gt"}"><span class="${["bar bar-1 svelte-1nr3gt", ""].join(" ").trim()}"></span>
-				<span class="${["bar bar-2 svelte-1nr3gt", ""].join(" ").trim()}"></span>
-				<span class="${["bar bar-3 svelte-1nr3gt", ""].join(" ").trim()}"></span>
-				<span class="${["bar bar-4 svelte-1nr3gt", ""].join(" ").trim()}"></span></div>
+		<input id="${"confirmPassword"}"${add_attribute("type", "password", 0)} class="${"block border border-orange-700 w-full py-3 rounded mb-4"}" name="${"confirmPassword"}" ${"required"} placeholder="${"Confirm New Password"}"${add_attribute("value", confirmPassword, 0)}>
+		<div class="${"strength svelte-1nr3gt"}"><span class="${["bar bar-1 svelte-1nr3gt", ""].join(" ").trim()}"></span>
+			<span class="${["bar bar-2 svelte-1nr3gt", ""].join(" ").trim()}"></span>
+			<span class="${["bar bar-3 svelte-1nr3gt", ""].join(" ").trim()}"></span>
+			<span class="${["bar bar-4 svelte-1nr3gt", ""].join(" ").trim()}"></span></div>
 
-			<ul class="${"list-none"}"><li><span class="${"text-[10px]"}">${escape("\u274C")}</span>
-					<span class="${"text-base"}">must be at least 5 characters</span></li>
-				<li><span class="${"text-[10px]"}">${escape("\u274C")}</span>
-					<span class="${"text-base"}">must contain a capital letter</span></li>
-				<li><span class="${"text-[10px]"}">${escape("\u274C")}</span>
-					<span class="${"text-base"}">must contain a number</span></li>
-				<li><span class="${"text-[10px]"}">${escape("\u274C")}</span>
-					<span class="${"text-base"}">must contain one symbol ($&amp;+,:;=?#^!)</span></li></ul>
-
-			
-			<button type="${"submit"}" class="${"w-full text-center py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1"}" ${{ confirmPassword } !== { password: password2 } ? "disabled" : ""}>${escape(submitText)}</button></form></div>
+		<ul><li><span class="${"text-[10px]"}">${escape("\u274C")}</span>
+				<span class="${"text-sm"}">must be at least 5 characters</span></li>
+			<li><span class="${"text-[10px]"}">${escape("\u274C")}</span>
+				<span class="${"text-sm"}">must contain a capital letter</span></li>
+			<li><span class="${"text-[10px]"}">${escape("\u274C")}</span>
+				<span class="${"text-sm"}">must contain a number</span></li>
+			<li><span class="${"text-[10px]"}">${escape("\u274C")}</span>
+				<span class="${"text-sm"}">must contain one symbol ($&amp;+,:;=?#^!)</span></li></ul>
+		
+		<button type="${"submit"}" class="${"w-full text-center py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"}" value="${""}" ${!canGo ? "disabled" : ""}>Create Account</button></form>
 </div>`;
     });
   }
 });
 
-// .svelte-kit/output/server/nodes/17.js
+// .svelte-kit/output/server/nodes/19.js
 var __exports13 = {};
 __export(__exports13, {
-  css: () => css20,
+  css: () => css21,
   entry: () => entry13,
+  index: () => index13,
   js: () => js13,
   module: () => updateuser_svelte_exports
 });
-var entry13, js13, css20;
+var index13, entry13, js13, css21;
 var init__13 = __esm({
-  ".svelte-kit/output/server/nodes/17.js"() {
+  ".svelte-kit/output/server/nodes/19.js"() {
     init_updateuser_svelte();
-    entry13 = "pages/auth/updateuser.svelte-eeb8dbf8.js";
-    js13 = ["pages/auth/updateuser.svelte-eeb8dbf8.js", "chunks/index-27e8d48c.js", "chunks/dbClient-f8d02c03.js", "chunks/_commonjsHelpers-7d66b65f.js"];
-    css20 = ["assets/pages/auth/updateuser.svelte-a67ad598.css"];
+    index13 = 19;
+    entry13 = "pages/auth/updateuser.svelte-55891499.js";
+    js13 = ["pages/auth/updateuser.svelte-55891499.js", "chunks/index-574d3e5d.js", "chunks/dbClient-c8a5cf69.js", "chunks/_commonjsHelpers-7d66b65f.js"];
+    css21 = ["assets/pages/auth/updateuser.svelte-10dfaf51.css"];
   }
 });
 
@@ -19794,21 +19961,23 @@ var init_network_svelte = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/19.js
+// .svelte-kit/output/server/nodes/21.js
 var __exports14 = {};
 __export(__exports14, {
-  css: () => css21,
+  css: () => css22,
   entry: () => entry14,
+  index: () => index14,
   js: () => js14,
   module: () => network_svelte_exports
 });
-var entry14, js14, css21;
+var index14, entry14, js14, css22;
 var init__14 = __esm({
-  ".svelte-kit/output/server/nodes/19.js"() {
+  ".svelte-kit/output/server/nodes/21.js"() {
     init_network_svelte();
-    entry14 = "pages/error/network.svelte-7a3d5a9f.js";
-    js14 = ["pages/error/network.svelte-7a3d5a9f.js", "chunks/index-27e8d48c.js"];
-    css21 = [];
+    index14 = 21;
+    entry14 = "pages/error/network.svelte-56a3341d.js";
+    js14 = ["pages/error/network.svelte-56a3341d.js", "chunks/index-574d3e5d.js"];
+    css22 = [];
   }
 });
 
@@ -19930,21 +20099,23 @@ var init_privacy_svelte = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/21.js
+// .svelte-kit/output/server/nodes/23.js
 var __exports15 = {};
 __export(__exports15, {
-  css: () => css22,
+  css: () => css23,
   entry: () => entry15,
+  index: () => index15,
   js: () => js15,
   module: () => privacy_svelte_exports
 });
-var entry15, js15, css22;
+var index15, entry15, js15, css23;
 var init__15 = __esm({
-  ".svelte-kit/output/server/nodes/21.js"() {
+  ".svelte-kit/output/server/nodes/23.js"() {
     init_privacy_svelte();
-    entry15 = "pages/policies/privacy.svelte-d89b21b7.js";
-    js15 = ["pages/policies/privacy.svelte-d89b21b7.js", "chunks/index-27e8d48c.js"];
-    css22 = ["assets/pages/policies/privacy.svelte-4ed5363e.css"];
+    index15 = 23;
+    entry15 = "pages/policies/privacy.svelte-61475659.js";
+    js15 = ["pages/policies/privacy.svelte-61475659.js", "chunks/index-574d3e5d.js"];
+    css23 = ["assets/pages/policies/privacy.svelte-4ed5363e.css"];
   }
 });
 
@@ -20091,21 +20262,23 @@ var init_termsofservice_svelte = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/22.js
+// .svelte-kit/output/server/nodes/24.js
 var __exports16 = {};
 __export(__exports16, {
-  css: () => css23,
+  css: () => css24,
   entry: () => entry16,
+  index: () => index16,
   js: () => js16,
   module: () => termsofservice_svelte_exports
 });
-var entry16, js16, css23;
+var index16, entry16, js16, css24;
 var init__16 = __esm({
-  ".svelte-kit/output/server/nodes/22.js"() {
+  ".svelte-kit/output/server/nodes/24.js"() {
     init_termsofservice_svelte();
-    entry16 = "pages/policies/termsofservice.svelte-3702e374.js";
-    js16 = ["pages/policies/termsofservice.svelte-3702e374.js", "chunks/index-27e8d48c.js"];
-    css23 = ["assets/pages/policies/termsofservice.svelte-02c7bfed.css"];
+    index16 = 24;
+    entry16 = "pages/policies/termsofservice.svelte-ecc266f0.js";
+    js16 = ["pages/policies/termsofservice.svelte-ecc266f0.js", "chunks/index-574d3e5d.js"];
+    css24 = ["assets/pages/policies/termsofservice.svelte-02c7bfed.css"];
   }
 });
 
@@ -20119,7 +20292,7 @@ var init_layout_svelte3 = __esm({
   ".svelte-kit/output/server/entries/pages/profile/aboutme/__layout.svelte.js"() {
     init_index_5e953619();
     _layout3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<section class="${"content min-h-full bg-orange-300"}">${``}
+      return `<section class="${"min-h-full bg-orange-300"}">${``}
 	<form id="${"profileAboutMeForm"}" class="${"flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"}" action="${"/profile/aboutme"}" method="${"POST"}"><div class="${"flex flex-row"}"><div class="${"w-1/3"}"></div>
 			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"} type="${"submit"}" form="${"profileAboutMeForm"}">Save My Answers</button>
 			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"}>Cancel</button></div>
@@ -20131,18 +20304,20 @@ var init_layout_svelte3 = __esm({
 // .svelte-kit/output/server/nodes/3.js
 var __exports17 = {};
 __export(__exports17, {
-  css: () => css24,
+  css: () => css25,
   entry: () => entry17,
+  index: () => index17,
   js: () => js17,
   module: () => layout_svelte_exports3
 });
-var entry17, js17, css24;
+var index17, entry17, js17, css25;
 var init__17 = __esm({
   ".svelte-kit/output/server/nodes/3.js"() {
     init_layout_svelte3();
-    entry17 = "pages/profile/aboutme/__layout.svelte-2d887bd9.js";
-    js17 = ["pages/profile/aboutme/__layout.svelte-2d887bd9.js", "chunks/index-27e8d48c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css24 = ["assets/pages/profile/myplace/hazards/__layout.svelte-ca2c6065.css", "assets/Modal-186ac193.css"];
+    index17 = 3;
+    entry17 = "pages/profile/aboutme/__layout.svelte-34d50d7e.js";
+    js17 = ["pages/profile/aboutme/__layout.svelte-34d50d7e.js", "chunks/index-574d3e5d.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-3706472a.js", "chunks/SaveProfilePrompt-ffaa3fc8.js"];
+    css25 = ["assets/pages/profile/myplace/__layout.svelte-2254958b.css", "assets/Modal.svelte_svelte_type_style_lang-425b700c.css", "assets/Modal-74a8bea9.css"];
   }
 });
 
@@ -20292,9 +20467,9 @@ var init_index_svelte5 = __esm({
 	<div class="${"flex flex-col mx-2"}"><div class="${"flex flex-row justify-start items-center mx-2"}"><label class="${"tracking-wide justify-end mr-4 text-lg font-bold mb-1"}" for="${"mobile_reception_list"}">Reception:</label>
 			<div class="${"flex flex-row rounded-lg bg-orange-50 p-2 mx-2"}" style="${"align-items: center"}"><div class="${"font-semibold text-sm pr-4 sm:text-base text-orange-900"}">Poor
 				</div>
-				${each(Array(5), (_, i2) => {
-        return `<li class="${"list-none sm:text-base sm:font-semibold sm:p-1"}" name="${"mobile_reception_list"}"><label class="${"pl-2"}" for="${"mobile_reception"}">${escape(i2 + 1)}<br>
-							<input name="${"mobile_reception"}" type="${"radio"}"${add_attribute("value", i2 + 1, 0)}${i2 + 1 === profileAboutMe[0].mobile_reception ? add_attribute("checked", true, 1) : ""}></label>
+				${each(Array(5), (_, i3) => {
+        return `<li class="${"list-none sm:text-base sm:font-semibold sm:p-1"}" name="${"mobile_reception_list"}"><label class="${"pl-2"}" for="${"mobile_reception"}">${escape(i3 + 1)}<br>
+							<input name="${"mobile_reception"}" type="${"radio"}"${add_attribute("value", i3 + 1, 0)}${i3 + 1 === profileAboutMe[0].mobile_reception ? add_attribute("checked", true, 1) : ""}></label>
 					</li>`;
       })}
 				<div class="${"font-semibold text-sm pl-4 sm:text-base text-orange-900"}">Excellent
@@ -20342,21 +20517,23 @@ var init_index_svelte5 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/23.js
+// .svelte-kit/output/server/nodes/25.js
 var __exports18 = {};
 __export(__exports18, {
-  css: () => css25,
+  css: () => css26,
   entry: () => entry18,
+  index: () => index18,
   js: () => js18,
   module: () => index_svelte_exports5
 });
-var entry18, js18, css25;
+var index18, entry18, js18, css26;
 var init__18 = __esm({
-  ".svelte-kit/output/server/nodes/23.js"() {
+  ".svelte-kit/output/server/nodes/25.js"() {
     init_index_svelte5();
-    entry18 = "pages/profile/aboutme/index.svelte-3923c777.js";
-    js18 = ["pages/profile/aboutme/index.svelte-3923c777.js", "chunks/index-27e8d48c.js", "chunks/utils-b80a401c.js", "chunks/profileOptions-03445d06.js"];
-    css25 = ["assets/pages/profile/aboutme/index.svelte-8408b850.css"];
+    index18 = 25;
+    entry18 = "pages/profile/aboutme/index.svelte-2dccf5b2.js";
+    js18 = ["pages/profile/aboutme/index.svelte-2dccf5b2.js", "chunks/index-574d3e5d.js", "chunks/utils-b80a401c.js", "chunks/profileOptions-03445d06.js"];
+    css26 = ["assets/pages/profile/aboutme/index.svelte-8408b850.css"];
   }
 });
 
@@ -20375,21 +20552,62 @@ var init_map_svelte = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/25.js
+// .svelte-kit/output/server/nodes/27.js
 var __exports19 = {};
 __export(__exports19, {
-  css: () => css26,
+  css: () => css27,
   entry: () => entry19,
+  index: () => index19,
   js: () => js19,
   module: () => map_svelte_exports
 });
-var entry19, js19, css26;
+var index19, entry19, js19, css27;
 var init__19 = __esm({
-  ".svelte-kit/output/server/nodes/25.js"() {
+  ".svelte-kit/output/server/nodes/27.js"() {
     init_map_svelte();
-    entry19 = "pages/profile/map.svelte-0b13fb43.js";
-    js19 = ["pages/profile/map.svelte-0b13fb43.js", "chunks/index-27e8d48c.js"];
-    css26 = [];
+    index19 = 27;
+    entry19 = "pages/profile/map.svelte-d6d248fd.js";
+    js19 = ["pages/profile/map.svelte-d6d248fd.js", "chunks/index-574d3e5d.js"];
+    css27 = [];
+  }
+});
+
+// .svelte-kit/output/server/entries/pages/profile/mycommunity/__layout.svelte.js
+var layout_svelte_exports4 = {};
+__export(layout_svelte_exports4, {
+  default: () => _layout4
+});
+var _layout4;
+var init_layout_svelte4 = __esm({
+  ".svelte-kit/output/server/entries/pages/profile/mycommunity/__layout.svelte.js"() {
+    init_index_5e953619();
+    _layout4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<section class="${"min-h-full bg-orange-300"}">${``}
+	<form id="${"profileAboutMeForm"}" class="${"flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"}" action="${"/profile/aboutme"}" method="${"POST"}"><div class="${"flex flex-row"}"><div class="${"w-1/3"}"></div>
+			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"} type="${"submit"}" form="${"profileAboutMeForm"}">Save My Answers</button>
+			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"}>Cancel</button></div>
+		${slots.default ? slots.default({}) : ``}</form></section>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/nodes/4.js
+var __exports20 = {};
+__export(__exports20, {
+  css: () => css28,
+  entry: () => entry20,
+  index: () => index20,
+  js: () => js20,
+  module: () => layout_svelte_exports4
+});
+var index20, entry20, js20, css28;
+var init__20 = __esm({
+  ".svelte-kit/output/server/nodes/4.js"() {
+    init_layout_svelte4();
+    index20 = 4;
+    entry20 = "pages/profile/mycommunity/__layout.svelte-ff5e29af.js";
+    js20 = ["pages/profile/mycommunity/__layout.svelte-ff5e29af.js", "chunks/index-574d3e5d.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-3706472a.js", "chunks/SaveProfilePrompt-ffaa3fc8.js"];
+    css28 = ["assets/pages/profile/myplace/__layout.svelte-2254958b.css", "assets/Modal.svelte_svelte_type_style_lang-425b700c.css", "assets/Modal-74a8bea9.css"];
   }
 });
 
@@ -20403,7 +20621,7 @@ var init_index_svelte6 = __esm({
   ".svelte-kit/output/server/entries/pages/profile/mycommunity/index.svelte.js"() {
     init_index_5e953619();
     init_profileOptions_03445d06();
-    init_TextAreaInput_366ae8ef();
+    init_TextAreaInput_2189c9ee();
     Mycommunity = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { profileCommunity } = $$props;
       if ($$props.profileCommunity === void 0 && $$bindings.profileCommunity && profileCommunity !== void 0)
@@ -20412,8 +20630,7 @@ var init_index_svelte6 = __esm({
       let $$rendered;
       do {
         $$settled = true;
-        $$rendered = `<section class="${"content min-h-full bg-orange-300"}">${``}
-	<form id="${"profileCommunityForm"}" class="${"flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"}" action="${"/profile/community"}" method="${"POST"}"><div class="${"flex flex-row"}"><div class="${"w-1/3"}"></div>
+        $$rendered = `<section class="${"min-h-full bg-orange-300"}"><form id="${"profileCommunityForm"}" class="${"flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"}" action="${"/profile/community"}" method="${"POST"}"><div class="${"flex flex-row"}"><div class="${"w-1/3"}"></div>
 			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"} type="${"submit"}" form="${"profileCommunityForm"}">Save My Answers</button>
 			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"}>Cancel</button></div>
 		
@@ -20452,21 +20669,62 @@ var init_index_svelte6 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/26.js
-var __exports20 = {};
-__export(__exports20, {
-  css: () => css27,
-  entry: () => entry20,
-  js: () => js20,
+// .svelte-kit/output/server/nodes/28.js
+var __exports21 = {};
+__export(__exports21, {
+  css: () => css29,
+  entry: () => entry21,
+  index: () => index21,
+  js: () => js21,
   module: () => index_svelte_exports6
 });
-var entry20, js20, css27;
-var init__20 = __esm({
-  ".svelte-kit/output/server/nodes/26.js"() {
+var index21, entry21, js21, css29;
+var init__21 = __esm({
+  ".svelte-kit/output/server/nodes/28.js"() {
     init_index_svelte6();
-    entry20 = "pages/profile/mycommunity/index.svelte-b2838a00.js";
-    js20 = ["pages/profile/mycommunity/index.svelte-b2838a00.js", "chunks/index-27e8d48c.js", "chunks/profileOptions-03445d06.js", "chunks/TextAreaInput-0ce753bd.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css27 = ["assets/pages/profile/mycommunity/index.svelte-3787f7e1.css", "assets/TextAreaInput-1766c24c.css", "assets/Modal-186ac193.css"];
+    index21 = 28;
+    entry21 = "pages/profile/mycommunity/index.svelte-ce95893a.js";
+    js21 = ["pages/profile/mycommunity/index.svelte-ce95893a.js", "chunks/index-574d3e5d.js", "chunks/profileOptions-03445d06.js", "chunks/TextAreaInput-f555b11d.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js"];
+    css29 = ["assets/pages/profile/mycommunity/index.svelte-3787f7e1.css", "assets/Modal.svelte_svelte_type_style_lang-425b700c.css", "assets/TextAreaInput-cd7da125.css"];
+  }
+});
+
+// .svelte-kit/output/server/entries/pages/profile/myplace/__layout.svelte.js
+var layout_svelte_exports5 = {};
+__export(layout_svelte_exports5, {
+  default: () => _layout5
+});
+var _layout5;
+var init_layout_svelte5 = __esm({
+  ".svelte-kit/output/server/entries/pages/profile/myplace/__layout.svelte.js"() {
+    init_index_5e953619();
+    _layout5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<section class="${"min-h-full bg-orange-300"}">${``}
+	<form id="${"profileMyPlaceForm"}" class="${"flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"}" action="${"/profile/myplace"}" method="${"POST"}"><div class="${"flex flex-row"}"><div class="${"w-1/3"}"></div>
+			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"} type="${"submit"}" form="${"profileMyPlaceForm"}">Save My Answers</button>
+			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"}>Cancel</button></div>
+		${slots.default ? slots.default({}) : ``}</form></section>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/nodes/8.js
+var __exports22 = {};
+__export(__exports22, {
+  css: () => css30,
+  entry: () => entry22,
+  index: () => index22,
+  js: () => js22,
+  module: () => layout_svelte_exports5
+});
+var index22, entry22, js22, css30;
+var init__22 = __esm({
+  ".svelte-kit/output/server/nodes/8.js"() {
+    init_layout_svelte5();
+    index22 = 8;
+    entry22 = "pages/profile/myplace/__layout.svelte-8f72f0b5.js";
+    js22 = ["pages/profile/myplace/__layout.svelte-8f72f0b5.js", "chunks/index-574d3e5d.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-3706472a.js", "chunks/SaveProfilePrompt-ffaa3fc8.js"];
+    css30 = ["assets/pages/profile/myplace/__layout.svelte-2254958b.css", "assets/Modal.svelte_svelte_type_style_lang-425b700c.css", "assets/Modal-74a8bea9.css"];
   }
 });
 
@@ -20480,7 +20738,7 @@ var init_index_svelte7 = __esm({
   ".svelte-kit/output/server/entries/pages/profile/myplace/index.svelte.js"() {
     init_index_5e953619();
     init_profileOptions_03445d06();
-    init_NumberInput_4ff76850();
+    init_NumberInput_1d0cf689();
     Myplace = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { profileMyPlace } = $$props;
       if ($$props.profileMyPlace === void 0 && $$bindings.profileMyPlace && profileMyPlace !== void 0)
@@ -20489,64 +20747,60 @@ var init_index_svelte7 = __esm({
       let $$rendered;
       do {
         $$settled = true;
-        $$rendered = `<section class="${"content min-h-full bg-orange-300"}">${``}
-	<form id="${"profileMyPlaceForm"}" class="${"flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"}" action="${"/profile/myplace"}" method="${"POST"}"><div class="${"flex flex-row"}"><div class="${"w-1/3"}"></div>
-			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"} type="${"submit"}" form="${"profileMyPlaceForm"}">Save My Answers</button>
-			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"}>Cancel</button></div>
-		
-		<div class="${"flex flex-row mt-2 mx-2"}"><div class="${"flex flex-col basis-7/12 mx-2"}"><label class="${"tracking-wide text-lg font-bold mb-1"}" for="${"property_address_street"}">Property address</label>
-				<input type="${"text"}" name="${"property_address_street"}" class="${"border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"}" placeholder="${"Street Address"}" autocomplete="${"street-address"}" style="${"text-transform:uppercase sm:text-xl"}"${add_attribute("value", profileMyPlace[0].property_address_street, 0)}></div>
-			<div class="${"flex flex-col basis-3/12 mx-2"}"><label class="${"tracking-wide text-lg font-bold mb-1"}" for="${"property_address_suburb"}">Suburb</label>
-				<input type="${"text"}" name="${"property_address_suburb"}" class="${"border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"}" placeholder="${"Suburb"}" autocomplete="${""}" style="${"text-transform:uppercase sm:text-xl"}"${add_attribute("value", profileMyPlace[0].property_address_suburb, 0)}></div>
-			<div class="${"flex flex-col basis-2/12 mx-2"}"><label class="${"tracking-wide text-lg font-bold mb-1"}" for="${"property_address_postcode"}">Postcode</label>
-				<input type="${"text"}" name="${"property_address_postcode"}" class="${"border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"}" placeholder="${"Postcode"}" autocomplete="${""}"${add_attribute("value", profileMyPlace[0].property_address_postcode, 0)}></div></div>
+        $$rendered = `<section class="${"min-h-full bg-orange-300"}">
+	<div class="${"flex flex-row mt-2 mx-2"}"><div class="${"flex flex-col basis-7/12 mx-2"}"><label class="${"tracking-wide text-lg font-bold mb-1"}" for="${"property_address_street"}">Property address</label>
+			<input type="${"text"}" name="${"property_address_street"}" class="${"border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"}" placeholder="${"Street Address"}" autocomplete="${"street-address"}" style="${"text-transform:uppercase sm:text-xl"}"${add_attribute("value", profileMyPlace[0].property_address_street, 0)}></div>
+		<div class="${"flex flex-col basis-3/12 mx-2"}"><label class="${"tracking-wide text-lg font-bold mb-1"}" for="${"property_address_suburb"}">Suburb</label>
+			<input type="${"text"}" name="${"property_address_suburb"}" class="${"border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"}" placeholder="${"Suburb"}" autocomplete="${"address-level2"}" style="${"text-transform:uppercase sm:text-xl"}"${add_attribute("value", profileMyPlace[0].property_address_suburb, 0)}></div>
+		<div class="${"flex flex-col basis-2/12 mx-2"}"><label class="${"tracking-wide text-lg font-bold mb-1"}" for="${"property_address_postcode"}">Postcode</label>
+			<input type="${"text"}" name="${"property_address_postcode"}" class="${"border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"}" placeholder="${"Postcode"}" autocomplete="${"postal-code"}"${add_attribute("value", profileMyPlace[0].property_address_postcode, 0)}></div></div>
 
-		
-		<div class="${"flex flex-row mt-4 mx-2"}"><div class="${"flex items-center justify-start"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" for="${"owned_list"}">Do you Own this property?</label>
-				<div class="${"flex flex-row rounded-lg bg-orange-50 p-1 mx-2"}">${each(yesNoOptions2, ({ value, lable }) => {
-          return `<li class="${"list-none sm:text-base sm:font-semibold sm:p-1"}" name="${"owned_list"}"><input name="${"property_owned"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === profileMyPlace[0].property_owned ? add_attribute("checked", true, 1) : ""}>
-							<label for="${"property_owned"}">${escape(lable)}</label>
-						</li>`;
-        })}</div></div></div>
-		<div${add_classes((profileMyPlace[0].property_owned === true ? "hidden" : "").trim())}><div class="${"flex flex-row pt-0 mx-2"}"><div class="${"flex flex-col basis-7/12 mx-2"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" for="${"agent_name"}">Managing Agent
-					</label>
-					<input type="${"text"}" name="${"agent_name"}" class="${"block border w-full border-orange-700 rounded py-1 sm:text-xl"}" placeholder="${"Managing Agent name"}" style="${"text-transform:titlecase sm:text-xl"}"${add_attribute("value", profileMyPlace[0].agent_name, 0)}></div>
-				<div class="${"flex flex-col basis-5/12 mx-2"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" for="${"agent_phone"}">Phone</label>
-					<input type="${"text"}" name="${"agent_phone"}" class="${"block border w-full border-orange-700 rounded py-1 sm:text-xl"}" placeholder="${"Managing Agent phone"}" autocomplete="${""}" style="${"text-transform:uppercase sm:text-xl"}"${add_attribute("value", profileMyPlace[0].agent_phone, 0)}></div></div>
-			</div>
-
-		
-		<div class="${"flex flex-row justify-start items-center mx-2 mt-2"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" for="${"residency_profile_list"}">Are you:</label>
-			<div class="${"flex rounded-lg bg-orange-50 mx-3"}"><div class="${"list-none sm:text-base sm:font-semibold sm:p-1"}">${each(residencyOptions2, ({ value, lable }) => {
-          return `<li class="${"justify-start place-items-center"}" name="${"residency_profile_list"}"><input class="${"m-1"}" name="${"residency_profile"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === profileMyPlace[0].residency_profile ? add_attribute("checked", true, 1) : ""}>
-							<label for="${"residency_profile"}">${escape(lable)}</label>
-						</li>`;
-        })}</div></div></div>
-
-		
-		<div class="${"flex flex-row justify-start items-center mx-2 mt-2"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" for="${"sign_posted_list"}">Is your property well sign_posted and numbered clearly from the road?
-			</label>
+	
+	<div class="${"flex flex-row mt-4 mx-2"}"><div class="${"flex items-center justify-start"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" for="${"owned_list"}">Do you Own this property?</label>
 			<div class="${"flex flex-row rounded-lg bg-orange-50 p-1 mx-2"}">${each(yesNoOptions2, ({ value, lable }) => {
-          return `<li class="${"list-none sm:text-base sm:font-semibold sm:p-1"}" name="${"sign_posted_list"}"><input name="${"sign_posted"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === profileMyPlace[0].sign_posted ? add_attribute("checked", true, 1) : ""}>
-						<label for="${"sign_posted"}">${escape(lable)}</label>
+          return `<li class="${"list-none sm:text-base sm:font-semibold sm:p-1"}" name="${"owned_list"}"><input name="${"property_owned"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === profileMyPlace[0].property_owned ? add_attribute("checked", true, 1) : ""}>
+						<label for="${"property_owned"}">${escape(lable)}</label>
 					</li>`;
+        })}</div></div></div>
+	<div${add_classes((profileMyPlace[0].property_owned === true ? "hidden" : "").trim())}><div class="${"flex flex-row pt-0 mx-2"}"><div class="${"flex flex-col basis-7/12 mx-2"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" for="${"agent_name"}">Managing Agent
+				</label>
+				<input type="${"text"}" name="${"agent_name"}" class="${"block border w-full border-orange-700 rounded py-1 sm:text-xl"}" placeholder="${"Managing Agent name"}" style="${"text-transform:titlecase sm:text-xl"}"${add_attribute("value", profileMyPlace[0].agent_name, 0)}></div>
+			<div class="${"flex flex-col basis-5/12 mx-2"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" for="${"agent_phone"}">Phone</label>
+				<input type="${"text"}" name="${"agent_phone"}" class="${"block border w-full border-orange-700 rounded py-1 sm:text-xl"}" placeholder="${"Managing Agent phone"}" autocomplete="${""}" style="${"text-transform:uppercase sm:text-xl"}"${add_attribute("value", profileMyPlace[0].agent_phone, 0)}></div></div>
+		</div>
+
+	
+	<div class="${"flex flex-row justify-start items-center mx-2 mt-2"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" for="${"residency_profile_list"}">Are you:</label>
+		<div class="${"flex rounded-lg bg-orange-50 mx-3"}"><div class="${"list-none sm:text-base sm:font-semibold sm:p-1"}">${each(residencyOptions2, ({ value, lable }) => {
+          return `<li class="${"justify-start place-items-center"}" name="${"residency_profile_list"}"><input class="${"m-1"}" name="${"residency_profile"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === profileMyPlace[0].residency_profile ? add_attribute("checked", true, 1) : ""}>
+						<label for="${"residency_profile"}">${escape(lable)}</label>
+					</li>`;
+        })}</div></div></div>
+
+	
+	<div class="${"flex flex-row justify-start items-center mx-2 mt-2"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" for="${"sign_posted_list"}">Is your property well sign_posted and numbered clearly from the road?
+		</label>
+		<div class="${"flex flex-row rounded-lg bg-orange-50 p-1 mx-2"}">${each(yesNoOptions2, ({ value, lable }) => {
+          return `<li class="${"list-none sm:text-base sm:font-semibold sm:p-1"}" name="${"sign_posted_list"}"><input name="${"sign_posted"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === profileMyPlace[0].sign_posted ? add_attribute("checked", true, 1) : ""}>
+					<label for="${"sign_posted"}">${escape(lable)}</label>
+				</li>`;
         })}</div></div>
 
-		
-		<div class="${"flex flex-row justify-start items-center mx-2 mt-2"}"><label class="${"tracking-wide text-lg font-bold mb-1"}" for="${"truck_access_list"}">Is there easy access to property and paddocks?</label>
-			<div class="${"flex rounded-lg bg-orange-50 mx-3"}"><div class="${"list-none sm:text-base sm:font-semibold sm:p-1"}">${each(accessOptions2, ({ value, lable }) => {
+	
+	<div class="${"flex flex-row justify-start items-center mx-2 mt-2"}"><label class="${"tracking-wide text-lg font-bold mb-1"}" for="${"truck_access_list"}">Is there easy access to property and paddocks?</label>
+		<div class="${"flex rounded-lg bg-orange-50 mx-3"}"><div class="${"list-none sm:text-base sm:font-semibold sm:p-1"}">${each(accessOptions2, ({ value, lable }) => {
           return `<li class="${"justify-start place-items-center"}" name="${"truck_access_list"}">${lable === "Other" ? `<input class="${"m-1"}" name="${"truck_access"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === profileMyPlace[0].truck_access ? add_attribute("checked", true, 1) : ""}>` : `<input name="${"truck_access"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === profileMyPlace[0].truck_access ? add_attribute("checked", true, 1) : ""}>`}
-							<label for="${"truck_access"}">${escape(lable)}</label>
-						</li>`;
+						<label for="${"truck_access"}">${escape(lable)}</label>
+					</li>`;
         })}</div></div></div>
 
-		
-		<div class="${"flex flex-row justify-start items-center mt-2 mx-2"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" ${profileMyPlace[0].truck_access !== 4 ? "hidden" : ""} for="${"other_access_information"}">Other Access Information:</label>
-			<input type="${"text"}" class="${"border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"}" id="${"other_access_information"}" name="${"other_access_information"}" ${profileMyPlace[0].truck_access !== 4 ? "hidden" : ""}${add_attribute("value", profileMyPlace[0].other_access_information, 0)}></div>
+	
+	<div class="${"flex flex-row justify-start items-center mt-2 mx-2"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" ${profileMyPlace[0].truck_access !== 4 ? "hidden" : ""} for="${"other_access_information"}">Other Access Information:</label>
+		<input type="${"text"}" class="${"border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"}" id="${"other_access_information"}" name="${"other_access_information"}" ${profileMyPlace[0].truck_access !== 4 ? "hidden" : ""}${add_attribute("value", profileMyPlace[0].other_access_information, 0)}></div>
 
-		
-		<div class="${"flex flex-row mt-2 mx-2"}"><div class="${"flex items-center justify-start"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" for="${"residents_profile"}">How many people usually live at this property:</label>
-				<div class="${"flex flex-row justify-between list-none rounded-lg bg-orange-50 p-1 mx-2"}" name="${"residents_profile"}">${validate_component(NumberInput, "NumberInput").$$render($$result, {
+	
+	<div class="${"flex flex-row mt-2 mx-2"}"><div class="${"flex items-center justify-start"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" for="${"residents_profile"}">How many people usually live at this property:</label>
+			<div class="${"flex flex-row justify-between list-none rounded-lg bg-orange-50 p-1 mx-2"}" name="${"residents_profile"}">${validate_component(NumberInput, "NumberInput").$$render($$result, {
           name: "residents0_18",
           lable: "0-18 years",
           lableClass: "tracking-wide text-orange-900 text-l font-bold mb-1",
@@ -20558,7 +20812,7 @@ var init_index_svelte7 = __esm({
             $$settled = false;
           }
         }, {})}
-					${validate_component(NumberInput, "NumberInput").$$render($$result, {
+				${validate_component(NumberInput, "NumberInput").$$render($$result, {
           name: "residents19_50",
           lable: "19-50 years",
           lableClass: "tracking-wide text-orange-900 text-l font-bold mb-1",
@@ -20570,7 +20824,7 @@ var init_index_svelte7 = __esm({
             $$settled = false;
           }
         }, {})}
-					${validate_component(NumberInput, "NumberInput").$$render($$result, {
+				${validate_component(NumberInput, "NumberInput").$$render($$result, {
           name: "residents51_70",
           lable: "51-70 years",
           lableClass: "tracking-wide text-orange-900 text-l font-bold mb-1",
@@ -20582,7 +20836,7 @@ var init_index_svelte7 = __esm({
             $$settled = false;
           }
         }, {})}
-					${validate_component(NumberInput, "NumberInput").$$render($$result, {
+				${validate_component(NumberInput, "NumberInput").$$render($$result, {
           name: "residents71_",
           lable: "71 years +",
           lableClass: "tracking-wide text-orange-900 text-l font-bold mb-1",
@@ -20595,70 +20849,74 @@ var init_index_svelte7 = __esm({
           }
         }, {})}</div></div></div>
 
-		
-		<div class="${"flex flex-row justify-start items-center mt-2 mx-2"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" for="${"vulnerable_residents_list"}">Do you consider any person on the property to be vulnerable?
-			</label>
-			<div class="${"flex flex-row rounded-lg bg-orange-50 p-1 mx-2"}">${each(yesNoOptions2, ({ value, lable }) => {
+	
+	<div class="${"flex flex-row justify-start items-center mt-2 mx-2"}"><label class="${"tracking-wide mr-4 mt-1 text-lg font-bold mb-1"}" for="${"vulnerable_residents_list"}">Do you consider any person on the property to be vulnerable?
+		</label>
+		<div class="${"flex flex-row rounded-lg bg-orange-50 p-1 mx-2"}">${each(yesNoOptions2, ({ value, lable }) => {
           return `<li class="${"list-none sm:text-base sm:font-semibold sm:p-1"}" name="${"vulnerable_residents_list"}"><input name="${"vulnerable_residents"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === profileMyPlace[0].vulnerable_residents ? add_attribute("checked", true, 1) : ""}>
-						<label for="${"vulnerable_residents"}">${escape(lable)}</label>
-					</li>`;
-        })}</div></div></form></section>`;
+					<label for="${"vulnerable_residents"}">${escape(lable)}</label>
+				</li>`;
+        })}</div></div></section>`;
       } while (!$$settled);
       return $$rendered;
     });
   }
 });
 
-// .svelte-kit/output/server/nodes/33.js
-var __exports21 = {};
-__export(__exports21, {
-  css: () => css28,
-  entry: () => entry21,
-  js: () => js21,
+// .svelte-kit/output/server/nodes/35.js
+var __exports23 = {};
+__export(__exports23, {
+  css: () => css31,
+  entry: () => entry23,
+  index: () => index23,
+  js: () => js23,
   module: () => index_svelte_exports7
 });
-var entry21, js21, css28;
-var init__21 = __esm({
-  ".svelte-kit/output/server/nodes/33.js"() {
+var index23, entry23, js23, css31;
+var init__23 = __esm({
+  ".svelte-kit/output/server/nodes/35.js"() {
     init_index_svelte7();
-    entry21 = "pages/profile/myplace/index.svelte-94a250b8.js";
-    js21 = ["pages/profile/myplace/index.svelte-94a250b8.js", "chunks/index-27e8d48c.js", "chunks/profileOptions-03445d06.js", "chunks/NumberInput-b447724c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css28 = ["assets/pages/profile/myplace/index.svelte-b75ecb0c.css", "assets/NumberInput-920921e1.css", "assets/Modal-186ac193.css"];
+    index23 = 35;
+    entry23 = "pages/profile/myplace/index.svelte-bc9dfd39.js";
+    js23 = ["pages/profile/myplace/index.svelte-bc9dfd39.js", "chunks/index-574d3e5d.js", "chunks/profileOptions-03445d06.js", "chunks/NumberInput-1d7adc92.js"];
+    css31 = ["assets/pages/profile/myplace/index.svelte-06ac6149.css", "assets/NumberInput-097731fa.css"];
   }
 });
 
 // .svelte-kit/output/server/entries/pages/profile/settings/__layout.svelte.js
-var layout_svelte_exports4 = {};
-__export(layout_svelte_exports4, {
-  default: () => _layout4
+var layout_svelte_exports6 = {};
+__export(layout_svelte_exports6, {
+  default: () => _layout6
 });
-var _layout4;
-var init_layout_svelte4 = __esm({
+var _layout6;
+var init_layout_svelte6 = __esm({
   ".svelte-kit/output/server/entries/pages/profile/settings/__layout.svelte.js"() {
     init_index_5e953619();
-    _layout4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<section class="${"content min-h-full bg-orange-300"}">${``}
+    _layout6 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<section class="${"min-h-full bg-orange-300"}">${``}
 	<form id="${"settingsForm"}" class="${"flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"}" action="${"/profile/settings"}" method="${"POST"}"><button ${"hidden"} type="${"submit"}" form="${"settingsForm"}">Save My Answers</button>
 		${slots.default ? slots.default({}) : ``}</form></section>`;
     });
   }
 });
 
-// .svelte-kit/output/server/nodes/10.js
-var __exports22 = {};
-__export(__exports22, {
-  css: () => css29,
-  entry: () => entry22,
-  js: () => js22,
-  module: () => layout_svelte_exports4
+// .svelte-kit/output/server/nodes/12.js
+var __exports24 = {};
+__export(__exports24, {
+  css: () => css32,
+  entry: () => entry24,
+  index: () => index24,
+  js: () => js24,
+  module: () => layout_svelte_exports6
 });
-var entry22, js22, css29;
-var init__22 = __esm({
-  ".svelte-kit/output/server/nodes/10.js"() {
-    init_layout_svelte4();
-    entry22 = "pages/profile/settings/__layout.svelte-e703479c.js";
-    js22 = ["pages/profile/settings/__layout.svelte-e703479c.js", "chunks/index-27e8d48c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css29 = ["assets/pages/profile/settings/__layout.svelte-9f2a880f.css", "assets/Modal-186ac193.css"];
+var index24, entry24, js24, css32;
+var init__24 = __esm({
+  ".svelte-kit/output/server/nodes/12.js"() {
+    init_layout_svelte6();
+    index24 = 12;
+    entry24 = "pages/profile/settings/__layout.svelte-5108d30f.js";
+    js24 = ["pages/profile/settings/__layout.svelte-5108d30f.js", "chunks/index-574d3e5d.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-3706472a.js", "chunks/SaveProfilePrompt-ffaa3fc8.js"];
+    css32 = ["assets/pages/profile/settings/__layout.svelte-9f2a880f.css", "assets/Modal.svelte_svelte_type_style_lang-425b700c.css", "assets/Modal-74a8bea9.css"];
   }
 });
 
@@ -20681,21 +20939,83 @@ var init_index_svelte8 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/34.js
-var __exports23 = {};
-__export(__exports23, {
-  css: () => css30,
-  entry: () => entry23,
-  js: () => js23,
+// .svelte-kit/output/server/nodes/36.js
+var __exports25 = {};
+__export(__exports25, {
+  css: () => css33,
+  entry: () => entry25,
+  index: () => index25,
+  js: () => js25,
   module: () => index_svelte_exports8
 });
-var entry23, js23, css30;
-var init__23 = __esm({
-  ".svelte-kit/output/server/nodes/34.js"() {
+var index25, entry25, js25, css33;
+var init__25 = __esm({
+  ".svelte-kit/output/server/nodes/36.js"() {
     init_index_svelte8();
-    entry23 = "pages/profile/settings/index.svelte-e9a6e058.js";
-    js23 = ["pages/profile/settings/index.svelte-e9a6e058.js", "chunks/index-27e8d48c.js"];
-    css30 = ["assets/pages/profile/settings/index.svelte-e8ee133f.css"];
+    index25 = 36;
+    entry25 = "pages/profile/settings/index.svelte-e8585999.js";
+    js25 = ["pages/profile/settings/index.svelte-e8585999.js", "chunks/index-574d3e5d.js"];
+    css33 = ["assets/pages/profile/settings/index.svelte-e8ee133f.css"];
+  }
+});
+
+// .svelte-kit/output/server/entries/pages/survey/maybe__layout.svelte.js
+var maybe_layout_svelte_exports = {};
+__export(maybe_layout_svelte_exports, {
+  default: () => Maybe__layout
+});
+var Maybe__layout;
+var init_maybe_layout_svelte = __esm({
+  ".svelte-kit/output/server/entries/pages/survey/maybe__layout.svelte.js"() {
+    init_index_5e953619();
+    init_ProgressBar_dbc366a0();
+    Maybe__layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let steps = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+      let currentActive = 1;
+      let progressBar;
+      let $$settled;
+      let $$rendered;
+      do {
+        $$settled = true;
+        $$rendered = `<section class="${"min-h-full bg-orange-300"}">${``}
+	<form id="${"surveyForm"}">
+		${slots.default ? slots.default({}) : ``}
+		<div class="${"mx-auto w-7/12"}">${validate_component(ProgressBar, "ProgressBar").$$render($$result, { steps, currentActive, this: progressBar }, {
+          currentActive: ($$value) => {
+            currentActive = $$value;
+            $$settled = false;
+          },
+          this: ($$value) => {
+            progressBar = $$value;
+            $$settled = false;
+          }
+        }, {})}</div>
+		<div class="${"mt-1 text-center"}"><button class="${"px-[20px] py-[6px] text-white bg-orange-500 rounded-xl focus:outline-none active:transform scale 98 disabled:cursor-not-allowed disabled:bg-slate-300"}" ${currentActive == 1 ? "disabled" : ""}>Prev</button>
+			<button class="${"px-[20px] py-[6px] text-white bg-orange-500 rounded-xl focus:outline-none active:transform scale 98 disabled:cursor-not-allowed disabled:bg-slate-300"}" ${currentActive == steps.length ? "hidden" : ""}>Next</button>
+			<button class="${"px-[20px] py-[6px] text-white bg-orange-500 rounded-xl focus:outline-none active:transform scale 98 disabled:cursor-not-allowed disabled:bg-slate-300"}" type="${"submit"}" form="${"surveyForm"}" ${currentActive == steps.length ? "hidden" : ""}>Submit</button></div></form></section>`;
+      } while (!$$settled);
+      return $$rendered;
+    });
+  }
+});
+
+// .svelte-kit/output/server/nodes/38.js
+var __exports26 = {};
+__export(__exports26, {
+  css: () => css34,
+  entry: () => entry26,
+  index: () => index26,
+  js: () => js26,
+  module: () => maybe_layout_svelte_exports
+});
+var index26, entry26, js26, css34;
+var init__26 = __esm({
+  ".svelte-kit/output/server/nodes/38.js"() {
+    init_maybe_layout_svelte();
+    index26 = 38;
+    entry26 = "pages/survey/maybe__layout.svelte-657d154c.js";
+    js26 = ["pages/survey/maybe__layout.svelte-657d154c.js", "chunks/index-574d3e5d.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-3706472a.js", "chunks/SaveProfilePrompt-ffaa3fc8.js", "chunks/ProgressBar-6aea2a62.js"];
+    css34 = ["assets/pages/survey/maybe__layout.svelte-a74b467a.css", "assets/Modal.svelte_svelte_type_style_lang-425b700c.css", "assets/Modal-74a8bea9.css", "assets/ProgressBar-f826fca1.css"];
   }
 });
 
@@ -20704,16 +21024,16 @@ var pagefuture_svelte_exports = {};
 __export(pagefuture_svelte_exports, {
   default: () => Pagefuture
 });
-var css31, Pagefuture;
+var css35, Pagefuture;
 var init_pagefuture_svelte = __esm({
   ".svelte-kit/output/server/entries/pages/survey/pagefuture.svelte.js"() {
     init_index_5e953619();
-    css31 = {
+    css35 = {
       code: ".container.svelte-1fdyafo{margin:40px, 60px;background-color:rgb(201, 241, 211);text-align:center}p1.svelte-1fdyafo{font-size:xx-large;font-weight:bold}p2.svelte-1fdyafo{font-size:larger;font-weight:bold}",
       map: null
     };
     Pagefuture = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      $$result.css.add(css31);
+      $$result.css.add(css35);
       return `<div class="${"container svelte-1fdyafo"}"><p1 class="${"svelte-1fdyafo"}">The future</p1>
 <br>
 
@@ -20727,21 +21047,23 @@ var init_pagefuture_svelte = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/36.js
-var __exports24 = {};
-__export(__exports24, {
-  css: () => css32,
-  entry: () => entry24,
-  js: () => js24,
+// .svelte-kit/output/server/nodes/39.js
+var __exports27 = {};
+__export(__exports27, {
+  css: () => css36,
+  entry: () => entry27,
+  index: () => index27,
+  js: () => js27,
   module: () => pagefuture_svelte_exports
 });
-var entry24, js24, css32;
-var init__24 = __esm({
-  ".svelte-kit/output/server/nodes/36.js"() {
+var index27, entry27, js27, css36;
+var init__27 = __esm({
+  ".svelte-kit/output/server/nodes/39.js"() {
     init_pagefuture_svelte();
-    entry24 = "pages/survey/pagefuture.svelte-6bc923ea.js";
-    js24 = ["pages/survey/pagefuture.svelte-6bc923ea.js", "chunks/index-27e8d48c.js"];
-    css32 = ["assets/pages/survey/pagefuture.svelte-0cf011a3.css"];
+    index27 = 39;
+    entry27 = "pages/survey/pagefuture.svelte-d90755a9.js";
+    js27 = ["pages/survey/pagefuture.svelte-d90755a9.js", "chunks/index-574d3e5d.js"];
+    css36 = ["assets/pages/survey/pagefuture.svelte-0cf011a3.css"];
   }
 });
 
@@ -20750,16 +21072,16 @@ var index_svelte_exports9 = {};
 __export(index_svelte_exports9, {
   default: () => Index
 });
-var css33, Index;
+var css37, Index;
 var init_index_svelte9 = __esm({
   ".svelte-kit/output/server/entries/pages/work/index_.svelte.js"() {
     init_index_5e953619();
-    css33 = {
+    css37 = {
       code: ".header.svelte-12kgwpt.svelte-12kgwpt{position:fixed;top:0;left:0;right:0;width:100vw;background:lightskyblue;text-align:center}.footer.svelte-12kgwpt.svelte-12kgwpt{position:fixed;bottom:0;left:0;right:0;width:100vw;background:lightskyblue;text-align:center}.content.svelte-12kgwpt.svelte-12kgwpt{min-height:100vh;max-width:80vw;margin:0 auto;display:flex;flex-direction:column;justify-content:center}.content-grid.svelte-12kgwpt.svelte-12kgwpt{display:grid;grid-template-columns:repeat(\r\n			2,\r\n			50%\r\n		);grid-template-rows:70px 50px 100px 100px;gap:1rem}.content-grid.svelte-12kgwpt>.svelte-12kgwpt{background:aliceblue}.content-grid.svelte-12kgwpt>.svelte-12kgwpt:nth-child(n + 3){grid-column:1 / -1}",
       map: null
     };
     Index = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      $$result.css.add(css33);
+      $$result.css.add(css37);
       return `<div>
 	<header class="${"header svelte-12kgwpt"}"><span>title </span></header>
 
@@ -20777,35 +21099,37 @@ var init_index_svelte9 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/38.js
-var __exports25 = {};
-__export(__exports25, {
-  css: () => css34,
-  entry: () => entry25,
-  js: () => js25,
+// .svelte-kit/output/server/nodes/41.js
+var __exports28 = {};
+__export(__exports28, {
+  css: () => css38,
+  entry: () => entry28,
+  index: () => index28,
+  js: () => js28,
   module: () => index_svelte_exports9
 });
-var entry25, js25, css34;
-var init__25 = __esm({
-  ".svelte-kit/output/server/nodes/38.js"() {
+var index28, entry28, js28, css38;
+var init__28 = __esm({
+  ".svelte-kit/output/server/nodes/41.js"() {
     init_index_svelte9();
-    entry25 = "pages/work/index_.svelte-9b4ae81e.js";
-    js25 = ["pages/work/index_.svelte-9b4ae81e.js", "chunks/index-27e8d48c.js"];
-    css34 = ["assets/pages/work/index_.svelte-0bb53fd9.css"];
+    index28 = 41;
+    entry28 = "pages/work/index_.svelte-3bb1e028.js";
+    js28 = ["pages/work/index_.svelte-3bb1e028.js", "chunks/index-574d3e5d.js"];
+    css38 = ["assets/pages/work/index_.svelte-0bb53fd9.css"];
   }
 });
 
 // .svelte-kit/output/server/entries/pages/profile/mycommunity/information/__layout.svelte.js
-var layout_svelte_exports5 = {};
-__export(layout_svelte_exports5, {
-  default: () => _layout5
+var layout_svelte_exports7 = {};
+__export(layout_svelte_exports7, {
+  default: () => _layout7
 });
-var _layout5;
-var init_layout_svelte5 = __esm({
+var _layout7;
+var init_layout_svelte7 = __esm({
   ".svelte-kit/output/server/entries/pages/profile/mycommunity/information/__layout.svelte.js"() {
     init_index_5e953619();
-    _layout5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<section class="${"content min-h-full bg-orange-300"}">${``}
+    _layout7 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<section class="${"min-h-full bg-orange-300"}">${``}
 	<form id="${"profileInformationForm"}" class="${"flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"}" action="${"/profile/community/information"}" method="${"POST"}"><div class="${"flex flex-row"}"><div class="${"w-1/3"}"></div>
 			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"} type="${"submit"}" form="${"profileInformationForm"}">Save My Answers</button>
 			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"}>Cancel</button></div>
@@ -20814,21 +21138,23 @@ var init_layout_svelte5 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/4.js
-var __exports26 = {};
-__export(__exports26, {
-  css: () => css35,
-  entry: () => entry26,
-  js: () => js26,
-  module: () => layout_svelte_exports5
+// .svelte-kit/output/server/nodes/5.js
+var __exports29 = {};
+__export(__exports29, {
+  css: () => css39,
+  entry: () => entry29,
+  index: () => index29,
+  js: () => js29,
+  module: () => layout_svelte_exports7
 });
-var entry26, js26, css35;
-var init__26 = __esm({
-  ".svelte-kit/output/server/nodes/4.js"() {
-    init_layout_svelte5();
-    entry26 = "pages/profile/mycommunity/information/__layout.svelte-7d325615.js";
-    js26 = ["pages/profile/mycommunity/information/__layout.svelte-7d325615.js", "chunks/index-27e8d48c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css35 = ["assets/pages/profile/myplace/hazards/__layout.svelte-ca2c6065.css", "assets/Modal-186ac193.css"];
+var index29, entry29, js29, css39;
+var init__29 = __esm({
+  ".svelte-kit/output/server/nodes/5.js"() {
+    init_layout_svelte7();
+    index29 = 5;
+    entry29 = "pages/profile/mycommunity/information/__layout.svelte-ed51eff2.js";
+    js29 = ["pages/profile/mycommunity/information/__layout.svelte-ed51eff2.js", "chunks/index-574d3e5d.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-3706472a.js", "chunks/SaveProfilePrompt-ffaa3fc8.js"];
+    css39 = ["assets/pages/profile/myplace/__layout.svelte-2254958b.css", "assets/Modal.svelte_svelte_type_style_lang-425b700c.css", "assets/Modal-74a8bea9.css"];
   }
 });
 
@@ -20842,7 +21168,7 @@ var init_index_svelte10 = __esm({
   ".svelte-kit/output/server/entries/pages/profile/mycommunity/information/index.svelte.js"() {
     init_index_5e953619();
     init_profileOptions_03445d06();
-    init_TextAreaInput_366ae8ef();
+    init_TextAreaInput_2189c9ee();
     Information = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { profileInformation } = $$props;
       if ($$props.profileInformation === void 0 && $$bindings.profileInformation && profileInformation !== void 0)
@@ -20879,35 +21205,37 @@ var init_index_svelte10 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/27.js
-var __exports27 = {};
-__export(__exports27, {
-  css: () => css36,
-  entry: () => entry27,
-  js: () => js27,
+// .svelte-kit/output/server/nodes/29.js
+var __exports30 = {};
+__export(__exports30, {
+  css: () => css40,
+  entry: () => entry30,
+  index: () => index30,
+  js: () => js30,
   module: () => index_svelte_exports10
 });
-var entry27, js27, css36;
-var init__27 = __esm({
-  ".svelte-kit/output/server/nodes/27.js"() {
+var index30, entry30, js30, css40;
+var init__30 = __esm({
+  ".svelte-kit/output/server/nodes/29.js"() {
     init_index_svelte10();
-    entry27 = "pages/profile/mycommunity/information/index.svelte-48058f93.js";
-    js27 = ["pages/profile/mycommunity/information/index.svelte-48058f93.js", "chunks/index-27e8d48c.js", "chunks/profileOptions-03445d06.js", "chunks/TextAreaInput-0ce753bd.js"];
-    css36 = ["assets/pages/profile/mycommunity/meetings/index.svelte-d79360e2.css", "assets/TextAreaInput-1766c24c.css"];
+    index30 = 29;
+    entry30 = "pages/profile/mycommunity/information/index.svelte-6235c19f.js";
+    js30 = ["pages/profile/mycommunity/information/index.svelte-6235c19f.js", "chunks/index-574d3e5d.js", "chunks/profileOptions-03445d06.js", "chunks/TextAreaInput-f555b11d.js"];
+    css40 = ["assets/pages/profile/mycommunity/meetings/index.svelte-d79360e2.css", "assets/TextAreaInput-cd7da125.css"];
   }
 });
 
 // .svelte-kit/output/server/entries/pages/profile/mycommunity/meetings/__layout.svelte.js
-var layout_svelte_exports6 = {};
-__export(layout_svelte_exports6, {
-  default: () => _layout6
+var layout_svelte_exports8 = {};
+__export(layout_svelte_exports8, {
+  default: () => _layout8
 });
-var _layout6;
-var init_layout_svelte6 = __esm({
+var _layout8;
+var init_layout_svelte8 = __esm({
   ".svelte-kit/output/server/entries/pages/profile/mycommunity/meetings/__layout.svelte.js"() {
     init_index_5e953619();
-    _layout6 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<section class="${"content min-h-full bg-orange-300"}">${``}
+    _layout8 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<section class="${"min-h-full bg-orange-300"}">${``}
 	<form id="${"profileMeetingsForm"}" class="${"flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"}" action="${"/profile/community/meetings"}" method="${"POST"}"><div class="${"flex flex-row"}"><div class="${"w-1/3"}"></div>
 			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"} type="${"submit"}" form="${"profileMeetingsForm"}">Save My Answers</button>
 			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"}>Cancel</button></div>
@@ -20916,21 +21244,23 @@ var init_layout_svelte6 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/5.js
-var __exports28 = {};
-__export(__exports28, {
-  css: () => css37,
-  entry: () => entry28,
-  js: () => js28,
-  module: () => layout_svelte_exports6
+// .svelte-kit/output/server/nodes/6.js
+var __exports31 = {};
+__export(__exports31, {
+  css: () => css41,
+  entry: () => entry31,
+  index: () => index31,
+  js: () => js31,
+  module: () => layout_svelte_exports8
 });
-var entry28, js28, css37;
-var init__28 = __esm({
-  ".svelte-kit/output/server/nodes/5.js"() {
-    init_layout_svelte6();
-    entry28 = "pages/profile/mycommunity/meetings/__layout.svelte-765408f8.js";
-    js28 = ["pages/profile/mycommunity/meetings/__layout.svelte-765408f8.js", "chunks/index-27e8d48c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css37 = ["assets/pages/profile/myplace/hazards/__layout.svelte-ca2c6065.css", "assets/Modal-186ac193.css"];
+var index31, entry31, js31, css41;
+var init__31 = __esm({
+  ".svelte-kit/output/server/nodes/6.js"() {
+    init_layout_svelte8();
+    index31 = 6;
+    entry31 = "pages/profile/mycommunity/meetings/__layout.svelte-a7476df6.js";
+    js31 = ["pages/profile/mycommunity/meetings/__layout.svelte-a7476df6.js", "chunks/index-574d3e5d.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-3706472a.js", "chunks/SaveProfilePrompt-ffaa3fc8.js"];
+    css41 = ["assets/pages/profile/myplace/__layout.svelte-2254958b.css", "assets/Modal.svelte_svelte_type_style_lang-425b700c.css", "assets/Modal-74a8bea9.css"];
   }
 });
 
@@ -20944,7 +21274,7 @@ var init_index_svelte11 = __esm({
   ".svelte-kit/output/server/entries/pages/profile/mycommunity/meetings/index.svelte.js"() {
     init_index_5e953619();
     init_profileOptions_03445d06();
-    init_TextAreaInput_366ae8ef();
+    init_TextAreaInput_2189c9ee();
     Meetings = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { profileMeetings } = $$props;
       if ($$props.profileMeetings === void 0 && $$bindings.profileMeetings && profileMeetings !== void 0)
@@ -20981,35 +21311,37 @@ var init_index_svelte11 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/28.js
-var __exports29 = {};
-__export(__exports29, {
-  css: () => css38,
-  entry: () => entry29,
-  js: () => js29,
+// .svelte-kit/output/server/nodes/30.js
+var __exports32 = {};
+__export(__exports32, {
+  css: () => css42,
+  entry: () => entry32,
+  index: () => index32,
+  js: () => js32,
   module: () => index_svelte_exports11
 });
-var entry29, js29, css38;
-var init__29 = __esm({
-  ".svelte-kit/output/server/nodes/28.js"() {
+var index32, entry32, js32, css42;
+var init__32 = __esm({
+  ".svelte-kit/output/server/nodes/30.js"() {
     init_index_svelte11();
-    entry29 = "pages/profile/mycommunity/meetings/index.svelte-61e64fb1.js";
-    js29 = ["pages/profile/mycommunity/meetings/index.svelte-61e64fb1.js", "chunks/index-27e8d48c.js", "chunks/profileOptions-03445d06.js", "chunks/TextAreaInput-0ce753bd.js"];
-    css38 = ["assets/pages/profile/mycommunity/meetings/index.svelte-d79360e2.css", "assets/TextAreaInput-1766c24c.css"];
+    index32 = 30;
+    entry32 = "pages/profile/mycommunity/meetings/index.svelte-3c0ceae1.js";
+    js32 = ["pages/profile/mycommunity/meetings/index.svelte-3c0ceae1.js", "chunks/index-574d3e5d.js", "chunks/profileOptions-03445d06.js", "chunks/TextAreaInput-f555b11d.js"];
+    css42 = ["assets/pages/profile/mycommunity/meetings/index.svelte-d79360e2.css", "assets/TextAreaInput-cd7da125.css"];
   }
 });
 
 // .svelte-kit/output/server/entries/pages/profile/mycommunity/workshops/__layout.svelte.js
-var layout_svelte_exports7 = {};
-__export(layout_svelte_exports7, {
-  default: () => _layout7
+var layout_svelte_exports9 = {};
+__export(layout_svelte_exports9, {
+  default: () => _layout9
 });
-var _layout7;
-var init_layout_svelte7 = __esm({
+var _layout9;
+var init_layout_svelte9 = __esm({
   ".svelte-kit/output/server/entries/pages/profile/mycommunity/workshops/__layout.svelte.js"() {
     init_index_5e953619();
-    _layout7 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<section class="${"content min-h-full bg-orange-300"}">${``}
+    _layout9 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<section class="${"min-h-full bg-orange-300"}">${``}
 	<form id="${"profileWorkshopsForm"}" class="${"flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"}" action="${"/profile/community/workshops"}" method="${"POST"}"><div class="${"flex flex-row"}"><div class="${"w-1/3"}"></div>
 			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"} type="${"submit"}" form="${"profileWorkshopsForm"}">Save My Answers</button>
 
@@ -21019,21 +21351,23 @@ var init_layout_svelte7 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/6.js
-var __exports30 = {};
-__export(__exports30, {
-  css: () => css39,
-  entry: () => entry30,
-  js: () => js30,
-  module: () => layout_svelte_exports7
+// .svelte-kit/output/server/nodes/7.js
+var __exports33 = {};
+__export(__exports33, {
+  css: () => css43,
+  entry: () => entry33,
+  index: () => index33,
+  js: () => js33,
+  module: () => layout_svelte_exports9
 });
-var entry30, js30, css39;
-var init__30 = __esm({
-  ".svelte-kit/output/server/nodes/6.js"() {
-    init_layout_svelte7();
-    entry30 = "pages/profile/mycommunity/workshops/__layout.svelte-31c51381.js";
-    js30 = ["pages/profile/mycommunity/workshops/__layout.svelte-31c51381.js", "chunks/index-27e8d48c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css39 = ["assets/pages/profile/myplace/hazards/__layout.svelte-ca2c6065.css", "assets/Modal-186ac193.css"];
+var index33, entry33, js33, css43;
+var init__33 = __esm({
+  ".svelte-kit/output/server/nodes/7.js"() {
+    init_layout_svelte9();
+    index33 = 7;
+    entry33 = "pages/profile/mycommunity/workshops/__layout.svelte-3eb92a1c.js";
+    js33 = ["pages/profile/mycommunity/workshops/__layout.svelte-3eb92a1c.js", "chunks/index-574d3e5d.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-3706472a.js", "chunks/SaveProfilePrompt-ffaa3fc8.js"];
+    css43 = ["assets/pages/profile/myplace/__layout.svelte-2254958b.css", "assets/Modal.svelte_svelte_type_style_lang-425b700c.css", "assets/Modal-74a8bea9.css"];
   }
 });
 
@@ -21047,7 +21381,7 @@ var init_index_svelte12 = __esm({
   ".svelte-kit/output/server/entries/pages/profile/mycommunity/workshops/index.svelte.js"() {
     init_index_5e953619();
     init_profileOptions_03445d06();
-    init_TextAreaInput_366ae8ef();
+    init_TextAreaInput_2189c9ee();
     Workshops = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { profileWorkshops } = $$props;
       if ($$props.profileWorkshops === void 0 && $$bindings.profileWorkshops && profileWorkshops !== void 0)
@@ -21099,35 +21433,37 @@ var init_index_svelte12 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/29.js
-var __exports31 = {};
-__export(__exports31, {
-  css: () => css40,
-  entry: () => entry31,
-  js: () => js31,
+// .svelte-kit/output/server/nodes/31.js
+var __exports34 = {};
+__export(__exports34, {
+  css: () => css44,
+  entry: () => entry34,
+  index: () => index34,
+  js: () => js34,
   module: () => index_svelte_exports12
 });
-var entry31, js31, css40;
-var init__31 = __esm({
-  ".svelte-kit/output/server/nodes/29.js"() {
+var index34, entry34, js34, css44;
+var init__34 = __esm({
+  ".svelte-kit/output/server/nodes/31.js"() {
     init_index_svelte12();
-    entry31 = "pages/profile/mycommunity/workshops/index.svelte-052d795e.js";
-    js31 = ["pages/profile/mycommunity/workshops/index.svelte-052d795e.js", "chunks/index-27e8d48c.js", "chunks/profileOptions-03445d06.js", "chunks/TextAreaInput-0ce753bd.js"];
-    css40 = ["assets/pages/profile/mycommunity/workshops/index.svelte-2c98e2b2.css", "assets/TextAreaInput-1766c24c.css"];
+    index34 = 31;
+    entry34 = "pages/profile/mycommunity/workshops/index.svelte-0a55ed6a.js";
+    js34 = ["pages/profile/mycommunity/workshops/index.svelte-0a55ed6a.js", "chunks/index-574d3e5d.js", "chunks/profileOptions-03445d06.js", "chunks/TextAreaInput-f555b11d.js"];
+    css44 = ["assets/pages/profile/mycommunity/workshops/index.svelte-2c98e2b2.css", "assets/TextAreaInput-cd7da125.css"];
   }
 });
 
 // .svelte-kit/output/server/entries/pages/profile/myplace/animals/__layout.svelte.js
-var layout_svelte_exports8 = {};
-__export(layout_svelte_exports8, {
-  default: () => _layout8
+var layout_svelte_exports10 = {};
+__export(layout_svelte_exports10, {
+  default: () => _layout10
 });
-var _layout8;
-var init_layout_svelte8 = __esm({
+var _layout10;
+var init_layout_svelte10 = __esm({
   ".svelte-kit/output/server/entries/pages/profile/myplace/animals/__layout.svelte.js"() {
     init_index_5e953619();
-    _layout8 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<section class="${"content min-h-full bg-orange-300"}">${``}
+    _layout10 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<section class="${"min-h-full bg-orange-300"}">${``}
 	<form id="${"profileAnimalsForm"}" class="${"flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"}" action="${"/profile/myplace/animals"}" method="${"POST"}"><div class="${"flex flex-row"}"><div class="${"w-1/3"}"></div>
 			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"} type="${"submit"}" form="${"profileAnimalsForm"}">Save My Answers</button>
 			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"}>Cancel</button></div>
@@ -21136,21 +21472,23 @@ var init_layout_svelte8 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/7.js
-var __exports32 = {};
-__export(__exports32, {
-  css: () => css41,
-  entry: () => entry32,
-  js: () => js32,
-  module: () => layout_svelte_exports8
+// .svelte-kit/output/server/nodes/9.js
+var __exports35 = {};
+__export(__exports35, {
+  css: () => css45,
+  entry: () => entry35,
+  index: () => index35,
+  js: () => js35,
+  module: () => layout_svelte_exports10
 });
-var entry32, js32, css41;
-var init__32 = __esm({
-  ".svelte-kit/output/server/nodes/7.js"() {
-    init_layout_svelte8();
-    entry32 = "pages/profile/myplace/animals/__layout.svelte-de8d5dcc.js";
-    js32 = ["pages/profile/myplace/animals/__layout.svelte-de8d5dcc.js", "chunks/index-27e8d48c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css41 = ["assets/pages/profile/myplace/hazards/__layout.svelte-ca2c6065.css", "assets/Modal-186ac193.css"];
+var index35, entry35, js35, css45;
+var init__35 = __esm({
+  ".svelte-kit/output/server/nodes/9.js"() {
+    init_layout_svelte10();
+    index35 = 9;
+    entry35 = "pages/profile/myplace/animals/__layout.svelte-01a572df.js";
+    js35 = ["pages/profile/myplace/animals/__layout.svelte-01a572df.js", "chunks/index-574d3e5d.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-3706472a.js", "chunks/SaveProfilePrompt-ffaa3fc8.js"];
+    css45 = ["assets/pages/profile/myplace/__layout.svelte-2254958b.css", "assets/Modal.svelte_svelte_type_style_lang-425b700c.css", "assets/Modal-74a8bea9.css"];
   }
 });
 
@@ -21164,7 +21502,7 @@ var init_index_svelte13 = __esm({
   ".svelte-kit/output/server/entries/pages/profile/myplace/animals/index.svelte.js"() {
     init_index_5e953619();
     init_profileOptions_03445d06();
-    init_NumberInput_4ff76850();
+    init_NumberInput_1d0cf689();
     Animals = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { profileAnimals } = $$props;
       if ($$props.profileAnimals === void 0 && $$bindings.profileAnimals && profileAnimals !== void 0)
@@ -21258,35 +21596,37 @@ var init_index_svelte13 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/30.js
-var __exports33 = {};
-__export(__exports33, {
-  css: () => css42,
-  entry: () => entry33,
-  js: () => js33,
+// .svelte-kit/output/server/nodes/32.js
+var __exports36 = {};
+__export(__exports36, {
+  css: () => css46,
+  entry: () => entry36,
+  index: () => index36,
+  js: () => js36,
   module: () => index_svelte_exports13
 });
-var entry33, js33, css42;
-var init__33 = __esm({
-  ".svelte-kit/output/server/nodes/30.js"() {
+var index36, entry36, js36, css46;
+var init__36 = __esm({
+  ".svelte-kit/output/server/nodes/32.js"() {
     init_index_svelte13();
-    entry33 = "pages/profile/myplace/animals/index.svelte-93d34380.js";
-    js33 = ["pages/profile/myplace/animals/index.svelte-93d34380.js", "chunks/index-27e8d48c.js", "chunks/profileOptions-03445d06.js", "chunks/NumberInput-b447724c.js"];
-    css42 = ["assets/pages/profile/myplace/animals/index.svelte-1a00fb52.css", "assets/NumberInput-920921e1.css"];
+    index36 = 32;
+    entry36 = "pages/profile/myplace/animals/index.svelte-64295c58.js";
+    js36 = ["pages/profile/myplace/animals/index.svelte-64295c58.js", "chunks/index-574d3e5d.js", "chunks/profileOptions-03445d06.js", "chunks/NumberInput-1d7adc92.js"];
+    css46 = ["assets/pages/profile/myplace/animals/index.svelte-1a00fb52.css", "assets/NumberInput-097731fa.css"];
   }
 });
 
 // .svelte-kit/output/server/entries/pages/profile/myplace/assets/__layout.svelte.js
-var layout_svelte_exports9 = {};
-__export(layout_svelte_exports9, {
-  default: () => _layout9
+var layout_svelte_exports11 = {};
+__export(layout_svelte_exports11, {
+  default: () => _layout11
 });
-var _layout9;
-var init_layout_svelte9 = __esm({
+var _layout11;
+var init_layout_svelte11 = __esm({
   ".svelte-kit/output/server/entries/pages/profile/myplace/assets/__layout.svelte.js"() {
     init_index_5e953619();
-    _layout9 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<section class="${"content min-h-full bg-orange-300"}">${``}
+    _layout11 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<section class="${"min-h-full bg-orange-300"}">${``}
 	<form id="${"profileAssetsForm"}" class="${"flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"}" action="${"/profile/myplace/assets"}" method="${"POST"}"><div class="${"flex flex-row"}"><div class="${"w-1/3"}"></div>
 			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"} type="${"submit"}" form="${"profileAssetsForm"}">Save My Answers</button>
 			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"}>Cancel</button></div>
@@ -21295,21 +21635,23 @@ var init_layout_svelte9 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/8.js
-var __exports34 = {};
-__export(__exports34, {
-  css: () => css43,
-  entry: () => entry34,
-  js: () => js34,
-  module: () => layout_svelte_exports9
+// .svelte-kit/output/server/nodes/10.js
+var __exports37 = {};
+__export(__exports37, {
+  css: () => css47,
+  entry: () => entry37,
+  index: () => index37,
+  js: () => js37,
+  module: () => layout_svelte_exports11
 });
-var entry34, js34, css43;
-var init__34 = __esm({
-  ".svelte-kit/output/server/nodes/8.js"() {
-    init_layout_svelte9();
-    entry34 = "pages/profile/myplace/assets/__layout.svelte-1be75f65.js";
-    js34 = ["pages/profile/myplace/assets/__layout.svelte-1be75f65.js", "chunks/index-27e8d48c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css43 = ["assets/pages/profile/myplace/hazards/__layout.svelte-ca2c6065.css", "assets/Modal-186ac193.css"];
+var index37, entry37, js37, css47;
+var init__37 = __esm({
+  ".svelte-kit/output/server/nodes/10.js"() {
+    init_layout_svelte11();
+    index37 = 10;
+    entry37 = "pages/profile/myplace/assets/__layout.svelte-c4eea37d.js";
+    js37 = ["pages/profile/myplace/assets/__layout.svelte-c4eea37d.js", "chunks/index-574d3e5d.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-3706472a.js", "chunks/SaveProfilePrompt-ffaa3fc8.js"];
+    css47 = ["assets/pages/profile/myplace/__layout.svelte-2254958b.css", "assets/Modal.svelte_svelte_type_style_lang-425b700c.css", "assets/Modal-74a8bea9.css"];
   }
 });
 
@@ -21368,35 +21710,37 @@ var init_index_svelte14 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/31.js
-var __exports35 = {};
-__export(__exports35, {
-  css: () => css44,
-  entry: () => entry35,
-  js: () => js35,
+// .svelte-kit/output/server/nodes/33.js
+var __exports38 = {};
+__export(__exports38, {
+  css: () => css48,
+  entry: () => entry38,
+  index: () => index38,
+  js: () => js38,
   module: () => index_svelte_exports14
 });
-var entry35, js35, css44;
-var init__35 = __esm({
-  ".svelte-kit/output/server/nodes/31.js"() {
+var index38, entry38, js38, css48;
+var init__38 = __esm({
+  ".svelte-kit/output/server/nodes/33.js"() {
     init_index_svelte14();
-    entry35 = "pages/profile/myplace/assets/index.svelte-115a5d23.js";
-    js35 = ["pages/profile/myplace/assets/index.svelte-115a5d23.js", "chunks/index-27e8d48c.js", "chunks/profileOptions-03445d06.js"];
-    css44 = ["assets/pages/profile/myplace/assets/index.svelte-8b879906.css"];
+    index38 = 33;
+    entry38 = "pages/profile/myplace/assets/index.svelte-9d2a761c.js";
+    js38 = ["pages/profile/myplace/assets/index.svelte-9d2a761c.js", "chunks/index-574d3e5d.js", "chunks/profileOptions-03445d06.js"];
+    css48 = ["assets/pages/profile/myplace/assets/index.svelte-8b879906.css"];
   }
 });
 
 // .svelte-kit/output/server/entries/pages/profile/myplace/hazards/__layout.svelte.js
-var layout_svelte_exports10 = {};
-__export(layout_svelte_exports10, {
-  default: () => _layout10
+var layout_svelte_exports12 = {};
+__export(layout_svelte_exports12, {
+  default: () => _layout12
 });
-var _layout10;
-var init_layout_svelte10 = __esm({
+var _layout12;
+var init_layout_svelte12 = __esm({
   ".svelte-kit/output/server/entries/pages/profile/myplace/hazards/__layout.svelte.js"() {
     init_index_5e953619();
-    _layout10 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<section class="${"content min-h-full bg-orange-300"}">${``}
+    _layout12 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<section class="${"min-h-full bg-orange-300"}">${``}
 	<form id="${"profileHazardsForm"}" class="${"flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"}" action="${"/profile/myplace/hazards"}" method="${"POST"}"><div class="${"flex flex-row"}"><div class="${"w-1/3"}"></div>
 			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"} type="${"submit"}" form="${"profileHazardsForm"}">Save My Answers</button>
 			<button class="${"w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"}" ${"hidden"}>Cancel</button></div>
@@ -21405,21 +21749,23 @@ var init_layout_svelte10 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/9.js
-var __exports36 = {};
-__export(__exports36, {
-  css: () => css45,
-  entry: () => entry36,
-  js: () => js36,
-  module: () => layout_svelte_exports10
+// .svelte-kit/output/server/nodes/11.js
+var __exports39 = {};
+__export(__exports39, {
+  css: () => css49,
+  entry: () => entry39,
+  index: () => index39,
+  js: () => js39,
+  module: () => layout_svelte_exports12
 });
-var entry36, js36, css45;
-var init__36 = __esm({
-  ".svelte-kit/output/server/nodes/9.js"() {
-    init_layout_svelte10();
-    entry36 = "pages/profile/myplace/hazards/__layout.svelte-635e7670.js";
-    js36 = ["pages/profile/myplace/hazards/__layout.svelte-635e7670.js", "chunks/index-27e8d48c.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-7232ca99.js", "chunks/SaveProfilePrompt-80006133.js"];
-    css45 = ["assets/pages/profile/myplace/hazards/__layout.svelte-ca2c6065.css", "assets/Modal-186ac193.css"];
+var index39, entry39, js39, css49;
+var init__39 = __esm({
+  ".svelte-kit/output/server/nodes/11.js"() {
+    init_layout_svelte12();
+    index39 = 11;
+    entry39 = "pages/profile/myplace/hazards/__layout.svelte-09364dc4.js";
+    js39 = ["pages/profile/myplace/hazards/__layout.svelte-09364dc4.js", "chunks/index-574d3e5d.js", "chunks/navigation-3f1ea447.js", "chunks/singletons-d1fb5791.js", "chunks/Modal-3706472a.js", "chunks/SaveProfilePrompt-ffaa3fc8.js"];
+    css49 = ["assets/pages/profile/myplace/__layout.svelte-2254958b.css", "assets/Modal.svelte_svelte_type_style_lang-425b700c.css", "assets/Modal-74a8bea9.css"];
   }
 });
 
@@ -21433,7 +21779,7 @@ var init_index_svelte15 = __esm({
   ".svelte-kit/output/server/entries/pages/profile/myplace/hazards/index.svelte.js"() {
     init_index_5e953619();
     init_profileOptions_03445d06();
-    init_TextAreaInput_366ae8ef();
+    init_TextAreaInput_2189c9ee();
     Hazards = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { profileHazards } = $$props;
       if ($$props.profileHazards === void 0 && $$bindings.profileHazards && profileHazards !== void 0)
@@ -21443,15 +21789,15 @@ var init_index_svelte15 = __esm({
       do {
         $$settled = true;
         $$rendered = `
-<div class="${"flex flex-row justify-start items-center mx-2 mt-2"}"><label class="${"tracking-wide mr-4 mt-1 text-orange-900 text-l font-bold mb-1"}" for="${"site_hazards_list"}">Do you have any of the following on your property?</label>
-	<div class="${"flex rounded-lg bg-orange-50 mx-3"}"><div class="${"tracking-wide text-lg font-bold mb-1"}" name="${"site_hazards_list"}">${each(siteHazardsOptions2, ({ value, lable }) => {
+<div class="${"flex flex-col mx-2"}"><div class="${"flex flex-row justify-start items-center mt-3 mx-2"}"><label class="${"tracking-wide mr-4 mt-1 text-orange-900 text-l font-bold mb-1"}" for="${"site_hazards_list"}">Do you have any of the following on your property?</label>
+		<div class="${"flex rounded-lg bg-orange-50 mx-3"}"><div class="${"tracking-wide text-lg font-bold mb-1"}" name="${"site_hazards_list"}">${each(siteHazardsOptions2, ({ value, lable }) => {
           return `<li class="${"list-none sm:text-base sm:font-semibold sm:p-1"}" name="${"site_hazards_list"}"><input name="${"site_hazards"}" type="${"checkbox"}"${add_attribute("value", value, 0)}${~profileHazards[0].site_hazards.indexOf(value) ? add_attribute("checked", true, 1) : ""}>
-					<label for="${"site_hazards"}">${escape(lable)}</label>
-				</li>`;
+						<label for="${"site_hazards"}">${escape(lable)}</label>
+					</li>`;
         })}</div></div></div>
 
-
-<div class="${"flex flex-row justify-start items-center mx-2 mt-2"}">${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
+	
+	<div class="${"flex flex-row justify-start items-center mx-2 mt-2"}">${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
           lableClass: "tracking-wide text-lg font-bold mb-1",
           headingText: "Are there any other hazards on the property that should be noted?",
           divClass: "rounded-lg bg-orange-300 sm:text-xl",
@@ -21465,16 +21811,16 @@ var init_index_svelte15 = __esm({
           }
         }, {})}</div>
 
-
-<div class="${"flex flex-row justify-start items-center mx-2 mt-2"}"><label class="${"tracking-wide text-lg font-bold mb-1"}" for="${"land_adjacent_hazard_list"}">Does any adjoining land represent a hazard?</label>
-	<div class="${"flex flex-row rounded-lg bg-orange-50 p-1 mx-2"}">${each(yesNoMaybeOptions2, ({ value, lable }) => {
+	
+	<div class="${"flex flex-row justify-start items-center mx-2 mt-2"}"><label class="${"tracking-wide text-lg font-bold mb-1"}" for="${"land_adjacent_hazard_list"}">Does any adjoining land represent a hazard?</label>
+		<div class="${"flex flex-row rounded-lg bg-orange-50 p-1 mx-2"}">${each(yesNoMaybeOptions2, ({ value, lable }) => {
           return `<li class="${"list-none sm:text-base sm:font-semibold sm:p-1"}" name="${"land_adjacent_hazard_list"}"><input name="${"land_adjacent_hazard"}" type="${"radio"}"${add_attribute("value", value, 0)}${value === profileHazards[0].land_adjacent_hazard ? add_attribute("checked", true, 1) : ""}>
-				<label for="${"land_adjacent_hazard"}">${escape(lable)}</label>
-			</li>`;
+					<label for="${"land_adjacent_hazard"}">${escape(lable)}</label>
+				</li>`;
         })}</div></div>
 
-
-<div class="${"flex flex-row justify-start items-center mx-2 mt-2"}">${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
+	
+	<div class="${"flex flex-row justify-start items-center mx-2 mt-2"}">${validate_component(TextAreaInput, "TextAreaInput").$$render($$result, {
           lableClass: "tracking-wide text-lg font-bold mb-1",
           headingText: "Are there other areas that concern you or represent a potential threat?",
           divClass: "rounded-lg bg-orange-300 sm:text-xl",
@@ -21486,34 +21832,36 @@ var init_index_svelte15 = __esm({
             profileHazards[0].other_hazards = $$value;
             $$settled = false;
           }
-        }, {})}</div>`;
+        }, {})}</div></div>`;
       } while (!$$settled);
       return $$rendered;
     });
   }
 });
 
-// .svelte-kit/output/server/nodes/32.js
-var __exports37 = {};
-__export(__exports37, {
-  css: () => css46,
-  entry: () => entry37,
-  js: () => js37,
+// .svelte-kit/output/server/nodes/34.js
+var __exports40 = {};
+__export(__exports40, {
+  css: () => css50,
+  entry: () => entry40,
+  index: () => index40,
+  js: () => js40,
   module: () => index_svelte_exports15
 });
-var entry37, js37, css46;
-var init__37 = __esm({
-  ".svelte-kit/output/server/nodes/32.js"() {
+var index40, entry40, js40, css50;
+var init__40 = __esm({
+  ".svelte-kit/output/server/nodes/34.js"() {
     init_index_svelte15();
-    entry37 = "pages/profile/myplace/hazards/index.svelte-c82b06f9.js";
-    js37 = ["pages/profile/myplace/hazards/index.svelte-c82b06f9.js", "chunks/index-27e8d48c.js", "chunks/profileOptions-03445d06.js", "chunks/TextAreaInput-0ce753bd.js"];
-    css46 = ["assets/pages/profile/myplace/hazards/index.svelte-76a28c79.css", "assets/TextAreaInput-1766c24c.css"];
+    index40 = 34;
+    entry40 = "pages/profile/myplace/hazards/index.svelte-48cd6456.js";
+    js40 = ["pages/profile/myplace/hazards/index.svelte-48cd6456.js", "chunks/index-574d3e5d.js", "chunks/profileOptions-03445d06.js", "chunks/TextAreaInput-f555b11d.js"];
+    css50 = ["assets/pages/profile/myplace/hazards/index.svelte-a3408842.css", "assets/TextAreaInput-cd7da125.css"];
   }
 });
 
-// .svelte-kit/output/server/entries/endpoints/profile/index.ts.js
-var index_ts_exports = {};
-__export(index_ts_exports, {
+// .svelte-kit/output/server/entries/endpoints/profile/index.js
+var profile_exports = {};
+__export(profile_exports, {
   get: () => get
 });
 async function get() {
@@ -21535,7 +21883,7 @@ async function get() {
         body: { errorAddProfile }
       };
     }
-    const { data: surveyData2, error: errorSurveyData } = await db.from("survey_responses").select("*").eq("email_address", _session.user.email);
+    const { data: surveyData, error: errorSurveyData } = await db.from("survey_responses").select("*").eq("email_address", _session.user.email);
     if (errorSurveyData) {
       console.log("error Get Survey Data:", errorSurveyData);
       return {
@@ -21543,8 +21891,8 @@ async function get() {
         body: { errorSurveyData }
       };
     }
-    if (surveyData2[0]) {
-      resetProfile(surveyData2[0], _session.user.id);
+    if (surveyData[0]) {
+      resetProfile(surveyData[0], _session.user.id);
     }
   }
   const { data: profileComments, error: errorComments } = await db.from("profile").select("other_comments").eq("id", _session.user.id);
@@ -21614,9 +21962,9 @@ async function resetProfile(survey, id) {
     };
   }
 }
-var init_index_ts = __esm({
-  ".svelte-kit/output/server/entries/endpoints/profile/index.ts.js"() {
-    init_dbClient_ca7c14e1();
+var init_profile = __esm({
+  ".svelte-kit/output/server/entries/endpoints/profile/index.js"() {
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -21626,22 +21974,48 @@ __export(survey_exports, {
   get: () => get2
 });
 async function get2() {
-  const { data: survey_responses, error: error2 } = await db.from("survey_responses").select("*").eq("email_address", "bcycadata@outlook.com");
-  console.log("survey_responses:", survey_responses);
-  if (error2) {
-    console.log("error:", error2);
+  const _session = db.auth.session();
+  const { data: surveyResponses, error: errorsurveyResponses } = await db.from("profile").select("*").eq("id", _session.user.id);
+  let surveyData = surveyResponses[0];
+  console.log("surveyResponses:", surveyResponses[0]);
+  if (surveyData.static_water_available == null) {
+    surveyData.static_water_available = [];
+  }
+  if (surveyData.static_water_available == null) {
+    surveyData.static_water_available = [];
+  }
+  if (surveyData.fireFightingAssets == null) {
+    surveyData.fireFightingAssets = [];
+  }
+  if (surveyData.explosiveHazards == null) {
+    surveyData.explosiveHazards = [];
+  }
+  if (surveyData.communityWorkshopChoices == null) {
+    surveyData.communityWorkshopChoices = [];
+  }
+  if (surveyData.informationSheetChoices == null) {
+    surveyData.informationSheetChoices = [];
+  }
+  if (surveyData.communityMeetingChoices == null) {
+    surveyData.communityMeetingChoices = [];
+  }
+  if (surveyData.stayInTouchChoices == null) {
+    surveyData.stayInTouchChoices = [];
+  }
+  if (errorsurveyResponses) {
+    console.log("error:", errorsurveyResponses);
     return {
       status: 400,
-      body: { error: error2 }
+      body: { errorsurveyResponses }
     };
   }
   return {
-    body: { survey_responses }
+    body: { surveyData }
   };
 }
 var init_survey = __esm({
   ".svelte-kit/output/server/entries/endpoints/survey/index.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -21693,7 +22067,7 @@ async function post({ request }) {
 }
 var init_aboutme = __esm({
   ".svelte-kit/output/server/entries/endpoints/profile/aboutme/index.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -21706,6 +22080,9 @@ __export(mycommunity_exports, {
 async function get4() {
   const _session = db.auth.session();
   const { data: profileCommunity, error: error2 } = await db.from("profile").select("stay_in_touch_choices,postal_address_street,postal_address_suburb,postal_address_postcode,other_comments").eq("id", _session.user.id);
+  if (profileCommunity[0].stay_in_touch_choices == null) {
+    profileCommunity[0].stay_in_touch_choices = [];
+  }
   console.log("profileSettings:", profileCommunity);
   if (error2) {
     console.log("error profileSettings:", error2);
@@ -21741,7 +22118,7 @@ async function post2({ request }) {
 }
 var init_mycommunity = __esm({
   ".svelte-kit/output/server/entries/endpoints/profile/mycommunity/index.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -21797,7 +22174,7 @@ async function post3({ request }) {
 }
 var init_myplace = __esm({
   ".svelte-kit/output/server/entries/endpoints/profile/myplace/index.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -21839,7 +22216,7 @@ async function post4({ request }) {
 }
 var init_settings = __esm({
   ".svelte-kit/output/server/entries/endpoints/profile/settings/index.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -21849,10 +22226,72 @@ __export(survey_exports2, {
   post: () => post5
 });
 async function post5({ request }) {
+  const _session = db.auth.session();
   const body = await request.formData();
-  const bodyObject = getFormBody(body);
-  console.log("Body:  ", bodyObject);
-  console.log("Data:  ", surveyData);
+  const bodyObject = setMissing(getFormBody(body));
+  const { data: surveyAnswers, error: error2 } = await db.from("profile").update({
+    first_name: bodyObject.first_name,
+    family_name: bodyObject.family_name,
+    property_address_street: bodyObject.property_address_street,
+    property_address_suburb: bodyObject.property_address_suburb,
+    property_address_postcode: bodyObject.property_address_postcode,
+    property_owned: bodyObject.property_owned,
+    agent_name: bodyObject.agent_name,
+    agent_phone: bodyObject.agent_phone,
+    sign_posted: bodyObject.sign_posted,
+    truck_access: bodyObject.truck_access,
+    truck_access_other_information: bodyObject.truck_access_other_information,
+    mobile: bodyObject.mobile,
+    phone: bodyObject.phone,
+    mobile_reception: bodyObject.mobile_reception,
+    residency_profile: bodyObject.residency_profile,
+    residents0_18: bodyObject.residents0_18,
+    residents19_50: bodyObject.residents19_50,
+    residents51_70: bodyObject.residents51_70,
+    residents71_: bodyObject.residents71_,
+    vulnerable_residents: bodyObject.vulnerable_residents,
+    number_dogs: bodyObject.number_dogs,
+    number_cats: bodyObject.number_cats,
+    number_birds: bodyObject.number_birds,
+    number_other_pets: bodyObject.number_other_pets,
+    live_stock_present: bodyObject.live_stock_present,
+    live_stock_safe_area: bodyObject.live_stock_safe_area,
+    share_livestock_safe_area: bodyObject.share_livestock_safe_area,
+    static_water_available: setArray(bodyObject.static_water_available),
+    have_stortz: bodyObject.have_stortz,
+    stortz_size: bodyObject.stortz_size,
+    fire_fighting_assets: setArray(bodyObject.fire_fighting_assets),
+    site_hazards: setArray(bodyObject.site_hazards),
+    other_site_hazards: bodyObject.other_site_hazards,
+    fire_hazard_reduction: setArray(bodyObject.fire_hazard_reduction),
+    land_adjacent_hazard: bodyObject.land_adjacent_hazard,
+    other_hazards: bodyObject.other_hazards,
+    rfs_survival_plan: bodyObject.rfs_survival_plan,
+    send_rfs_survival_plan: bodyObject.send_rfs_survival_plan,
+    fire_fighting_experience: bodyObject.fire_fighting_experience,
+    fire_trauma: bodyObject.fire_trauma,
+    community_workshop_choices: setArray(bodyObject.community_workshop_choices),
+    other_community_workshop: bodyObject.other_community_workshop,
+    will_run_community_workshops: bodyObject.will_run_community_workshops,
+    information_sheet_choices: setArray(bodyObject.information_sheet_choices),
+    other_information_sheet: bodyObject.other_information_sheet,
+    community_meeting_choices: setArray(bodyObject.community_meeting_choices),
+    other_community_meeting: bodyObject.other_community_meeting,
+    stay_in_touch_choices: setArray(bodyObject.stay_in_touch_choices),
+    other_comments: bodyObject.other_comments
+  }).eq("id", _session.user.id);
+  console.log("Body Object:  ", bodyObject);
+  if (error2) {
+    console.log("update error profileCommunity:", error2);
+    return {
+      status: 400,
+      body: { error: error2 }
+    };
+  }
+  console.log("Data:  ", surveyAnswers);
+  return {
+    body: { surveyAnswers }
+  };
 }
 function getFormBody(body) {
   return [...body.entries()].reduce((data2, [k, v]) => {
@@ -21861,6 +22300,8 @@ function getFormBody(body) {
       value = true;
     if (value === "false")
       value = false;
+    if (value === "")
+      value = null;
     if (k in data2)
       data2[k] = Array.isArray(data2[k]) ? [...data2[k], value] : [data2[k], value];
     else
@@ -21868,15 +22309,85 @@ function getFormBody(body) {
     return data2;
   }, {});
 }
+function setMissing(data2) {
+  for (i = 0; i < check.length; i++) {
+    if (!data2.hasOwnProperty(check[i])) {
+      data2[check[i]] = null;
+    }
+  }
+  return data2;
+}
+function setArray(value) {
+  if (value == null) {
+    return [];
+  } else if (Array.isArray(value)) {
+    return value;
+  }
+  let result = new Array();
+  result[0] = value;
+  return result;
+}
+var check;
 var init_survey2 = __esm({
   ".svelte-kit/output/server/entries/endpoints/api/userdata/survey.js"() {
-    init_surveyOptions_2d8b3438();
+    init_dbClient_c24cb89a();
+    check = [
+      "first_name",
+      "family_name",
+      "property_address_street",
+      "property_address_suburb",
+      "property_address_postcode",
+      "property_owned",
+      "agent_name",
+      "agent_phone",
+      "sign_posted",
+      "truck_access",
+      "truck_access_other_information",
+      "mobile",
+      "phone",
+      "mobile_reception",
+      "residency_profile",
+      "residents0_18",
+      "residents19_50",
+      "residents51_70",
+      "residents71_",
+      "vulnerable_residents",
+      "number_dogs",
+      "number_cats",
+      "number_birds",
+      "number_other_pets",
+      "live_stock_present",
+      "live_stock_safe_area",
+      "share_livestock_safe_area",
+      "static_water_available",
+      "have_stortz",
+      "stortz_size",
+      "fire_fighting_assets",
+      "site_hazards",
+      "other_site_hazards",
+      "fire_hazard_reduction",
+      "land_adjacent_hazard",
+      "other_hazards",
+      "rfs_survival_plan",
+      "send_rfs_survival_plan",
+      "fire_fighting_experience",
+      "fire_trauma",
+      "community_workshop_choices",
+      "other_community_workshop",
+      "will_run_community_workshops",
+      "information_sheet_choices",
+      "other_information_sheet",
+      "community_meeting_choices",
+      "other_community_meeting",
+      "stay_in_touch_choices",
+      "other_comments"
+    ];
   }
 });
 
 // .svelte-kit/output/server/entries/endpoints/api/userdata/profile.js
-var profile_exports = {};
-__export(profile_exports, {
+var profile_exports2 = {};
+__export(profile_exports2, {
   get: () => get7
 });
 async function get7() {
@@ -21886,9 +22397,9 @@ async function get7() {
     body: { data }
   };
 }
-var init_profile = __esm({
+var init_profile2 = __esm({
   ".svelte-kit/output/server/entries/endpoints/api/userdata/profile.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -21966,7 +22477,7 @@ async function post7({ request }) {
 }
 var init_updateuser = __esm({
   ".svelte-kit/output/server/entries/endpoints/api/auth/updateuser.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -22031,7 +22542,7 @@ async function post9({ request }) {
 }
 var init_signup = __esm({
   ".svelte-kit/output/server/entries/endpoints/api/auth/signup.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -22062,7 +22573,7 @@ async function post10({ request }) {
 }
 var init_signout = __esm({
   ".svelte-kit/output/server/entries/endpoints/api/auth/signout.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -22074,9 +22585,6 @@ __export(signin_exports, {
 async function post11({ request }) {
   const body = await request.formData();
   const email = body.get("email");
-  console.log("supabaseKey:", supabaseKey);
-  console.log("supabaseURL:", supabaseURL);
-  console.log("Please:", db);
   const { user, error: error2 } = await db.auth.signIn({
     email,
     password: body.get("password")
@@ -22112,7 +22620,7 @@ async function post11({ request }) {
 }
 var init_signin = __esm({
   ".svelte-kit/output/server/entries/endpoints/api/auth/signin.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -22125,14 +22633,14 @@ async function post12({ request }) {
   const body = await request.formData();
   console.log(body);
   const { data: data2, error: error2 } = await db.auth.api.resetPasswordForEmail(body.get("email"), {
-    redirectTo: `${supabaseRedirectBase}/redirect`
+    redirectTo: `${supabaseRedirectBase}/auth/redirect`
   });
   console.log("Data: ", data2);
   console.log("Error: ", error2);
 }
 var init_resetpassword = __esm({
   ".svelte-kit/output/server/entries/endpoints/api/auth/resetpassword.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -22145,6 +22653,9 @@ __export(information_exports, {
 async function get8() {
   const _session = db.auth.session();
   const { data: profileInformation, error: error2 } = await db.from("profile").select("information_sheet_choices,other_information_sheet").eq("id", _session.user.id);
+  if (profileInformation[0].information_sheet_choices == null) {
+    profileInformation[0].information_sheet_choices = [];
+  }
   console.log("profileInformation:", profileInformation);
   if (error2) {
     console.log("error profileInformation:", error2);
@@ -22177,7 +22688,7 @@ async function post13({ request }) {
 }
 var init_information = __esm({
   ".svelte-kit/output/server/entries/endpoints/profile/mycommunity/information/index.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -22190,6 +22701,9 @@ __export(meetings_exports, {
 async function get9() {
   const _session = db.auth.session();
   const { data: profileMeetings, error: error2 } = await db.from("profile").select("community_meeting_choices,other_community_meeting").eq("id", _session.user.id);
+  if (profileMeetings[0].community_meeting_choices == null) {
+    profileMeetings[0].community_meeting_choices = [];
+  }
   console.log("profileMeetings:", profileMeetings);
   if (error2) {
     console.log("error profileMeetings:", error2);
@@ -22222,7 +22736,7 @@ async function post14({ request }) {
 }
 var init_meetings = __esm({
   ".svelte-kit/output/server/entries/endpoints/profile/mycommunity/meetings/index.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -22235,6 +22749,9 @@ __export(workshops_exports, {
 async function get10() {
   const _session = db.auth.session();
   const { data: profileWorkshops, error: error2 } = await db.from("profile").select("community_workshop_choices,other_community_workshop,will_run_community_workshops").eq("id", _session.user.id);
+  if (profileWorkshops[0].community_workshop_choices == null) {
+    profileWorkshops[0].community_workshop_choices = [];
+  }
   console.log("profileWorkshops:", profileWorkshops);
   if (error2) {
     console.log("error profileWorkshops:", error2);
@@ -22268,7 +22785,7 @@ async function post15({ request }) {
 }
 var init_workshops = __esm({
   ".svelte-kit/output/server/entries/endpoints/profile/mycommunity/workshops/index.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -22318,7 +22835,7 @@ async function post16({ request }) {
 }
 var init_animals = __esm({
   ".svelte-kit/output/server/entries/endpoints/profile/myplace/animals/index.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -22331,7 +22848,15 @@ __export(assets_exports, {
 async function get12() {
   const _session = db.auth.session();
   const { data: profileAssets, error: error2 } = await db.from("profile").select("static_water_available,have_stortz,stortz_size,fire_fighting_assets,fire_hazard_reduction").eq("id", _session.user.id);
-  console.log("profileAssets:", profileAssets);
+  if (profileAssets[0].static_water_available == null) {
+    profileAssets[0].static_water_available = [];
+  }
+  if (profileAssets[0].fire_fighting_assets == null) {
+    profileAssets[0].fire_fighting_assets = [];
+  }
+  if (profileAssets[0].fire_hazard_reduction == null) {
+    profileAssets[0].fire_hazard_reduction = [];
+  }
   if (error2) {
     console.log("error profileAssets:", error2);
     return {
@@ -22366,7 +22891,7 @@ async function post17({ request }) {
 }
 var init_assets = __esm({
   ".svelte-kit/output/server/entries/endpoints/profile/myplace/assets/index.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -22379,6 +22904,10 @@ __export(hazards_exports, {
 async function get13() {
   const _session = db.auth.session();
   const { data: profileHazards, error: error2 } = await db.from("profile").select("site_hazards,other_site_hazards,land_adjacent_hazard,other_hazards").eq("id", _session.user.id);
+  console.log("profileHazards:", profileHazards);
+  if (profileHazards[0].site_hazards == null) {
+    profileHazards[0].site_hazards = [];
+  }
   if (error2) {
     console.log("error profileHazards:", error2);
     return {
@@ -22412,7 +22941,7 @@ async function post18({ request }) {
 }
 var init_hazards = __esm({
   ".svelte-kit/output/server/entries/endpoints/profile/myplace/hazards/index.js"() {
-    init_dbClient_ca7c14e1();
+    init_dbClient_c24cb89a();
   }
 });
 
@@ -22422,10 +22951,150 @@ __export(serverless_exports, {
   default: () => serverless_default
 });
 module.exports = __toCommonJS(serverless_exports);
-init_install_fetch();
+init_polyfills();
 
 // node_modules/@sveltejs/kit/dist/node.js
 var import_stream = require("stream");
+var setCookie = { exports: {} };
+var defaultParseOptions = {
+  decodeValues: true,
+  map: false,
+  silent: false
+};
+function isNonEmptyString(str) {
+  return typeof str === "string" && !!str.trim();
+}
+function parseString(setCookieValue, options) {
+  var parts = setCookieValue.split(";").filter(isNonEmptyString);
+  var nameValue = parts.shift().split("=");
+  var name = nameValue.shift();
+  var value = nameValue.join("=");
+  options = options ? Object.assign({}, defaultParseOptions, options) : defaultParseOptions;
+  try {
+    value = options.decodeValues ? decodeURIComponent(value) : value;
+  } catch (e2) {
+    console.error("set-cookie-parser encountered an error while decoding a cookie with value '" + value + "'. Set options.decodeValues to false to disable this feature.", e2);
+  }
+  var cookie2 = {
+    name,
+    value
+  };
+  parts.forEach(function(part) {
+    var sides = part.split("=");
+    var key2 = sides.shift().trimLeft().toLowerCase();
+    var value2 = sides.join("=");
+    if (key2 === "expires") {
+      cookie2.expires = new Date(value2);
+    } else if (key2 === "max-age") {
+      cookie2.maxAge = parseInt(value2, 10);
+    } else if (key2 === "secure") {
+      cookie2.secure = true;
+    } else if (key2 === "httponly") {
+      cookie2.httpOnly = true;
+    } else if (key2 === "samesite") {
+      cookie2.sameSite = value2;
+    } else {
+      cookie2[key2] = value2;
+    }
+  });
+  return cookie2;
+}
+function parse(input, options) {
+  options = options ? Object.assign({}, defaultParseOptions, options) : defaultParseOptions;
+  if (!input) {
+    if (!options.map) {
+      return [];
+    } else {
+      return {};
+    }
+  }
+  if (input.headers && input.headers["set-cookie"]) {
+    input = input.headers["set-cookie"];
+  } else if (input.headers) {
+    var sch = input.headers[Object.keys(input.headers).find(function(key2) {
+      return key2.toLowerCase() === "set-cookie";
+    })];
+    if (!sch && input.headers.cookie && !options.silent) {
+      console.warn("Warning: set-cookie-parser appears to have been called on a request object. It is designed to parse Set-Cookie headers from responses, not Cookie headers from requests. Set the option {silent: true} to suppress this warning.");
+    }
+    input = sch;
+  }
+  if (!Array.isArray(input)) {
+    input = [input];
+  }
+  options = options ? Object.assign({}, defaultParseOptions, options) : defaultParseOptions;
+  if (!options.map) {
+    return input.filter(isNonEmptyString).map(function(str) {
+      return parseString(str, options);
+    });
+  } else {
+    var cookies = {};
+    return input.filter(isNonEmptyString).reduce(function(cookies2, str) {
+      var cookie2 = parseString(str, options);
+      cookies2[cookie2.name] = cookie2;
+      return cookies2;
+    }, cookies);
+  }
+}
+function splitCookiesString(cookiesString) {
+  if (Array.isArray(cookiesString)) {
+    return cookiesString;
+  }
+  if (typeof cookiesString !== "string") {
+    return [];
+  }
+  var cookiesStrings = [];
+  var pos = 0;
+  var start;
+  var ch;
+  var lastComma;
+  var nextStart;
+  var cookiesSeparatorFound;
+  function skipWhitespace() {
+    while (pos < cookiesString.length && /\s/.test(cookiesString.charAt(pos))) {
+      pos += 1;
+    }
+    return pos < cookiesString.length;
+  }
+  function notSpecialChar() {
+    ch = cookiesString.charAt(pos);
+    return ch !== "=" && ch !== ";" && ch !== ",";
+  }
+  while (pos < cookiesString.length) {
+    start = pos;
+    cookiesSeparatorFound = false;
+    while (skipWhitespace()) {
+      ch = cookiesString.charAt(pos);
+      if (ch === ",") {
+        lastComma = pos;
+        pos += 1;
+        skipWhitespace();
+        nextStart = pos;
+        while (pos < cookiesString.length && notSpecialChar()) {
+          pos += 1;
+        }
+        if (pos < cookiesString.length && cookiesString.charAt(pos) === "=") {
+          cookiesSeparatorFound = true;
+          pos = nextStart;
+          cookiesStrings.push(cookiesString.substring(start, lastComma));
+          start = pos;
+        } else {
+          pos = lastComma + 1;
+        }
+      } else {
+        pos += 1;
+      }
+    }
+    if (!cookiesSeparatorFound || pos >= cookiesString.length) {
+      cookiesStrings.push(cookiesString.substring(start, cookiesString.length));
+    }
+  }
+  return cookiesStrings;
+}
+setCookie.exports = parse;
+setCookie.exports.parse = parse;
+setCookie.exports.parseString = parseString;
+var splitCookiesString_1 = setCookie.exports.splitCookiesString = splitCookiesString;
 function get_raw_body(req) {
   return new Promise((fulfil, reject) => {
     const h2 = req.headers;
@@ -22482,14 +23151,16 @@ async function getRequest(base2, req) {
 async function setResponse(res, response) {
   const headers = Object.fromEntries(response.headers);
   if (response.headers.has("set-cookie")) {
-    headers["set-cookie"] = response.headers.raw()["set-cookie"];
+    const header = response.headers.get("set-cookie");
+    const split = splitCookiesString_1(header);
+    headers["set-cookie"] = split;
   }
   res.writeHead(response.status, headers);
   if (response.body instanceof import_stream.Readable) {
     response.body.pipe(res);
   } else {
     if (response.body) {
-      res.write(await response.arrayBuffer());
+      res.write(new Uint8Array(await response.arrayBuffer()));
     }
     res.end();
   }
@@ -22540,6 +23211,7 @@ var Root = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { props_2 = null } = $$props;
   let { props_3 = null } = $$props;
   let { props_4 = null } = $$props;
+  let { props_5 = null } = $$props;
   setContext("__svelte__", stores);
   afterUpdate(stores.page.notify);
   if ($$props.stores === void 0 && $$bindings.stores && stores !== void 0)
@@ -22558,6 +23230,8 @@ var Root = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     $$bindings.props_3(props_3);
   if ($$props.props_4 === void 0 && $$bindings.props_4 && props_4 !== void 0)
     $$bindings.props_4(props_4);
+  if ($$props.props_5 === void 0 && $$bindings.props_5 && props_5 !== void 0)
+    $$bindings.props_5(props_5);
   {
     stores.page.set(page2);
   }
@@ -22572,7 +23246,11 @@ ${components[1] ? `${validate_component(components[0] || missing_component, "sve
             default: () => {
               return `${components[4] ? `${validate_component(components[3] || missing_component, "svelte:component").$$render($$result, Object.assign(props_3 || {}), {}, {
                 default: () => {
-                  return `${validate_component(components[4] || missing_component, "svelte:component").$$render($$result, Object.assign(props_4 || {}), {}, {})}`;
+                  return `${components[5] ? `${validate_component(components[4] || missing_component, "svelte:component").$$render($$result, Object.assign(props_4 || {}), {}, {
+                    default: () => {
+                      return `${validate_component(components[5] || missing_component, "svelte:component").$$render($$result, Object.assign(props_5 || {}), {}, {})}`;
+                    }
+                  })}` : `${validate_component(components[4] || missing_component, "svelte:component").$$render($$result, Object.assign(props_4 || {}), {}, {})}`}`;
                 }
               })}` : `${validate_component(components[3] || missing_component, "svelte:component").$$render($$result, Object.assign(props_3 || {}), {}, {})}`}`;
             }
@@ -22604,13 +23282,13 @@ function to_headers(object) {
 }
 function hash(value) {
   let hash2 = 5381;
-  let i2 = value.length;
+  let i3 = value.length;
   if (typeof value === "string") {
-    while (i2)
-      hash2 = hash2 * 33 ^ value.charCodeAt(--i2);
+    while (i3)
+      hash2 = hash2 * 33 ^ value.charCodeAt(--i3);
   } else {
-    while (i2)
-      hash2 = hash2 * 33 ^ value[--i2];
+    while (i3)
+      hash2 = hash2 * 33 ^ value[--i3];
   }
   return (hash2 >>> 0).toString(36);
 }
@@ -22782,12 +23460,12 @@ function devalue(value) {
   }
   walk(value);
   var names = /* @__PURE__ */ new Map();
-  Array.from(counts).filter(function(entry38) {
-    return entry38[1] > 1;
+  Array.from(counts).filter(function(entry41) {
+    return entry41[1] > 1;
   }).sort(function(a, b) {
     return b[1] - a[1];
-  }).forEach(function(entry38, i2) {
-    names.set(entry38[0], getName(i2));
+  }).forEach(function(entry41, i3) {
+    names.set(entry41[0], getName(i3));
   });
   function stringify(thing) {
     if (names.has(thing)) {
@@ -22807,8 +23485,8 @@ function devalue(value) {
       case "Date":
         return "new Date(" + thing.getTime() + ")";
       case "Array":
-        var members = thing.map(function(v, i2) {
-          return i2 in thing ? stringify(v) : "";
+        var members = thing.map(function(v, i3) {
+          return i3 in thing ? stringify(v) : "";
         });
         var tail = thing.length === 0 || thing.length - 1 in thing ? "" : ",";
         return "[" + members.join(",") + tail + "]";
@@ -22852,8 +23530,8 @@ function devalue(value) {
           break;
         case "Array":
           values_1.push("Array(" + thing.length + ")");
-          thing.forEach(function(v, i2) {
-            statements_1.push(name + "[" + i2 + "]=" + stringify(v));
+          thing.forEach(function(v, i3) {
+            statements_1.push(name + "[" + i3 + "]=" + stringify(v));
           });
           break;
         case "Set":
@@ -22922,17 +23600,17 @@ function safeProp(key2) {
 }
 function stringifyString(str) {
   var result = '"';
-  for (var i2 = 0; i2 < str.length; i2 += 1) {
-    var char = str.charAt(i2);
+  for (var i3 = 0; i3 < str.length; i3 += 1) {
+    var char = str.charAt(i3);
     var code = char.charCodeAt(0);
     if (char === '"') {
       result += '\\"';
     } else if (char in escaped2) {
       result += escaped2[char];
     } else if (code >= 55296 && code <= 57343) {
-      var next = str.charCodeAt(i2 + 1);
+      var next = str.charCodeAt(i3 + 1);
       if (code <= 56319 && (next >= 56320 && next <= 57343)) {
-        result += char + str[++i2];
+        result += char + str[++i3];
       } else {
         result += "\\u" + code.toString(16).toUpperCase();
       }
@@ -22968,8 +23646,8 @@ function writable(value, start = noop3) {
           subscriber_queue.push(subscriber, value);
         }
         if (run_queue) {
-          for (let i2 = 0; i2 < subscriber_queue.length; i2 += 2) {
-            subscriber_queue[i2][0](subscriber_queue[i2 + 1]);
+          for (let i3 = 0; i3 < subscriber_queue.length; i3 += 2) {
+            subscriber_queue[i3][0](subscriber_queue[i3 + 1]);
           }
           subscriber_queue.length = 0;
         }
@@ -23045,9 +23723,9 @@ function sha256(data2) {
   if (!key[0])
     precompute();
   const out = init.slice(0);
-  const array = encode$1(data2);
-  for (let i2 = 0; i2 < array.length; i2 += 16) {
-    const w = array.subarray(i2, i2 + 16);
+  const array2 = encode$1(data2);
+  for (let i3 = 0; i3 < array2.length; i3 += 16) {
+    const w = array2.subarray(i3, i3 + 16);
     let tmp;
     let a;
     let b;
@@ -23097,7 +23775,7 @@ function precompute() {
     return (x2 - Math.floor(x2)) * 4294967296;
   }
   let prime = 2;
-  for (let i2 = 0; i2 < 64; prime++) {
+  for (let i3 = 0; i3 < 64; prime++) {
     let is_prime = true;
     for (let factor = 2; factor * factor <= prime; factor++) {
       if (prime % factor === 0) {
@@ -23106,24 +23784,24 @@ function precompute() {
       }
     }
     if (is_prime) {
-      if (i2 < 8) {
-        init[i2] = frac(prime ** (1 / 2));
+      if (i3 < 8) {
+        init[i3] = frac(prime ** (1 / 2));
       }
-      key[i2] = frac(prime ** (1 / 3));
-      i2++;
+      key[i3] = frac(prime ** (1 / 3));
+      i3++;
     }
   }
 }
 function reverse_endianness(bytes) {
-  for (let i2 = 0; i2 < bytes.length; i2 += 4) {
-    const a = bytes[i2 + 0];
-    const b = bytes[i2 + 1];
-    const c = bytes[i2 + 2];
-    const d = bytes[i2 + 3];
-    bytes[i2 + 0] = d;
-    bytes[i2 + 1] = c;
-    bytes[i2 + 2] = b;
-    bytes[i2 + 3] = a;
+  for (let i3 = 0; i3 < bytes.length; i3 += 4) {
+    const a = bytes[i3 + 0];
+    const b = bytes[i3 + 1];
+    const c = bytes[i3 + 2];
+    const d = bytes[i3 + 3];
+    bytes[i3 + 0] = d;
+    bytes[i3 + 1] = c;
+    bytes[i3 + 2] = b;
+    bytes[i3 + 3] = a;
   }
 }
 function encode$1(str) {
@@ -23143,46 +23821,31 @@ var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".s
 function base64(bytes) {
   const l = bytes.length;
   let result = "";
-  let i2;
-  for (i2 = 2; i2 < l; i2 += 3) {
-    result += chars[bytes[i2 - 2] >> 2];
-    result += chars[(bytes[i2 - 2] & 3) << 4 | bytes[i2 - 1] >> 4];
-    result += chars[(bytes[i2 - 1] & 15) << 2 | bytes[i2] >> 6];
-    result += chars[bytes[i2] & 63];
+  let i3;
+  for (i3 = 2; i3 < l; i3 += 3) {
+    result += chars[bytes[i3 - 2] >> 2];
+    result += chars[(bytes[i3 - 2] & 3) << 4 | bytes[i3 - 1] >> 4];
+    result += chars[(bytes[i3 - 1] & 15) << 2 | bytes[i3] >> 6];
+    result += chars[bytes[i3] & 63];
   }
-  if (i2 === l + 1) {
-    result += chars[bytes[i2 - 2] >> 2];
-    result += chars[(bytes[i2 - 2] & 3) << 4];
+  if (i3 === l + 1) {
+    result += chars[bytes[i3 - 2] >> 2];
+    result += chars[(bytes[i3 - 2] & 3) << 4];
     result += "==";
   }
-  if (i2 === l) {
-    result += chars[bytes[i2 - 2] >> 2];
-    result += chars[(bytes[i2 - 2] & 3) << 4 | bytes[i2 - 1] >> 4];
-    result += chars[(bytes[i2 - 1] & 15) << 2];
+  if (i3 === l) {
+    result += chars[bytes[i3 - 2] >> 2];
+    result += chars[(bytes[i3 - 2] & 3) << 4 | bytes[i3 - 1] >> 4];
+    result += chars[(bytes[i3 - 1] & 15) << 2];
     result += "=";
   }
   return result;
 }
 var csp_ready;
-var generate_nonce;
-var generate_hash;
-if (typeof crypto !== "undefined") {
-  const array = new Uint8Array(16);
-  generate_nonce = () => {
-    crypto.getRandomValues(array);
-    return base64(array);
-  };
-  generate_hash = sha256;
-} else {
-  const name = "crypto";
-  csp_ready = import(name).then((crypto2) => {
-    generate_nonce = () => {
-      return crypto2.randomBytes(16).toString("base64");
-    };
-    generate_hash = (input) => {
-      return crypto2.createHash("sha256").update(input, "utf-8").digest().toString("base64");
-    };
-  });
+var array = new Uint8Array(16);
+function generate_nonce() {
+  crypto.getRandomValues(array);
+  return base64(array);
 }
 var quoted = /* @__PURE__ */ new Set([
   "self",
@@ -23228,7 +23891,7 @@ var Csp = class {
   add_script(content) {
     if (this.#script_needs_csp) {
       if (this.#use_hashes) {
-        this.#script_src.push(`sha256-${generate_hash(content)}`);
+        this.#script_src.push(`sha256-${sha256(content)}`);
       } else if (this.#script_src.length === 0) {
         this.#script_src.push(`nonce-${this.nonce}`);
       }
@@ -23237,7 +23900,7 @@ var Csp = class {
   add_style(content) {
     if (this.#style_needs_csp) {
       if (this.#use_hashes) {
-        this.#style_src.push(`sha256-${generate_hash(content)}`);
+        this.#style_src.push(`sha256-${sha256(content)}`);
       } else if (this.#style_src.length === 0) {
         this.#style_src.push(`nonce-${this.nonce}`);
       }
@@ -23366,8 +24029,8 @@ async function render_response({
     print_error("origin", "origin");
     print_error("path", "pathname");
     print_error("query", "searchParams");
-    for (let i2 = 0; i2 < branch.length; i2 += 1) {
-      props[`props_${i2}`] = await branch[i2].loaded.props;
+    for (let i3 = 0; i3 < branch.length; i3 += 1) {
+      props[`props_${i3}`] = await branch[i3].loaded.props;
     }
     rendered = options.root.render(props);
   } else {
@@ -23396,9 +24059,7 @@ async function render_response({
 			hydrate: ${resolve_opts.ssr && page_config.hydrate ? `{
 				status: ${status},
 				error: ${serialize_error(error2)},
-				nodes: [
-					${(branch || []).map(({ node }) => `import(${s2(options.prefix + node.entry)})`).join(",\n						")}
-				],
+				nodes: [${branch.map(({ node }) => node.index).join(", ")}],
 				params: ${devalue(event.params)},
 				routeId: ${s2(event.routeId)}
 			}` : "null"}
@@ -23527,20 +24188,20 @@ function parse$1(str, options) {
   var obj = {};
   var opt = options || {};
   var dec = opt.decode || decode;
-  var index = 0;
-  while (index < str.length) {
-    var eqIdx = str.indexOf("=", index);
+  var index41 = 0;
+  while (index41 < str.length) {
+    var eqIdx = str.indexOf("=", index41);
     if (eqIdx === -1) {
       break;
     }
-    var endIdx = str.indexOf(";", index);
+    var endIdx = str.indexOf(";", index41);
     if (endIdx === -1) {
       endIdx = str.length;
     } else if (endIdx < eqIdx) {
-      index = str.lastIndexOf(";", eqIdx - 1) + 1;
+      index41 = str.lastIndexOf(";", eqIdx - 1) + 1;
       continue;
     }
-    var key2 = str.slice(index, eqIdx).trim();
+    var key2 = str.slice(index41, eqIdx).trim();
     if (obj[key2] === void 0) {
       var val = str.slice(eqIdx + 1, endIdx).trim();
       if (val.charCodeAt(0) === 34) {
@@ -23548,7 +24209,7 @@ function parse$1(str, options) {
       }
       obj[key2] = tryDecode(val, dec);
     }
-    index = endIdx + 1;
+    index41 = endIdx + 1;
   }
   return obj;
 }
@@ -23651,21 +24312,21 @@ function tryDecode(str, decode2) {
     return str;
   }
 }
-var setCookie = { exports: {} };
-var defaultParseOptions = {
+var setCookie2 = { exports: {} };
+var defaultParseOptions2 = {
   decodeValues: true,
   map: false,
   silent: false
 };
-function isNonEmptyString(str) {
+function isNonEmptyString2(str) {
   return typeof str === "string" && !!str.trim();
 }
-function parseString(setCookieValue, options) {
-  var parts = setCookieValue.split(";").filter(isNonEmptyString);
+function parseString2(setCookieValue, options) {
+  var parts = setCookieValue.split(";").filter(isNonEmptyString2);
   var nameValue = parts.shift().split("=");
   var name = nameValue.shift();
   var value = nameValue.join("=");
-  options = options ? Object.assign({}, defaultParseOptions, options) : defaultParseOptions;
+  options = options ? Object.assign({}, defaultParseOptions2, options) : defaultParseOptions2;
   try {
     value = options.decodeValues ? decodeURIComponent(value) : value;
   } catch (e2) {
@@ -23695,8 +24356,8 @@ function parseString(setCookieValue, options) {
   });
   return cookie2;
 }
-function parse2(input, options) {
-  options = options ? Object.assign({}, defaultParseOptions, options) : defaultParseOptions;
+function parse3(input, options) {
+  options = options ? Object.assign({}, defaultParseOptions2, options) : defaultParseOptions2;
   if (!input) {
     if (!options.map) {
       return [];
@@ -23718,21 +24379,21 @@ function parse2(input, options) {
   if (!Array.isArray(input)) {
     input = [input];
   }
-  options = options ? Object.assign({}, defaultParseOptions, options) : defaultParseOptions;
+  options = options ? Object.assign({}, defaultParseOptions2, options) : defaultParseOptions2;
   if (!options.map) {
-    return input.filter(isNonEmptyString).map(function(str) {
-      return parseString(str, options);
+    return input.filter(isNonEmptyString2).map(function(str) {
+      return parseString2(str, options);
     });
   } else {
     var cookies = {};
-    return input.filter(isNonEmptyString).reduce(function(cookies2, str) {
-      var cookie2 = parseString(str, options);
+    return input.filter(isNonEmptyString2).reduce(function(cookies2, str) {
+      var cookie2 = parseString2(str, options);
       cookies2[cookie2.name] = cookie2;
       return cookies2;
     }, cookies);
   }
 }
-function splitCookiesString(cookiesString) {
+function splitCookiesString2(cookiesString) {
   if (Array.isArray(cookiesString)) {
     return cookiesString;
   }
@@ -23787,10 +24448,10 @@ function splitCookiesString(cookiesString) {
   }
   return cookiesStrings;
 }
-setCookie.exports = parse2;
-setCookie.exports.parse = parse2;
-var parseString_1 = setCookie.exports.parseString = parseString;
-var splitCookiesString_1 = setCookie.exports.splitCookiesString = splitCookiesString;
+setCookie2.exports = parse3;
+setCookie2.exports.parse = parse3;
+var parseString_1 = setCookie2.exports.parseString = parseString2;
+var splitCookiesString_12 = setCookie2.exports.splitCookiesString = splitCookiesString2;
 function normalize(loaded2) {
   if (loaded2.fallthrough) {
     throw new Error("fallthrough is no longer supported. Use matchers instead: https://kit.svelte.dev/docs/routing#advanced-routing-matching");
@@ -23848,8 +24509,8 @@ function resolve(base2, path) {
   const baseparts = path_match ? [] : base2.slice(base_match[0].length).split("/");
   const pathparts = path_match ? path.slice(path_match[0].length).split("/") : path.split("/");
   baseparts.pop();
-  for (let i2 = 0; i2 < pathparts.length; i2 += 1) {
-    const part = pathparts[i2];
+  for (let i3 = 0; i3 < pathparts.length; i3 += 1) {
+    const part = pathparts[i3];
     if (part === ".")
       continue;
     else if (part === "..")
@@ -23932,6 +24593,9 @@ async function load_node({
       props: shadow.body || {},
       routeId: event.routeId,
       get session() {
+        if (node.module.prerender ?? options.prerender.default) {
+          throw Error("Attempted to access session from a prerendered page. Session would never be populated.");
+        }
         uses_credentials = true;
         return $session;
       },
@@ -24000,7 +24664,7 @@ async function load_node({
           if (opts.body && typeof opts.body !== "string") {
             throw new Error("Request body must be a string");
           }
-          response = await respond(new Request(new URL(requested, event.url).href, __spreadProps(__spreadValues({}, opts), { credentials: void 0 })), options, __spreadProps(__spreadValues({}, state), {
+          response = await respond(new Request(new URL(requested, event.url).href, __spreadValues({}, opts)), options, __spreadProps(__spreadValues({}, state), {
             initiator: route
           }));
           if (state.prerendering) {
@@ -24022,7 +24686,7 @@ async function load_node({
         }
         const set_cookie = response.headers.get("set-cookie");
         if (set_cookie) {
-          new_cookies.push(...splitCookiesString_1(set_cookie).map((str) => parseString_1(str)));
+          new_cookies.push(...splitCookiesString_12(set_cookie).map((str) => parseString_1(str)));
         }
         const proxy = new Proxy(response, {
           get(response2, key2, _receiver) {
@@ -24322,8 +24986,8 @@ async function respond$1(opts) {
   let set_cookie_headers = [];
   let stuff = {};
   ssr: {
-    for (let i2 = 0; i2 < nodes.length; i2 += 1) {
-      const node = nodes[i2];
+    for (let i3 = 0; i3 < nodes.length; i3 += 1) {
+      const node = nodes[i3];
       let loaded2;
       if (node) {
         try {
@@ -24331,7 +24995,7 @@ async function respond$1(opts) {
             node,
             stuff,
             is_error: false,
-            is_leaf: i2 === nodes.length - 1
+            is_leaf: i3 === nodes.length - 1
           }));
           set_cookie_headers = set_cookie_headers.concat(loaded2.set_cookie_headers);
           if (loaded2.loaded.redirect) {
@@ -24355,12 +25019,12 @@ async function respond$1(opts) {
           branch.push(loaded2);
         }
         if (error2) {
-          while (i2--) {
-            if (route.b[i2]) {
-              const index = route.b[i2];
-              const error_node = await options.manifest._.nodes[index]();
+          while (i3--) {
+            if (route.b[i3]) {
+              const index41 = route.b[i3];
+              const error_node = await options.manifest._.nodes[index41]();
               let node_loaded;
-              let j = i2;
+              let j = i3;
               while (!(node_loaded = branch[j])) {
                 j -= 1;
               }
@@ -24464,11 +25128,11 @@ async function render_page(event, route, options, state, resolve_opts) {
   });
 }
 function negotiate(accept, types2) {
-  const parts = accept.split(",").map((str, i2) => {
+  const parts = accept.split(",").map((str, i3) => {
     const match = /([^/]+)\/([^;]+)(?:;q=([0-9.]+))?/.exec(str);
     if (match) {
       const [, type, subtype, q = "1"] = match;
-      return { type, subtype, q: +q, i: i2 };
+      return { type, subtype, q: +q, i: i3 };
     }
     throw new Error(`Invalid Accept header: ${accept}`);
   }).sort((a, b) => {
@@ -24497,10 +25161,10 @@ function negotiate(accept, types2) {
 }
 function exec(match, names, types2, matchers) {
   const params = {};
-  for (let i2 = 0; i2 < names.length; i2 += 1) {
-    const name = names[i2];
-    const type = types2[i2];
-    const value = match[i2 + 1] || "";
+  for (let i3 = 0; i3 < names.length; i3 += 1) {
+    const name = names[i3];
+    const type = types2[i3];
+    const value = match[i3 + 1] || "";
     if (type) {
       const matcher = matchers[type];
       if (!matcher)
@@ -24551,8 +25215,9 @@ async function respond(request, options, state) {
   }
   const is_data_request = decoded.endsWith(DATA_SUFFIX);
   if (is_data_request) {
-    decoded = decoded.slice(0, -DATA_SUFFIX.length) || "/";
-    url = new URL(url.origin + url.pathname.slice(0, -DATA_SUFFIX.length) + url.search);
+    const data_suffix_length = DATA_SUFFIX.length - (options.trailing_slash === "always" ? 1 : 0);
+    decoded = decoded.slice(0, -data_suffix_length) || "/";
+    url = new URL(url.origin + url.pathname.slice(0, -data_suffix_length) + url.search);
   }
   if (!((_c = state.prerendering) == null ? void 0 : _c.fallback)) {
     const matchers = await options.manifest._.matchers();
@@ -24568,15 +25233,21 @@ async function respond(request, options, state) {
       }
     }
   }
-  if ((route == null ? void 0 : route.type) === "page") {
-    const normalized = normalize_path(url.pathname, options.trailing_slash);
-    if (normalized !== url.pathname && !((_d = state.prerendering) == null ? void 0 : _d.fallback)) {
+  if (route) {
+    if (route.type === "page") {
+      const normalized = normalize_path(url.pathname, options.trailing_slash);
+      if (normalized !== url.pathname && !((_d = state.prerendering) == null ? void 0 : _d.fallback)) {
+        return new Response(void 0, {
+          status: 301,
+          headers: {
+            "x-sveltekit-normalize": "1",
+            location: (normalized.startsWith("//") ? url.origin + normalized : normalized) + (url.search === "?" ? "" : url.search)
+          }
+        });
+      }
+    } else if (is_data_request) {
       return new Response(void 0, {
-        status: 301,
-        headers: {
-          "x-sveltekit-normalize": "1",
-          location: (normalized.startsWith("//") ? url.origin + normalized : normalized) + (url.search === "?" ? "" : url.search)
-        }
+        status: 404
       });
     }
   }
@@ -24769,7 +25440,7 @@ var Server = class {
       manifest: manifest2,
       method_override: { "parameter": "_method", "allowed": [] },
       paths: { base, assets },
-      prefix: assets + "/_app/",
+      prefix: assets + "/_app/immutable/",
       prerender: {
         default: false,
         enabled: true
@@ -24806,7 +25477,7 @@ var manifest = {
   assets: /* @__PURE__ */ new Set(["favicon.png"]),
   mimeTypes: { ".png": "image/png" },
   _: {
-    entry: { "file": "start-88ab2c6d.js", "js": ["start-88ab2c6d.js", "chunks/index-27e8d48c.js", "chunks/paths-396f020f.js", "chunks/preload-helper-e4860ae8.js", "chunks/singletons-d1fb5791.js"], "css": ["assets/start-b7cfbc3f.css"] },
+    entry: { "file": "start-75634942.js", "js": ["start-75634942.js", "chunks/index-574d3e5d.js", "chunks/paths-396f020f.js", "chunks/preload-helper-60cab3ee.js", "chunks/singletons-d1fb5791.js"], "css": ["assets/start-b7cfbc3f.css"] },
     nodes: [
       () => Promise.resolve().then(() => (init__(), __exports)),
       () => Promise.resolve().then(() => (init__2(), __exports2)),
@@ -24844,7 +25515,10 @@ var manifest = {
       () => Promise.resolve().then(() => (init__34(), __exports34)),
       () => Promise.resolve().then(() => (init__35(), __exports35)),
       () => Promise.resolve().then(() => (init__36(), __exports36)),
-      () => Promise.resolve().then(() => (init__37(), __exports37))
+      () => Promise.resolve().then(() => (init__37(), __exports37)),
+      () => Promise.resolve().then(() => (init__38(), __exports38)),
+      () => Promise.resolve().then(() => (init__39(), __exports39)),
+      () => Promise.resolve().then(() => (init__40(), __exports40))
     ],
     routes: [
       {
@@ -24865,7 +25539,7 @@ var manifest = {
         names: [],
         types: [],
         path: "/profile",
-        shadow: () => Promise.resolve().then(() => (init_index_ts(), index_ts_exports)),
+        shadow: () => Promise.resolve().then(() => (init_profile(), profile_exports)),
         a: [0, 3, 4],
         b: [1]
       },
@@ -25020,7 +25694,7 @@ var manifest = {
         types: [],
         path: "/profile/mycommunity",
         shadow: () => Promise.resolve().then(() => (init_mycommunity(), mycommunity_exports)),
-        a: [0, 3, 19],
+        a: [0, 3, 19, 20],
         b: [1]
       },
       {
@@ -25031,7 +25705,7 @@ var manifest = {
         types: [],
         path: "/profile/myplace",
         shadow: () => Promise.resolve().then(() => (init_myplace(), myplace_exports)),
-        a: [0, 3, 20],
+        a: [0, 3, 21, 22],
         b: [1]
       },
       {
@@ -25042,7 +25716,18 @@ var manifest = {
         types: [],
         path: "/profile/settings",
         shadow: () => Promise.resolve().then(() => (init_settings(), settings_exports)),
-        a: [0, 3, 21, 22],
+        a: [0, 3, 23, 24],
+        b: [1]
+      },
+      {
+        type: "page",
+        id: "survey/maybe__layout",
+        pattern: /^\/survey\/maybe__layout\/?$/,
+        names: [],
+        types: [],
+        path: "/survey/maybe__layout",
+        shadow: null,
+        a: [0, 25],
         b: [1]
       },
       {
@@ -25053,7 +25738,7 @@ var manifest = {
         types: [],
         path: "/survey/pagefuture",
         shadow: null,
-        a: [0, 23],
+        a: [0, 26],
         b: [1]
       },
       {
@@ -25064,7 +25749,7 @@ var manifest = {
         types: [],
         path: "/work/index_",
         shadow: null,
-        a: [0, 24],
+        a: [0, 27],
         b: [1]
       },
       {
@@ -25081,7 +25766,7 @@ var manifest = {
         pattern: /^\/api\/userdata\/profile\/?$/,
         names: [],
         types: [],
-        load: () => Promise.resolve().then(() => (init_profile(), profile_exports))
+        load: () => Promise.resolve().then(() => (init_profile2(), profile_exports2))
       },
       {
         type: "endpoint",
@@ -25147,7 +25832,7 @@ var manifest = {
         types: [],
         path: "/profile/mycommunity/information",
         shadow: () => Promise.resolve().then(() => (init_information(), information_exports)),
-        a: [0, 3, 25, 26],
+        a: [0, 3, 19, 28, 29],
         b: [1]
       },
       {
@@ -25158,7 +25843,7 @@ var manifest = {
         types: [],
         path: "/profile/mycommunity/meetings",
         shadow: () => Promise.resolve().then(() => (init_meetings(), meetings_exports)),
-        a: [0, 3, 27, 28],
+        a: [0, 3, 19, 30, 31],
         b: [1]
       },
       {
@@ -25169,7 +25854,7 @@ var manifest = {
         types: [],
         path: "/profile/mycommunity/workshops",
         shadow: () => Promise.resolve().then(() => (init_workshops(), workshops_exports)),
-        a: [0, 3, 29, 30],
+        a: [0, 3, 19, 32, 33],
         b: [1]
       },
       {
@@ -25180,7 +25865,7 @@ var manifest = {
         types: [],
         path: "/profile/myplace/animals",
         shadow: () => Promise.resolve().then(() => (init_animals(), animals_exports)),
-        a: [0, 3, 31, 32],
+        a: [0, 3, 21, 34, 35],
         b: [1]
       },
       {
@@ -25191,7 +25876,7 @@ var manifest = {
         types: [],
         path: "/profile/myplace/assets",
         shadow: () => Promise.resolve().then(() => (init_assets(), assets_exports)),
-        a: [0, 3, 33, 34],
+        a: [0, 3, 21, 36, 37],
         b: [1]
       },
       {
@@ -25202,7 +25887,7 @@ var manifest = {
         types: [],
         path: "/profile/myplace/hazards",
         shadow: () => Promise.resolve().then(() => (init_hazards(), hazards_exports)),
-        a: [0, 3, 35, 36],
+        a: [0, 3, 21, 38, 39],
         b: [1]
       }
     ],
@@ -25213,7 +25898,7 @@ var manifest = {
 };
 
 // .svelte-kit/vercel-tmp/serverless.js
-installFetch();
+installPolyfills();
 var server = new Server(manifest);
 var serverless_default = async (req, res) => {
   let request;
@@ -25239,3 +25924,4 @@ var serverless_default = async (req, res) => {
  */
 /*! fetch-blob. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
 /*! formdata-polyfill. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
+/*! node-domexception. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */

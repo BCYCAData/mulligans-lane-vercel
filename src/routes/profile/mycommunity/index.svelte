@@ -25,7 +25,7 @@
 	};
 </script>
 
-<section class="content min-h-full bg-orange-300">
+<section class="min-h-full bg-orange-300">
 	<form
 		id="profileCommunityForm"
 		on:change={(e) => {

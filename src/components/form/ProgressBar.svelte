@@ -103,7 +103,6 @@
 		color: #999;
 		border-radius: 50%;
 		height: 15px;
-		/* margin-right: 5px; */
 		width: 15px;
 		display: flex;
 		align-items: center;

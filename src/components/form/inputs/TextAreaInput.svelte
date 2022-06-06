@@ -7,7 +7,7 @@
 	export let inputValue;
 </script>
 
-<div class="w-11/12">
+<div class="w-full">
 	<label class={lableClass} for={nameText}>{headingText}</label>
 	<div class={divClass}>
 		<textarea

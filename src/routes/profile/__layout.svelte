@@ -2,9 +2,6 @@
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 	import Breadcrumbs from '$components/Breadcrumbs.svelte';
-
-	// let unsaved = false;
-	// let modalVisible = false;
 </script>
 
 <div class="wrapper grid  min-h-full bg-orange-100">
@@ -14,14 +11,11 @@
 		<div class="text-orange-900">
 			Burrell Creek Youth & Community Association Inc.
 		</div>
-		<!-- <button hidden={!unsaved} type="submit" form="profileForm"
-			>Save My Answers</button
-		> -->
 	</header>
 	<section class="crumbs p-0 max-h-[35px] bg-stone-200">
 		<Breadcrumbs path={$page.url.pathname} />
 	</section>
-	<section class="content min-h-full text-orange-900 bg-orange-300">
+	<section class="min-h-full text-orange-900 bg-orange-300">
 		<slot />
 	</section>
 	<aside class="side p-1 flex flex-col bg-stone-200">
@@ -127,9 +121,9 @@
 	.main-head {
 		grid-area: header;
 	}
-	.content {
+	/* .content {
 		grid-area: content;
-	}
+	} */
 	.crumbs {
 		grid-area: crumbs;
 	}

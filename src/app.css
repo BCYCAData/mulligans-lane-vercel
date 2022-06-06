@@ -31,6 +31,7 @@ body {
 		var(--secondary-color) 10.45%,
 		var(--tertiary-color) 41.35%
 	);
+	padding: 0;
 }
 
 #svelte {
@@ -59,16 +60,12 @@ a:hover {
 }
 
 h1 {
-	font-size: 1.25rem;
-	font-weight: bold;
-	text-align: center;
+	margin: 0;
 }
 
 h2 {
-	font-size: 1rem;
-	font-weight: bold;
+	margin: 0;
 }
 h3 {
-	font-size: 0.91rem;
-	font-weight: bold;
+	margin: 0;
 }

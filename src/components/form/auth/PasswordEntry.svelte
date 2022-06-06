@@ -9,8 +9,8 @@
 	$: confirmPassword = '';
 	$: canGo = password === confirmPassword && strength === 4;
 
-	let heading = '';
-	let submitText = '';
+	export let heading = 'Please set your new password.';
+	export let submitText = 'Submit';
 
 	if (redirectType == 'invite') {
 		heading = 'Please Set a Password';
@@ -33,10 +33,10 @@
 	class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
 >
 	<div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-		<h1 class="mb-8 text-3xl text-center">{heading}</h1>
+		<h1 class="mb-8 text-3xl text-orange-800 text-center">{heading}</h1>
 		<form action="/api/auth/updateuser" method="POST">
 			<label
-				class="inline uppercase tracking-wide text-orange-500 text-xs font-bold"
+				class="inline uppercase tracking-wide text-orange-900 text-xs font-bold"
 				for="password"
 				>Password:<span
 					class="toggle-password text-3xl text-gray-700 font-normal ml-3  align-middle "
@@ -57,7 +57,7 @@
 				value={password}
 			/>
 			<label
-				class="inline uppercase tracking-wide text-orange-500 text-xs font-bold"
+				class="inline uppercase tracking-wide text-orange-900 text-xs font-bold"
 				for="confirmPassword"
 				>Confirm Password:<span
 					class="toggle-password text-3xl text-gray-700 font-normal ml-3  align-middle "
@@ -87,19 +87,19 @@
 
 			<ul>
 				<li>
-					<span class="text-[10px]">{validations[0] ? '✔️' : '❌'}</span>
+					<span class="text-xs">{validations[0] ? '✔️' : '❌'}</span>
 					<span class="text-sm"> must be at least 5 characters</span>
 				</li>
 				<li>
-					<span class="text-[10px]">{validations[1] ? '✔️' : '❌'}</span>
+					<span class="text-xs">{validations[1] ? '✔️' : '❌'}</span>
 					<span class="text-sm"> must contain a capital letter</span>
 				</li>
 				<li>
-					<span class="text-[10px]">{validations[2] ? '✔️' : '❌'}</span>
+					<span class="text-xs">{validations[2] ? '✔️' : '❌'}</span>
 					<span class="text-sm"> must contain a number</span>
 				</li>
 				<li>
-					<span class="text-[10px]">{validations[3] ? '✔️' : '❌'}</span>
+					<span class="text-xs">{validations[3] ? '✔️' : '❌'}</span>
 					<span class="text-sm"> must contain one symbol ($&+,:;=?#^!)</span>
 				</li>
 			</ul>
@@ -107,7 +107,7 @@
 			<!-- <button disabled={strength < 4}>Sign Up</button> -->
 			<button
 				type="submit"
-				class="w-full text-center py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"
+				class="w-full text-center text-xl py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"
 				disabled={!canGo}>{submitText}</button
 			>
 		</form>
