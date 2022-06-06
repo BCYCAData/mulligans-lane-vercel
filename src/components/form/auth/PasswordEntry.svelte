@@ -57,12 +57,15 @@
 			<input
 				id="password"
 				type={showPassword ? 'text' : 'password'}
+				on:change={(e) => {
+					updatePassword = password;
+				}}
 				class="block border border-orange-700 w-full py-3 rounded mb-4"
 				name="password"
 				required={true}
 				placeholder="New Password"
 				on:input={validatePassword}
-				bind:value={password}
+				value={password}
 			/>
 			<label
 				class="inline uppercase tracking-wide text-orange-900 text-xs font-bold"
