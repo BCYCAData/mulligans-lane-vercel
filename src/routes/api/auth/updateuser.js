@@ -5,7 +5,6 @@ export async function post({ request }) {
 	const _session = await db.auth.session();
 	console.log(_session);
 	const token = _session?.access_token;
-	console.log(password);
 	const body = await request.formData();
 	const formBody = await getFormBody(body);
 	password = formBody.password;
