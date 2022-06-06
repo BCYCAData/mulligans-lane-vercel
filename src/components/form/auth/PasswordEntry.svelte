@@ -27,14 +27,20 @@
 		];
 		strength = validations.reduce((acc, cur) => acc + cur, 0);
 	}
+
+	async function setPassword() {
+		const { data, error } = await db.auth.update({ password: password });
+		console.log('data', data);
+		console.log('error', error);
+	}
 </script>
 
 <div
 	class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
 >
 	<div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-		<h1 class="mb-8 text-3xl text-orange-800 text-center">{heading}</h1>
-		<form action="/api/auth/updateuser" method="POST">
+		<form on:submit|preventDefault={setPassword}>
+			<!-- <form action="/api/auth/updateuser" method="POST"> -->
 			<label
 				class="inline uppercase tracking-wide text-orange-900 text-xs font-bold"
 				for="password"
