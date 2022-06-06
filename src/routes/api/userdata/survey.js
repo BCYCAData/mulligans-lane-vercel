@@ -1,5 +1,5 @@
 import { db } from '$lib/dbClient';
-import { getFormBody } from '$lib';
+import { getFormBody } from '$lib/utils';
 
 const check = [
 	'first_name',
