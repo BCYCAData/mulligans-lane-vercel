@@ -30,8 +30,8 @@
 		strength = validations.reduce((acc, cur) => acc + cur, 0);
 	}
 
-	async function setPassword(updatePassword) {
-		const { data, error } = await db.auth.update({ password: updatePassword });
+	async function setPassword() {
+		const { data, error } = await db.auth.update({ password: password });
 		console.log('data', data);
 		console.log('error', error);
 	}
@@ -41,7 +41,7 @@
 	class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
 >
 	<div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-		<form on:submit|preventDefault={setPassword($confirmPassword)}>
+		<form on:submit|preventDefault={setPassword()}>
 			<!-- <form action="/api/auth/updateuser" method="POST"> -->
 			<label
 				class="inline uppercase tracking-wide text-orange-900 text-xs font-bold"
@@ -62,7 +62,7 @@
 				required={true}
 				placeholder="New Password"
 				on:input={validatePassword}
-				value={password}
+				bind:value={password}
 			/>
 			<label
 				class="inline uppercase tracking-wide text-orange-900 text-xs font-bold"
