@@ -1,5 +1,5 @@
 <script>
-	import { db } from '$lib/dbClient';
+	import { supabaseClient } from '$lib/dbClient';
 	export let redirectType;
 
 	let strength = 0;
@@ -31,11 +31,13 @@
 	}
 
 	async function setPassword() {
-		const _session = await db.auth.session();
+		const _session = await supabaseClient.auth.session();
 		const token = _session?.access_token;
 
-		db.auth.setAuth(token);
-		const { data, error } = await db.auth.update({ password: password });
+		supabaseClient.auth.setAuth(token);
+		const { data, error } = await supabaseClient.auth.update({
+			password: password
+		});
 		console.log('data', data);
 		console.log('error', error);
 	}
@@ -68,6 +70,7 @@
 				name="password"
 				required={true}
 				placeholder="New Password"
+				autocomplete="new-password"
 				on:input={validatePassword}
 				value={password}
 			/>
@@ -90,6 +93,7 @@
 				name="confirmPassword"
 				required={true}
 				placeholder="Confirm New Password"
+				autocomplete="new-password"
 				on:input={validatePassword}
 				value={confirmPassword}
 			/>
@@ -119,7 +123,6 @@
 				</li>
 			</ul>
 
-			<!-- <button disabled={strength < 4}>Sign Up</button> -->
 			<button
 				type="submit"
 				class="w-full text-center text-xl py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"

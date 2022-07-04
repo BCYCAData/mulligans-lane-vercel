@@ -3,7 +3,7 @@
 </script>
 
 <div
-	class="bg-red-100 rounded-lg py-3 px-4 mb-3 text-base text-red-700 inline-flex items-center w-full"
+	class="bg-red-100 rounded-lg py-3 my-1 text-base text-red-700 inline-flex items-center w-full"
 	role="alert"
 >
 	<svg
@@ -11,7 +11,7 @@
 		focusable="false"
 		data-prefix="fas"
 		data-icon="times-circle"
-		class="w-4 h-4 mr-2 fill-current"
+		class="w-4 h-4 m-2 fill-current"
 		role="img"
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 512 512"

@@ -8,23 +8,24 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta http-equiv="content-security-policy" content=""><title>Home</title>
 	<link rel="stylesheet" href="/_app/immutable/assets/start-b7cfbc3f.css">
-	<link rel="stylesheet" href="/_app/immutable/assets/pages/__layout.svelte-e0a20162.css">
+	<link rel="stylesheet" href="/_app/immutable/assets/pages/__layout.svelte-535341be.css">
 	<link rel="stylesheet" href="/_app/immutable/assets/pages/index.svelte-5d00bf84.css">
 	<link rel="stylesheet" href="/_app/immutable/assets/Modal.svelte_svelte_type_style_lang-425b700c.css">
 	<link rel="stylesheet" href="/_app/immutable/assets/Modal-74a8bea9.css">
-	<link rel="stylesheet" href="/_app/immutable/assets/AddressChallenge-0d33c795.css">
-	<link rel="modulepreload" href="/_app/immutable/start-75634942.js">
-	<link rel="modulepreload" href="/_app/immutable/chunks/index-574d3e5d.js">
-	<link rel="modulepreload" href="/_app/immutable/chunks/paths-396f020f.js">
+	<link rel="stylesheet" href="/_app/immutable/assets/AddressChallenge-353962e0.css">
+	<link rel="modulepreload" href="/_app/immutable/start-9b80e55a.js">
+	<link rel="modulepreload" href="/_app/immutable/chunks/index-b429d93a.js">
+	<link rel="modulepreload" href="/_app/immutable/chunks/index-d2d21406.js">
 	<link rel="modulepreload" href="/_app/immutable/chunks/preload-helper-60cab3ee.js">
 	<link rel="modulepreload" href="/_app/immutable/chunks/singletons-d1fb5791.js">
-	<link rel="modulepreload" href="/_app/immutable/pages/__layout.svelte-db3676ce.js">
-	<link rel="modulepreload" href="/_app/immutable/chunks/dbClient-c8a5cf69.js">
+	<link rel="modulepreload" href="/_app/immutable/pages/__layout.svelte-bd4265f8.js">
+	<link rel="modulepreload" href="/_app/immutable/chunks/stores-a39adcc4.js">
+	<link rel="modulepreload" href="/_app/immutable/chunks/dbClient-bf869f33.js">
 	<link rel="modulepreload" href="/_app/immutable/chunks/_commonjsHelpers-7d66b65f.js">
-	<link rel="modulepreload" href="/_app/immutable/chunks/stores-e24d1d4b.js">
-	<link rel="modulepreload" href="/_app/immutable/pages/index.svelte-965ae9e8.js">
-	<link rel="modulepreload" href="/_app/immutable/chunks/Modal-3706472a.js">
-	<link rel="modulepreload" href="/_app/immutable/chunks/AddressChallenge-36588023.js">
+	<link rel="modulepreload" href="/_app/immutable/chunks/navigation-c2011339.js">
+	<link rel="modulepreload" href="/_app/immutable/pages/index.svelte-4108b6c7.js">
+	<link rel="modulepreload" href="/_app/immutable/chunks/Modal-454a9f1a.js">
+	<link rel="modulepreload" href="/_app/immutable/chunks/AddressChallenge-3b98089b.js">
 	<link rel="modulepreload" href="/_app/immutable/chunks/utils-b80a401c.js">
 </head>
 
@@ -32,14 +33,13 @@
 	<div id="svelte">
 
 
-<div class="grid w-11/12 mx-auto min-h-screen svelte-1jjqws8" id="wrapper"><header class="col-span-8 row-span-1"><nav class="container h-15 flex justify-around items-center mx-auto bg-orange-300">
-	<div><a class="absolute top-0" aria-label="Hall photo" href="https://www.facebook.com/Burrell-Creek-Youth-and-Community-Association-Inc-1584955455117833/?__tn__=-UC*F"><img class="rounded-full p-1" src="/_app/immutable/assets/hall_logo_image_90px-c8a9d17c.png" alt="BCYCA Inc"></a></div>
-	
+
+
+<div class="grid w-11/12 mx-auto min-h-screen svelte-1jjqws8" id="wrapper"><header class="col-span-8 row-span-1"><nav class="container h-15 flex justify-around items-center mx-auto bg-orange-300"><div><a class="absolute top-0" aria-label="Hall photo" href="https://www.facebook.com/Burrell-Creek-Youth-and-Community-Association-Inc-1584955455117833/?__tn__=-UC*F"><img class="rounded-full p-1" src="/_app/immutable/assets/hall_logo_image_90px-c8a9d17c.png" alt="BCYCA Inc"></a></div>
 	
 	<div class="flex ml-[89px] items-center"><div class="hidden md:block"><a sveltekit:prefetch href="/" class="svelte-173hj3l active"><button class="py-2 px-2 font-semibold text-white bg-orange-500 rounded-xl svelte-173hj3l">Home</button></a>
 			<a sveltekit:prefetch href="/about" class="svelte-173hj3l"><button class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black svelte-173hj3l">About</button></a>
 			<a sveltekit:prefetch href="/contact" class="svelte-173hj3l"><button class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black svelte-173hj3l">Contact Us</button></a></div></div>
-	
 
 	
 	<div class="hidden md:flex items-center"><a sveltekit:prefetch href="/auth/signin" class="svelte-173hj3l"><button class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black svelte-173hj3l">Sign In</button></a></div>
@@ -47,7 +47,6 @@
 	</div>
 	
 	<div class="md:hidden flex items-center"><button class="outline-none bg-transparent mobile-menu-button"><svg class="w-6 h-6 text-orange-500 hover:text-purple-500 " x-show="!showMenu" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div>
-	
 
 	
 	<div class="bg-orange-300 absolute w-full mobile-menu hidden"><ul class="space-y-2 list-none"><li><a sveltekit:prefetch href="/" class="svelte-173hj3l active"><button class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black svelte-173hj3l">Home</button></a></li>
@@ -55,7 +54,7 @@
 			<li><a sveltekit:prefetch href="/contact" class="svelte-173hj3l"><button class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black svelte-173hj3l">Contact Us</button></a></li>
 			<li><a sveltekit:prefetch href="/auth/signin" class="svelte-173hj3l"><button class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black svelte-173hj3l">Sign In</button></a></li></ul></div>
 </nav></header>
-	<main class="col-span-8 row-span-22">
+		<main class="col-span-8 row-span-22">
 
 <section class="flex flex-col items-center text-center mt-5 sm:mt-1 mx-auto h-full max-w-3xl text-gray-800"><h1 class="title-font font-bold underline hidden sm:block sm:text-2xl text-orange-600">Strengthening OUR Community
 	</h1>
@@ -78,18 +77,17 @@
 		<span><a class="text-blue-600" href="https://forms.gle/z6dHgPxJbS7AhGLa6">https://forms.gle/z6dHgPxJbS7AhGLa6</a></span></p>
 	<p class="text-sm md:text-lg mt-1 font-semibold">Want more information?</p>
 	<p class="text-sm md:text-lg mt-0 font-semibold">Call Helen 0424 515 963</p></section></main>
-	<footer class="col-span-8 row-span-1 sticky bottom-0"><div class="flex content-center items-center justify-around bg-orange-600 text-light-600 w-full h-[45px]"><a sveltekit:prefetch href="/policies/termsofservice">Terms of Service</a>
-				<h3>Building a safer connected community</h3>
-				<a sveltekit:prefetch href="/policies/privacy">Privacy Policy</a></div></footer>
-</div>
+		<footer class="col-span-8 row-span-1 sticky bottom-0"><div class="flex content-center items-center justify-around bg-orange-600 text-light-600 w-full h-[45px]"><a sveltekit:prefetch href="/policies/termsofservice">Terms of Service</a>
+					<h3>Building a safer connected community</h3>
+					<a sveltekit:prefetch href="/policies/privacy">Privacy Policy</a></div></footer></div>
 
 
-		<script type="module" data-sveltekit-hydrate="11vc6im">
-		import { start } from "/_app/immutable/start-75634942.js";
+		<script type="module" data-sveltekit-hydrate="17ctqes">
+		import { start } from "/_app/immutable/start-9b80e55a.js";
 		start({
-			target: document.querySelector('[data-sveltekit-hydrate="11vc6im"]').parentNode,
+			target: document.querySelector('[data-sveltekit-hydrate="17ctqes"]').parentNode,
 			paths: {"base":"","assets":""},
-			session: (function(a){return {user:"guest",signInError:a,authenticated:false,authEvent:a}}("")),
+			session: (function(a){return {user:a,accessToken:a,error:void 0}}(null)),
 			route: true,
 			spa: false,
 			trailing_slash: "never",

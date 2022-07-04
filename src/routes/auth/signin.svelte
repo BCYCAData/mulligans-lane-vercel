@@ -1,18 +1,31 @@
 <script>
-	import { browser } from '$app/env';
-	import { session } from '$app/stores';
-	import AuthErrorMessage from '$components/form/AuthErrorMessage.svelte';
+	// import AuthErrorMessage from '$components/form/AuthErrorMessage.svelte';
+
+	import { supabaseClient } from '$lib/dbClient';
 
 	import Modal from '$components/Modal.svelte';
 	import AddressChallenge from '$components/form/addressChallenge/AddressChallenge.svelte';
 
-	let modalVisible = false;
+	let loading = false;
+	let email;
+	let password;
 
-	if (browser) {
-		if ($session['user'] === 'guest' || $session['user'] === '') {
-			$session['signInError'] = 'none';
+	const handleSubmit = async () => {
+		try {
+			loading = true;
+			const { error } = await supabaseClient.auth.signIn({
+				email: email,
+				password: password
+			});
+			if (error) throw error;
+		} catch (error) {
+			alert(error.error_description || error.message);
+		} finally {
+			loading = false;
 		}
-	}
+	};
+
+	let modalVisible = false;
 </script>
 
 <div class="flex flex-col items-center max-w-sm max-w-screen-xsm mx-auto">
@@ -20,8 +33,7 @@
 		class="bg-white p-6 sm:ml-0 rounded shadow-md text-black w-5/6 sm:w-full"
 	>
 		<h1 class="text-2xl text-center">Welcome Back</h1>
-		<form action="/api/auth/signin" method="POST">
-			<!-- <form on:submit|preventDefault={handleSubmit}> -->
+		<form on:submit|preventDefault={handleSubmit}>
 			<input
 				id="email"
 				type="email"
@@ -30,6 +42,7 @@
 				required={true}
 				placeholder="Email"
 				autocomplete="email"
+				bind:value={email}
 			/>
 			<input
 				id="password"
@@ -38,6 +51,8 @@
 				name="password"
 				required={true}
 				placeholder="Password"
+				autocomplete="current-password"
+				bind:value={password}
 			/>
 			<div class="flex justify-between mt-4 mb-3">
 				<a
@@ -47,9 +62,9 @@
 					Forgot Your Password? &lt&lt&lt
 				</a>
 			</div>
-			{#if $session['signInError'] !== 'none' && $session['signInError'] !== ''}
+			<!-- {#if $session['signInError'] !== 'none' && $session['signInError'] !== ''}
 				<AuthErrorMessage message={$session['signInError']} />
-			{/if}
+			{/if} -->
 
 			<button
 				type="submit"

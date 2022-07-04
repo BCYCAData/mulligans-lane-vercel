@@ -1,11 +1,11 @@
 <script>
-	import { db, supabaseRedirectBase } from '$lib/dbClient';
+	import { supabaseClient, supabaseRedirectBase } from '$lib/dbClient';
 
 	let systemError = false;
 
 	async function resetPassword() {
 		console.log('Base: ', supabaseRedirectBase);
-		const { data, error } = await db.auth.api.resetPasswordForEmail(
+		const { data, error } = await supabaseClient.auth.api.resetPasswordForEmail(
 			'bcycadata@outlook.com',
 			{
 				redirectTo: `${supabaseRedirectBase}/auth/resetpassword`

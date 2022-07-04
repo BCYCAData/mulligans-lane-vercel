@@ -15,13 +15,6 @@ export const yesNoOptions = [
 	{ value: false, lable: 'No' }
 ];
 
-// export const accessOptions = [
-// 	{ value: 'All', lable: 'All gates are more than 2.5 metres wide' },
-// 	{ value: 'Most', lable: 'Most gates are more than 2.5 metres wide' },
-// 	{ value: 'No', lable: 'No' },
-// 	{ value: otherAccessOption, lable: 'Other' }
-// ];
-
 export const yesNoMaybeOptions = [
 	{ value: 'Y', lable: 'Yes' },
 	{ value: 'N', lable: 'No' },
@@ -118,97 +111,97 @@ export const accessOptions = [
 	{ value: 4, lable: 'Other' }
 ];
 
-export let profileData = {
-	first_name: '',
-	family_name: '',
-	property_address: '',
-	home_address: '',
-	contact_address: '',
-	residency_profile: '',
-	sign_posted: false,
-	truck_access: '',
-	truck_access_other: '',
-	mobile: '',
-	phone: '',
-	mobile_reception: '',
-	residents0_18: '',
-	residents19_50: '',
-	residents51_70: '',
-	residents71_: '',
-	vulnerable_residents: false,
-	number_dogs: '',
-	number_cats: '',
-	number_birds: '',
-	number_other_pets: '',
-	live_stock_present: false,
-	live_stock_safe_area: '',
-	share_livestock_safe_area: '',
-	static_water_available: [],
-	have_stortz: '',
-	stortz_size: '',
-	fire_fighting_assets: [],
-	site_hazards: [],
-	other_site_hazards: '',
-	fire_hazard_reduction: [],
-	land_adjacent_hazard: '',
-	other_hazards: '',
-	rfs_survival_plan: '',
-	send_rfs_survival_plan: '',
-	fire_fighting_experience: '',
-	fire_trauma: false,
-	plan_to_leave_before_fire: '',
-	plan_to_leave_before_flood: '',
-	community_workshop_choices: [],
-	other_community_workshop: '',
-	will_run_community_workshops: '',
-	information_sheet_choices: [],
-	other_information_sheet: '',
-	community_meeting_choices: [],
-	other_community_meeting: '',
-	stay_in_touch_choices: [],
-	other_comments: ''
-};
+// export let profileData = {
+// 	first_name: '',
+// 	family_name: '',
+// 	property_address: '',
+// 	home_address: '',
+// 	contact_address: '',
+// 	residency_profile: '',
+// 	sign_posted: false,
+// 	truck_access: '',
+// 	truck_access_other: '',
+// 	mobile: '',
+// 	phone: '',
+// 	mobile_reception: '',
+// 	residents0_18: '',
+// 	residents19_50: '',
+// 	residents51_70: '',
+// 	residents71_: '',
+// 	vulnerable_residents: false,
+// 	number_dogs: '',
+// 	number_cats: '',
+// 	number_birds: '',
+// 	number_other_pets: '',
+// 	live_stock_present: false,
+// 	live_stock_safe_area: '',
+// 	share_livestock_safe_area: '',
+// 	static_water_available: [],
+// 	have_stortz: '',
+// 	stortz_size: '',
+// 	fire_fighting_assets: [],
+// 	site_hazards: [],
+// 	other_site_hazards: '',
+// 	fire_hazard_reduction: [],
+// 	land_adjacent_hazard: '',
+// 	other_hazards: '',
+// 	rfs_survival_plan: '',
+// 	send_rfs_survival_plan: '',
+// 	fire_fighting_experience: '',
+// 	fire_trauma: false,
+// 	plan_to_leave_before_fire: '',
+// 	plan_to_leave_before_flood: '',
+// 	community_workshop_choices: [],
+// 	other_community_workshop: '',
+// 	will_run_community_workshops: '',
+// 	information_sheet_choices: [],
+// 	other_information_sheet: '',
+// 	community_meeting_choices: [],
+// 	other_community_meeting: '',
+// 	stay_in_touch_choices: [],
+// 	other_comments: ''
+// };
 
-export let property_address = '';
-export let residency_profile = '';
-export let sign_posted = true;
-export let truck_access = '';
-export let truck_access_other = '';
-export let mobile = '';
-export let phone = '';
-export let mobile_reception = '';
-export let residents0_18 = '';
-export let residents19_50 = '';
-export let residents51_70 = '';
-export let residents71_ = '';
-export let vulnerable_residents = false;
-export let number_dogs = '';
-export let number_cats = '';
-export let number_birds = '';
-export let number_other_pets = '';
-export let live_stock_present = false;
-export let live_stock_safe_area = '';
-export let share_livestock_safe_area = '';
-export let static_water_available = [];
-export let have_stortz = '';
-export let stortz_size = '';
-export let fire_fighting_assets = [];
-export let site_hazards = [];
-export let other_site_hazards = '';
-export let fire_hazard_reduction = [];
-export let land_adjacent_hazard = '';
-export let other_hazards = '';
-export let rfs_survival_plan = '';
-export let fire_fighting_experience = '';
-export let fire_trauma = false;
-export let plan_to_leave_before_fire = '';
-export let plan_to_leave_before_flood = '';
-export let community_workshop_choices = [];
-export let other_community_workshop = '';
-export let will_run_community_workshops = '';
-export let information_sheet_choices = [];
-export let other_information_sheet = '';
-export let community_meeting_choices = [];
-export let other_community_meeting = '';
-export let stay_in_touch_choices = [];
-export let other_comments = '';
+// export let property_address = '';
+// export let residency_profile = '';
+// export let sign_posted = true;
+// export let truck_access = '';
+// export let truck_access_other = '';
+// export let mobile = '';
+// export let phone = '';
+// export let mobile_reception = '';
+// export let residents0_18 = '';
+// export let residents19_50 = '';
+// export let residents51_70 = '';
+// export let residents71_ = '';
+// export let vulnerable_residents = false;
+// export let number_dogs = '';
+// export let number_cats = '';
+// export let number_birds = '';
+// export let number_other_pets = '';
+// export let live_stock_present = false;
+// export let live_stock_safe_area = '';
+// export let share_livestock_safe_area = '';
+// export let static_water_available = [];
+// export let have_stortz = '';
+// export let stortz_size = '';
+// export let fire_fighting_assets = [];
+// export let site_hazards = [];
+// export let other_site_hazards = '';
+// export let fire_hazard_reduction = [];
+// export let land_adjacent_hazard = '';
+// export let other_hazards = '';
+// export let rfs_survival_plan = '';
+// export let fire_fighting_experience = '';
+// export let fire_trauma = false;
+// export let plan_to_leave_before_fire = '';
+// export let plan_to_leave_before_flood = '';
+// export let community_workshop_choices = [];
+// export let other_community_workshop = '';
+// export let will_run_community_workshops = '';
+// export let information_sheet_choices = [];
+// export let other_information_sheet = '';
+// export let community_meeting_choices = [];
+// export let other_community_meeting = '';
+// export let stay_in_touch_choices = [];
+// export let other_comments = '';

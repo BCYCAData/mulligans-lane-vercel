@@ -1,7 +1,7 @@
-import { db } from '$lib/dbClient';
+import { supabaseClient } from '$lib/dbClient';
 
 export async function get() {
-	const { data: survey_responses, error } = await db
+	const { data: survey_responses, error } = await supabaseClient
 		.from('survey_responses')
 		.select('*')
 		.eq('email_address', 'bcycadata@outlook.com');

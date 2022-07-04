@@ -6,13 +6,14 @@
 	const supabaseRedirectType = new URLSearchParams(
 		$page.url.hash.substring(1)
 	).get('type');
+	const url = $page.url;
 
-	console.log('Redirected');
 	// let email = '';
 </script>
 
 <p>Redirecting</p>
 {supabaseRedirectType}
+{url}
 {#if supabaseRedirectType === 'invite'}
 	<PasswordEntry />
 {/if}

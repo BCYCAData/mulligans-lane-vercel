@@ -43,9 +43,9 @@
 		<TextAreaInput
 			lableClass="tracking-wide text-lg font-bold mb-1"
 			headingText="Are there any other hazards on the property that should be noted?"
-			divClass="rounded-lg bg-orange-300 sm:text-xl"
+			divClass="rounded-lg bg-orange-300 sm:text-lg"
 			nameText="other_site_hazards"
-			textAreaClass="w-full resize-y sm:text-xl"
+			textAreaClass="w-full resize-y sm:text-lg"
 			bind:inputValue={profileHazards[0].other_site_hazards}
 		/>
 	</div>
@@ -81,9 +81,9 @@
 		<TextAreaInput
 			lableClass="tracking-wide text-lg font-bold mb-1"
 			headingText="Are there other areas that concern you or represent a potential threat?"
-			divClass="rounded-lg bg-orange-300 sm:text-xl"
+			divClass="rounded-lg bg-orange-300 sm:text-lg"
 			nameText="other_hazards"
-			textAreaClass="w-full resize-y sm:text-xl"
+			textAreaClass="w-full resize-y sm:text-lg"
 			bind:inputValue={profileHazards[0].other_hazards}
 		/>
 	</div>

@@ -44,10 +44,10 @@
 			<input
 				type="text"
 				name="postal_address_street"
-				class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"
+				class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-lg"
 				placeholder="Street Address"
 				autocomplete="street-address"
-				style="text-transform:uppercase sm:text-xl"
+				style="text-transform:uppercase sm:text-lg"
 				on:change={(e) => {
 					validateAddress(e);
 				}}
@@ -62,10 +62,10 @@
 			<input
 				type="text"
 				name="postal_address_suburb"
-				class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"
+				class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-lg"
 				placeholder="Suburb"
 				autocomplete=""
-				style="text-transform:uppercase sm:text-xl"
+				style="text-transform:uppercase sm:text-lg"
 				on:change={(e) => {
 					validateAddress(e);
 				}}
@@ -80,7 +80,7 @@
 			<input
 				type="text"
 				name="postal_address_postcode"
-				class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"
+				class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-lg"
 				placeholder="Postcode"
 				autocomplete=""
 				on:change={(e) => {

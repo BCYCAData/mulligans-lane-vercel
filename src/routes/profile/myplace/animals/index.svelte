@@ -22,28 +22,28 @@
 				name="number_dogs"
 				lable="Dogs"
 				lableClass="tracking-wide text-orange-900 text-l font-bold mb-1"
-				inputClass="border border-orange-700 w-10 rounded py-1 sm:text-xl"
+				inputClass="border border-orange-700 w-10 rounded py-1 sm:text-lg"
 				bind:inputValue={profileAnimals[0].number_dogs}
 			/>
 			<NumberInput
 				name="number_cats"
 				lable="Cats"
 				lableClass="tracking-wide text-orange-900 text-l font-bold mb-1"
-				inputClass="border border-orange-700 w-10 rounded py-1 sm:text-xl"
+				inputClass="border border-orange-700 w-10 rounded py-1 sm:text-lg"
 				bind:inputValue={profileAnimals[0].number_cats}
 			/>
 			<NumberInput
 				name="number_birds"
 				lable="Birds"
 				lableClass="tracking-wide text-orange-900 text-l font-bold mb-1"
-				inputClass="border border-orange-700 w-10 rounded py-1 sm:text-xl"
+				inputClass="border border-orange-700 w-10 rounded py-1 sm:text-lg"
 				bind:inputValue={profileAnimals[0].number_birds}
 			/>
 			<NumberInput
 				name="number_other_pets"
 				lable="Other"
 				lableClass="tracking-wide text-orange-900 text-l font-bold mb-1"
-				inputClass="border border-orange-700 w-10 rounded py-1 sm:text-xl"
+				inputClass="border border-orange-700 w-10 rounded py-1 sm:text-lg"
 				bind:inputValue={profileAnimals[0].number_other_pets}
 			/>
 		</div>

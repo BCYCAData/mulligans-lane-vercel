@@ -1,32 +1,20 @@
-import * as cookie from 'cookie';
-// import { db } from '$lib/dbClient';
+import { handleUser, handleCallback } from '@supabase/auth-helpers-sveltekit';
+import { sequence } from '@sveltejs/kit/hooks';
 
-export async function handle({ event, resolve }) {
-	const cookies = cookie.parse(event.request.headers.get('cookie') || '');
-	if (cookies && cookies.user) {
-		event.locals.user = cookies.user;
-		event.locals.signInError = cookies.signInError;
-		event.locals.authEvent = cookies.authEvent;
-	} else {
-		event.locals.user = 'guest';
-		event.locals.signInError = '';
-		event.locals.authenticated = false;
-		event.locals.authEvent = '';
-	}
-	if (event.locals.user !== 'guest') {
-		event.locals.authenticated = true;
-	}
+export const handle = sequence(
+	handleCallback({
+		cookieOptions: { lifetime: 1 * 365 * 24 * 60 * 60 }
+	}),
+	handleUser({
+		cookieOptions: { lifetime: 1 * 365 * 24 * 60 * 60 }
+	})
+);
 
-	const response = await resolve(event, {});
-
-	return response;
-}
-
-export async function getSession(event) {
+export const getSession = async (event) => {
+	const { user, accessToken, error } = event.locals;
 	return {
-		user: event.locals.user,
-		signInError: event.locals.signInError,
-		authenticated: event.locals.authenticated,
-		authEvent: event.locals.authEvent
+		user,
+		accessToken,
+		error
 	};
-}
+};

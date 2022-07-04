@@ -1,17 +1,13 @@
 <script>
-	import { db } from '$lib/dbClient';
+	import { supabaseClient } from '$lib/dbClient';
 	import { goto } from '$app/navigation';
-	import { session } from '$app/stores';
+	// import { session } from '$app/stores';
 
 	async function onSubmit(e) {
-		const { error } = await db.auth.signOut();
+		const { error } = await supabaseClient.auth.signOut();
 		if (error) {
 			console.log('Sign Out Error:  ', error.message);
 		}
-		$session['user'] = 'guest';
-		$session['signInError'] = 'none';
-		$session['authenticated'] = false;
-		$session['authEvent'] = 'SIGNED_OUT';
 		goto('/');
 	}
 </script>

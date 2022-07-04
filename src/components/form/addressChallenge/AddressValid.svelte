@@ -1,6 +1,9 @@
 <script>
-	import { session } from '$app/stores';
+	// import { session } from '$app/stores';
 	import AuthErrorMessage from '$components/form/AuthErrorMessage.svelte';
+
+	import { supabaseClient, supabaseRedirectBase } from '$lib/dbClient';
+
 	export let searchAddress;
 	export let validAddress;
 	export let community;
@@ -9,6 +12,8 @@
 	let strength = 0;
 	let validations = [];
 	let showPassword = false;
+	let loading = false;
+	let errorMessage = '';
 
 	$: password = '';
 	$: confirmPassword = '';
@@ -31,12 +36,34 @@
 		];
 		strength = validations.reduce((acc, cur) => acc + cur, 0);
 	}
+
+	const handleSubmit = async () => {
+		try {
+			loading = true;
+			const { error } = await supabaseClient.auth.signUp(
+				{
+					email: email,
+					password: password
+				},
+				{
+					redirectTo: `${supabaseRedirectBase}/survey`
+				}
+			);
+			if (error) throw error;
+		} catch (error) {
+			errorMessage = error.message;
+		} finally {
+			loading = false;
+		}
+	};
 </script>
 
-<h3 class="text-center">
+<h3 class="text-center mt-2">
 	{searchAddress}
 </h3>
-<h3 class="text-center">( {validAddress} )</h3>
+{#if searchAddress.replace(',', '') !== validAddress}
+	<h3 class="text-center">( {validAddress} )</h3>
+{/if}
 <h3 class="text-center">is part of the</h3>
 <h3 class="text-center">{community}</h3>
 <h3 class="text-center">community.</h3>
@@ -44,7 +71,8 @@
 	class="max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
 >
 	<div class="px-6 py-2 rounded shadow-md text-black w-full">
-		<form action="/api/auth/signup" method="post">
+		<!-- <form action="/api/auth/signup" method="post"> -->
+		<form on:submit|preventDefault={handleSubmit}>
 			<label
 				class="inline uppercase tracking-wide text-orange-500 text-xs font-bold"
 				for="email">Email:</label
@@ -72,13 +100,14 @@
 			>
 			<input
 				id="password"
-				type={showPassword ? 'text' : 'password'}
+				type="password"
 				class="block border border-orange-700 w-full py-3 rounded mb-4"
 				name="password"
 				required={true}
 				placeholder="New Password"
+				autocomplete="new-password"
 				on:input={validatePassword}
-				value={password}
+				bind:value={password}
 			/>
 			<label
 				class="inline uppercase tracking-wide text-orange-500 text-xs font-bold"
@@ -94,13 +123,14 @@
 
 			<input
 				id="confirmPassword"
-				type={showPassword ? 'text' : 'password'}
+				type="password"
 				class="block border border-orange-700 w-full py-3 rounded mb-4"
 				name="confirmPassword"
 				required={true}
 				placeholder="Confirm New Password"
+				autocomplete="new-password"
 				on:input={validatePassword}
-				value={confirmPassword}
+				bind:value={confirmPassword}
 			/>
 			<div class="strength">
 				<span class="bar bar-1" class:bar-show={strength > 0} />
@@ -127,8 +157,8 @@
 					<span class="text-sm"> must contain one symbol ($&+,:;=?#^!)</span>
 				</li>
 			</ul>
-			{#if $session['signInError'] !== 'none' && $session['signInError'] !== ''}
-				<AuthErrorMessage message={$session['signInError']} />
+			{#if errorMessage !== ''}
+				<AuthErrorMessage message={errorMessage} />
 			{/if}
 			<button
 				type="submit"

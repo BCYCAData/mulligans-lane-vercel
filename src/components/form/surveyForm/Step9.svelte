@@ -1,17 +1,17 @@
 <script>
-	import { informationSheetOptions } from '$lib/surveyOptions';
+	import { informationSheetOptions } from '$lib/profileOptions';
 	import TextAreaInput from '../inputs/TextAreaInput.svelte';
 
 	export let surveyData;
 </script>
 
-<h3 class="mt-9 text-base sm:text-xl">
+<h3 class="text-base sm:text-lg">
 	What information sheets would be useful to you?
 </h3>
-<div class="p-2 pr-4 flex justify-start rounded-lg bg-orange-300">
-	<ul class="list-none w-full pl-0">
+<div class="p-2 flex justify-start rounded-lg bg-orange-300">
+	<ul class="list-none w-full pl-0 my-0">
 		{#each informationSheetOptions as { value, lable }}
-			<li class="sm:text-xl pr-3">
+			<li class="sm:text-lg pr-3">
 				<input
 					name="information_sheet_choices"
 					type="checkbox"
@@ -25,10 +25,10 @@
 </div>
 
 <TextAreaInput
-	lableClass="font-bold text-base sm:text-xl"
+	lableClass="font-bold text-base sm:text-lg"
 	headingText="Are there other information sheets that you would find useful?"
-	divClass="p-3 rounded-lg bg-orange-300 sm:text-xl"
+	divClass="p-2 rounded-lg bg-orange-300 sm:text-lg"
 	nameText="other_information_sheet"
-	textAreaClass="w-full resize-y sm:text-xl"
+	textAreaClass="w-full resize-y sm:text-lg"
 	bind:inputValue={surveyData.other_information_sheet}
 />

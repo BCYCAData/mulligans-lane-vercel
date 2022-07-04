@@ -46,7 +46,7 @@ export const fireHazardReductionOptions = [
 	{ value: 2, lable: 'Slashed areas around house/sheds' },
 	{ value: 3, lable: 'A backup pump (petrol or diesel)' },
 	{ value: 4, lable: 'Driveway 3.5m overhead clearance ' },
-	{ value: 4, lable: 'Truck access around your property ' }
+	{ value: 5, lable: 'Truck access around your property ' }
 ];
 export const fireFightingExperienceOptions = [
 	{ value: 1, lable: 'No experience' },

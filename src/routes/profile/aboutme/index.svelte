@@ -27,7 +27,7 @@
 		<input
 			type="text"
 			name="first_name"
-			class="border w-full border-orange-700 rounded  bg-orange-50 py-1 sm:text-xl"
+			class="border w-full border-orange-700 rounded  bg-orange-50 py-1 sm:text-lg"
 			placeholder="First Name"
 			autocomplete="given-name"
 			bind:value={profileAboutMe[0].first_name}
@@ -40,7 +40,7 @@
 		<input
 			type="text"
 			name="family_name"
-			class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"
+			class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-lg"
 			placeholder="Family Name"
 			autocomplete="family_name"
 			style="text-transform:capitalize"
@@ -58,7 +58,7 @@
 		<input
 			type="tel"
 			name="phone"
-			class="border w-full border-orange-700 rounded py-1 sm:text-xl"
+			class="border w-full border-orange-700 rounded py-1 sm:text-lg"
 			placeholder="Landline XXXX XXXX"
 			on:keydown={(e) => {
 				if (['Backspace', 'Delete'].includes(e.key)) {
@@ -88,7 +88,7 @@
 		<input
 			type="tel"
 			name="mobile"
-			class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"
+			class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-lg"
 			placeholder="Mobile 0XXX XXX XXX"
 			on:keydown={(e) => {
 				if (['Backspace', 'Delete'].includes(e.key)) {

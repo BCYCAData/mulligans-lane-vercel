@@ -95,10 +95,10 @@
 					<input
 						type="text"
 						name="postal_address_street"
-						class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"
+						class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-lg"
 						placeholder="Street Address"
 						autocomplete="street-address"
-						style="text-transform:uppercase sm:text-xl"
+						style="text-transform:uppercase sm:text-lg"
 						on:change={(e) => {
 							validateAddress(e);
 						}}
@@ -113,10 +113,10 @@
 					<input
 						type="text"
 						name="postal_address_suburb"
-						class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"
+						class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-lg"
 						placeholder="Suburb"
 						autocomplete=""
-						style="text-transform:uppercase sm:text-xl"
+						style="text-transform:uppercase sm:text-lg"
 						on:change={(e) => {
 							validateAddress(e);
 						}}
@@ -131,7 +131,7 @@
 					<input
 						type="text"
 						name="postal_address_postcode"
-						class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"
+						class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-lg"
 						placeholder="Postcode"
 						autocomplete=""
 						on:change={(e) => {
@@ -148,9 +148,9 @@
 			<TextAreaInput
 				lableClass="tracking-wide m-4 mt-1 text-orange-900 text-l font-bold mb-1"
 				headingText="If you have any other comments, add them here."
-				divClass="p-2 rounded-lg bg-orange-300 sm:text-xl"
+				divClass="p-2 rounded-lg bg-orange-300 sm:text-lg"
 				nameText="other_community_workshop"
-				textAreaClass="w-full  ml-4 resize-y sm:text-xl"
+				textAreaClass="w-full  ml-4 resize-y sm:text-lg"
 				bind:inputValue={profileCommunity[0].other_comments}
 			/>
 		</div>

@@ -1,5 +1,5 @@
 <script>
-	import { db } from '$lib/dbClient';
+	import { supabaseClient } from '$lib/dbClient';
 	import { session } from '$app/stores';
 	import AuthErrorMessage from '$components/form/AuthErrorMessage.svelte';
 
@@ -21,7 +21,7 @@
 		submitText = 'Set Password';
 	}
 
-	db.auth.onAuthStateChange(async (event, _session) => {
+	supabaseClient.auth.onAuthStateChange(async (event, _session) => {
 		email = _session.user.email;
 		console.log('Supabase event: ', event);
 	});

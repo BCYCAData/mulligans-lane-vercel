@@ -1,8 +1,8 @@
-import { db } from '$lib/dbClient';
+import { supabaseClient } from '$lib/dbClient';
 
 export async function get() {
-	const _session = db.auth.session();
-	const { data: profileCommunity, error } = await db
+	const _session = supabaseClient.auth.session();
+	const { data: profileCommunity, error } = await supabaseClient
 		.from('profile')
 		.select(
 			'stay_in_touch_choices,postal_address_street,postal_address_suburb,postal_address_postcode,other_comments'
@@ -24,9 +24,9 @@ export async function get() {
 	};
 }
 export async function post({ request }) {
-	const _session = db.auth.session();
+	const _session = supabaseClient.auth.session();
 	const body = await request.formData();
-	const { data: profileCommunity, error } = await db
+	const { data: profileCommunity, error } = await supabaseClient
 		.from('profile')
 		.update({
 			stay_in_touch_choices: body.get('stay_in_touch_choices'),

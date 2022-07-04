@@ -1,10 +1,17 @@
 <script>
+	import { goto, invalidate } from '$app/navigation';
 	import Logo from '$components/header/logo/Logo.svelte';
-	import { page } from '$app/stores';
-	import { base } from '$app/paths';
-	import { session } from '$app/stores';
+	import { supabaseClient } from '$lib/dbClient';
+	import { page, session } from '$app/stores';
 
 	let menuOpen = true;
+
+	const handleSubmit = async () => {
+		await supabaseClient.auth.signOut();
+		await goto('/auth/signin');
+		// location.reload();
+		await invalidate('/auth/signin');
+	};
 
 	const handleNav = () => {
 		menuOpen = !menuOpen;
@@ -14,18 +21,14 @@
 <nav
 	class="container h-15 flex justify-around items-center mx-auto bg-orange-300"
 >
-	<!-- <div
-		class="container h-15 mx-1 lg:mx-50 flex justify-around items-center mx-auto"
-	> -->
 	<Logo />
-	<!-- <div class="inline-flex"> -->
 	<!-- Primary Navbar items -->
 	<div class="flex ml-[89px] items-center">
 		<div class="hidden md:block">
 			<a
 				class:active={$page.url.pathname.endsWith('/')}
 				sveltekit:prefetch
-				href="{base}/"
+				href="/"
 				><button
 					class="py-2 px-2 font-semibold text-white bg-orange-500 rounded-xl"
 					>Home</button
@@ -34,7 +37,7 @@
 			<a
 				class:active={$page.url.pathname.endsWith('/about')}
 				sveltekit:prefetch
-				href="{base}/about"
+				href="/about"
 				><button
 					class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"
 					>About</button
@@ -43,7 +46,7 @@
 			<a
 				class:active={$page.url.pathname.endsWith('/contact')}
 				sveltekit:prefetch
-				href="{base}/contact"
+				href="/contact"
 				><button
 					class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"
 					>Contact Us</button
@@ -51,30 +54,21 @@
 			>
 		</div>
 	</div>
-	<!-- </div> -->
 
 	<!-- Secondary Navbar items -->
 	<div class="hidden md:flex items-center">
-		{#if $session['authenticated']}
-			<form action="/api/auth/signout" method="post">
-				<!-- <form on:submit|preventDefault={handleSubmit}> -->
-				<button
-					class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"
-					>Sign Out</button
-				>
-			</form>
-			<!-- <a
-					class:active={$page.url.pathname.endsWith('/signin')}
-					sveltekit:prefetch
-					href="{base}/auth/signout"
-					class="py-0 px-2 font-semibold text-white bg-orange-500 rounded-xl"
-					>Sign Out</a
-				> -->
+		{#if $session.user}
+			<button
+				on:click={handleSubmit}
+				href="/"
+				class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl
+				outline-black">Sign Out</button
+			>
 		{:else}
 			<a
 				class:active={$page.url.pathname.endsWith('/signin')}
 				sveltekit:prefetch
-				href="{base}/auth/signin"
+				href="/auth/signin"
 				><button
 					class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"
 					>Sign In</button
@@ -107,7 +101,6 @@
 			</svg>
 		</button>
 	</div>
-	<!-- </div> -->
 
 	<!-- Mobile menu -->
 	<div
@@ -120,7 +113,7 @@
 					on:click={handleNav}
 					class:active={$page.url.pathname.endsWith('/')}
 					sveltekit:prefetch
-					href="{base}/"
+					href="/"
 					><button
 						class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"
 						>Home</button
@@ -132,7 +125,7 @@
 					on:click={handleNav}
 					class:active={$page.url.pathname.endsWith('/about')}
 					sveltekit:prefetch
-					href="{base}/about"
+					href="/about"
 					><button
 						class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"
 						>About</button
@@ -144,7 +137,7 @@
 					on:click={handleNav}
 					class:active={$page.url.pathname.endsWith('/contact')}
 					sveltekit:prefetch
-					href="{base}/contact"
+					href="/contact"
 					><button
 						class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"
 						>Contact Us</button
@@ -152,19 +145,17 @@
 				>
 			</li>
 			<li>
-				{#if $session['authenticated']}
-					<form action="/api/auth/signout" method="post">
-						<!-- <form on:submit|preventDefault={handleSubmit}> -->
-						<button
-							class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"
-							>Sign Out</button
-						>
-					</form>
+				{#if $session.user}
+					<button
+						on:click={handleSubmit}
+						class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"
+						>Sign Out</button
+					>
 				{:else}
 					<a
 						class:active={$page.url.pathname.endsWith('/signin')}
 						sveltekit:prefetch
-						href="{base}/auth/signin"
+						href="/auth/signin"
 						><button
 							class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"
 							>Sign In</button

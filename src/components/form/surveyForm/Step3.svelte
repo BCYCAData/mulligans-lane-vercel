@@ -1,15 +1,15 @@
 <script>
-	import { residencyOptions, yesNoOptions } from '$lib/surveyOptions';
+	import { residencyOptions, yesNoOptions } from '$lib/profileOptions';
 	import NumberInput from '$components/form/inputs/NumberInput.svelte';
 
 	export let surveyData;
 </script>
 
-<h3 class="mt-9 text-base sm:text-xl">Are you:</h3>
-<div class="p-2 pr-4 flex justify-start rounded-lg bg-orange-300">
-	<ul class="list-none w-full pl-0">
+<h3 class="text-base sm:text-lg">Are you:</h3>
+<div class="p-2 flex justify-start rounded-lg bg-orange-300">
+	<ul class="list-none w-full pl-0 my-0 ">
 		{#each residencyOptions as { value, lable }}
-			<li class="sm:text-xl pr-3">
+			<li class="sm:text-lg pr-3">
 				<input
 					name="residency_profile"
 					type="radio"
@@ -22,52 +22,48 @@
 	</ul>
 </div>
 
-<h3 class="text-base sm:text-xl">
+<h3 class="text-base sm:text-lg">
 	Please record the number of people who usually live at this property:
 </h3>
-<div class="py-2 pr-4 rounded-lg bg-orange-300">
-	<ul class="flex pl-0 justify-start list-none sm:text-xl">
+<div class="p-2 rounded-lg bg-orange-300">
+	<ul class="flex pl-0 my-0 justify-start list-none sm:text-lg">
 		<NumberInput
 			name="residents0_18"
-			listClass=""
 			lable="0-18 years"
-			lableClass="sm:text-xl"
-			inputClass="border border-orange-700 w-20 rounded sm:text-xl"
-			bind:value={surveyData.residents0_18}
+			lableClass="sm:text-lg"
+			inputClass="border border-orange-700 w-20 rounded sm:text-lg"
+			bind:inputValue={surveyData.residents0_18}
 		/>
 		<NumberInput
 			name="residents19_50"
-			listClass=""
 			lable="19-50 years"
-			lableClass="sm:text-xl"
-			inputClass="border border-orange-700 w-20 rounded sm:text-xl"
-			bind:value={surveyData.residents19_50}
+			lableClass="sm:text-lg"
+			inputClass="border border-orange-700 w-20 rounded sm:text-lg"
+			bind:inputValue={surveyData.residents19_50}
 		/>
 		<NumberInput
 			name="residents51_70"
-			listClass=""
 			lable="51-70 years"
-			lableClass="sm:text-xl"
-			inputClass="border border-orange-700 w-20 rounded sm:text-xl"
-			bind:value={surveyData.residents51_70}
+			lableClass="sm:text-lg"
+			inputClass="border border-orange-700 w-20 rounded sm:text-lg"
+			bind:inputValue={surveyData.residents51_70}
 		/>
 		<NumberInput
 			name="residents71_"
-			listClass=""
 			lable="71 years +"
-			lableClass="sm:text-xl"
-			inputClass="border border-orange-700 w-20 rounded sm:text-xl"
-			bind:value={surveyData.residents71_}
+			lableClass="sm:text-lg"
+			inputClass="border border-orange-700 w-20 rounded sm:text-lg"
+			bind:inputValue={surveyData.residents71_}
 		/>
 	</ul>
 </div>
 <div>
-	<h3 class="text-base sm:text-xl">
+	<h3 class="text-base sm:text-lg">
 		Do you consider any person on the property to be vulnerable?
 	</h3>
-	<div class="p-2 pr-4 flex justify-start rounded-lg bg-orange-300">
+	<div class="p-2 flex justify-start rounded-lg bg-orange-300">
 		{#each yesNoOptions as { value, lable }}
-			<li class="list-none sm:text-xl pr-3">
+			<li class="list-none sm:text-lg pr-3">
 				<input
 					name="vulnerable_residents"
 					type="radio"

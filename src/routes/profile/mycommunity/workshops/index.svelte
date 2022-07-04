@@ -39,9 +39,9 @@
 			lableClass="tracking-wide mr-4 mt-1 text-orange-900 text-l font-bold mb-1"
 			headingText="If there are other workshops that you would like to see run, please add
 			the details here"
-			divClass="p-2 rounded-lg bg-orange-300 sm:text-xl"
+			divClass="p-2 rounded-lg bg-orange-300 sm:text-lg"
 			nameText="other_community_workshop"
-			textAreaClass="w-full resize-y sm:text-xl"
+			textAreaClass="w-full resize-y sm:text-lg"
 			bind:inputValue={profileWorkshops[0].other_community_workshop}
 		/>
 	</div>
@@ -54,9 +54,9 @@
 			lableClass="tracking-wide mr-4 mt-1 text-orange-900 text-l font-bold mb-1"
 			headingText="If you would like to help run any of the workshops, please indicate which
 			ones below."
-			divClass="p-2 rounded-lg bg-orange-300 sm:text-xl"
+			divClass="p-2 rounded-lg bg-orange-300 sm:text-lg"
 			nameText="will_run_community_workshops"
-			textAreaClass="w-full resize-y sm:text-xl"
+			textAreaClass="w-full resize-y sm:text-lg"
 			bind:inputValue={profileWorkshops[0].will_run_community_workshops}
 		/>
 	</div>

@@ -20,11 +20,4 @@
 		With your help we can build a safer, connected community for us all.
 	</p>
 	<br />
-	<div class="flex flex-col justify-center items-center sm:text-lg">
-		<button
-			type="submit"
-			class="px-[20px] py-[6px] text-white bg-orange-500 rounded-xl focus:outline-none active:transform scale 98 sm:text-lg"
-			>Save my Answers</button
-		>
-	</div>
 </div>

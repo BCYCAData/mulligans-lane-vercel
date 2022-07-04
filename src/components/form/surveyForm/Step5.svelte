@@ -3,7 +3,7 @@
 		staticWaterOptions,
 		yesNoMaybeOptions,
 		fireFightingAssets
-	} from '$lib/surveyOptions';
+	} from '$lib/profileOptions';
 
 	let selectedStaticSources = new Set();
 	const unCheckAllStaticWater = (e) => {
@@ -25,20 +25,21 @@
 			noneChecked = false;
 		}
 	};
-	let noneChecked = false;
-	let have_stortzChecked = false;
 
 	export let surveyData;
+
+	let noneChecked = false;
+	let have_stortzChecked = surveyData.have_stortz;
 </script>
 
-<h3 class="mt-9 text-base sm:text-xl">
+<h3 class="text-base sm:text-lg">
 	Are there any static water supplies on the property?
 </h3>
-<div class="p-2 pr-4 flex justify-start rounded-lg bg-orange-300">
-	<ul class="list-none w-full pl-0">
+<div class="p-2 flex justify-start rounded-lg bg-orange-300">
+	<ul class="list-none w-full pl-0 my-0">
 		{#each staticWaterOptions as { value, lable }}
 			{#if value < 5}
-				<li class="sm:text-xl pr-3">
+				<li class="sm:text-lg pr-3">
 					<input
 						name="static_water_available"
 						type="checkbox"
@@ -51,7 +52,7 @@
 					<label for="static_water_available"> {lable}</label>
 				</li>
 			{:else}
-				<li class="sm:text-xl pr-3">
+				<li class="sm:text-lg pr-3">
 					<input
 						name="static_water_available"
 						type="checkbox"
@@ -68,12 +69,13 @@
 		{/each}
 	</ul>
 </div>
-<h3 class="text-base sm:text-xl">
+
+<h3 class="text-base sm:text-lg">
 	Do you have a Stortz fitting attached to a water tank?
 </h3>
-<div class="p-2 pr-4 flex justify-start rounded-lg bg-orange-300">
+<div class="p-2 flex justify-start rounded-lg bg-orange-300">
 	{#each yesNoMaybeOptions as { value, lable }}
-		<li class="list-none sm:text-xl pr-3">
+		<li class="list-none sm:text-lg pr-3">
 			<input
 				on:change={(e) => {
 					have_stortzChecked = e.currentTarget.value == 'Y';
@@ -89,24 +91,24 @@
 </div>
 {#if have_stortzChecked}
 	<h3>Please include the size</h3>
-	<div class="p-2 pr-4 flex justify-start rounded-lg bg-orange-300">
-		<label class="flex-none mr-2 sm:text-xl" for="stortz_size">Size (mm)</label>
+	<div class="p-2 flex justify-start rounded-lg bg-orange-300">
+		<label class="flex-none mr-2 sm:text-lg" for="stortz_size">Size (mm)</label>
 		<input
 			type="number"
 			id="stortz_size"
 			name="stortz_size"
-			class="border border-orange-700 w-half rounded sm:text-xl"
+			class="border border-orange-700 w-half rounded sm:text-lg"
 			bind:value={surveyData.stortz_size}
 		/>
 	</div>
 {/if}
-<h3 class="text-base sm:text-xl">
+<h3 class="text-base sm:text-lg">
 	Do you have any of the following at this property?
 </h3>
-<div class="p-2 pr-4 flex justify-start rounded-lg bg-orange-300">
-	<ul class="list-none w-full pl-0">
+<div class="p-2 flex justify-start rounded-lg bg-orange-300">
+	<ul class="list-none w-full pl-0 my-0">
 		{#each fireFightingAssets as { value, lable }}
-			<li class="sm:text-xl pr-3">
+			<li class="sm:text-lg pr-3">
 				<input
 					name="fire_fighting_assets"
 					type="checkbox"

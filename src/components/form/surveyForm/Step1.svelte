@@ -1,5 +1,5 @@
 <div>
-	<h1>
+	<h1 class="mx-auto text-center">
 		Strengthening Our Community<br />
 		Project Survey
 	</h1>

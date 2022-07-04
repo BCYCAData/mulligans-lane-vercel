@@ -39,9 +39,9 @@
 			lableClass="tracking-wide mr-4 mt-1 text-orange-900 text-l font-bold mb-1"
 			headingText="If there are other events you would be interested in, please add them
 			below."
-			divClass="p-3 rounded-lg bg-orange-300 sm:text-xl"
+			divClass="p-2 rounded-lg bg-orange-300 sm:text-lg"
 			nameText="other_community_meeting"
-			textAreaClass="w-full resize-y sm:text-xl"
+			textAreaClass="w-full resize-y sm:text-lg"
 			bind:inputValue={profileMeetings[0].other_community_meeting}
 		/>
 	</div>

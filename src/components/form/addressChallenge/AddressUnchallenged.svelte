@@ -45,7 +45,6 @@
 			for (let i = 0; i < communityPolygons.features.length; i++) {
 				let polygon = communityPolygons.features[i].geometry.coordinates[0];
 				let ok = PIP(polygon[0], found[1].point);
-				console.log('OK', ok);
 				unchallenged = false;
 				if (ok) {
 					status = 'addressValid';

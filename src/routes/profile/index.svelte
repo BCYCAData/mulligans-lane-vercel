@@ -1,3 +1,7 @@
+<!-- <script>
+	export let profileComments;
+</script> -->
+
 <div class="p-3">
 	<h1>
 		Strengthening Our Community<br />

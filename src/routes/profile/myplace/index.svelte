@@ -29,10 +29,10 @@
 			<input
 				type="text"
 				name="property_address_street"
-				class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"
+				class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-lg"
 				placeholder="Street Address"
 				autocomplete="street-address"
-				style="text-transform:uppercase sm:text-xl"
+				style="text-transform:uppercase sm:text-lg"
 				on:change={(e) => {
 					validateAddress(e);
 				}}
@@ -47,10 +47,10 @@
 			<input
 				type="text"
 				name="property_address_suburb"
-				class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"
+				class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-lg"
 				placeholder="Suburb"
 				autocomplete="address-level2"
-				style="text-transform:uppercase sm:text-xl"
+				style="text-transform:uppercase sm:text-lg"
 				on:change={(e) => {
 					validateAddress(e);
 				}}
@@ -65,7 +65,7 @@
 			<input
 				type="text"
 				name="property_address_postcode"
-				class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"
+				class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-lg"
 				placeholder="Postcode"
 				autocomplete="postal-code"
 				on:change={(e) => {
@@ -90,18 +90,18 @@
 						name="owned_list"
 					>
 						<input
-							name="property_owned"
+							name="property_rented"
 							type="radio"
-							bind:group={profileMyPlace[0].property_owned}
+							bind:group={profileMyPlace[0].property_rented}
 							{value}
 						/>
-						<label for="property_owned"> {lable}</label>
+						<label for="property_rented"> {lable}</label>
 					</li>
 				{/each}
 			</div>
 		</div>
 	</div>
-	<div class:hidden={profileMyPlace[0].property_owned === true}>
+	<div class:hidden={profileMyPlace[0].property_rented === true}>
 		<div class="flex flex-row pt-0 mx-2">
 			<div class="flex flex-col basis-7/12 mx-2">
 				<label
@@ -112,9 +112,9 @@
 				<input
 					type="text"
 					name="agent_name"
-					class="block border w-full border-orange-700 rounded py-1 sm:text-xl"
+					class="block border w-full border-orange-700 rounded py-1 sm:text-lg"
 					placeholder="Managing Agent name"
-					style="text-transform:titlecase sm:text-xl"
+					style="text-transform:titlecase sm:text-lg"
 					on:change={(e) => {
 						validateAddress(e);
 					}}
@@ -129,10 +129,10 @@
 				<input
 					type="text"
 					name="agent_phone"
-					class="block border w-full border-orange-700 rounded py-1 sm:text-xl"
+					class="block border w-full border-orange-700 rounded py-1 sm:text-lg"
 					placeholder="Managing Agent phone"
 					autocomplete=""
-					style="text-transform:uppercase sm:text-xl"
+					style="text-transform:uppercase sm:text-lg"
 					on:change={(e) => {
 						validateAddress(e);
 					}}
@@ -228,20 +228,20 @@
 		</div>
 	</div>
 
-	<!-- other_access_information -->
+	<!-- truck_access_other_information -->
 	<div class="flex flex-row justify-start items-center mt-2 mx-2">
 		<label
 			class="tracking-wide mr-4 mt-1 text-lg font-bold mb-1"
 			hidden={profileMyPlace[0].truck_access !== 4}
-			for="other_access_information">Other Access Information:</label
+			for="truck_access_other_information">Other Access Information:</label
 		>
 		<input
 			type="text"
-			class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-xl"
-			id="other_access_information"
-			name="other_access_information"
+			class="border w-full border-orange-700 rounded bg-orange-50 py-1 sm:text-lg"
+			id="truck_access_other_information"
+			name="truck_access_other_information"
 			hidden={profileMyPlace[0].truck_access !== 4}
-			bind:value={profileMyPlace[0].other_access_information}
+			bind:value={profileMyPlace[0].truck_access_other_information}
 		/>
 	</div>
 
@@ -261,28 +261,28 @@
 					name="residents0_18"
 					lable="0-18 years"
 					lableClass="tracking-wide text-orange-900 text-l font-bold mb-1"
-					inputClass="border border-orange-700 w-10 rounded py-1 sm:text-xl"
+					inputClass="border border-orange-700 w-10 rounded py-1 sm:text-lg"
 					bind:inputValue={profileMyPlace[0].residents0_18}
 				/>
 				<NumberInput
 					name="residents19_50"
 					lable="19-50 years"
 					lableClass="tracking-wide text-orange-900 text-l font-bold mb-1"
-					inputClass="border border-orange-700 w-10 rounded py-1 sm:text-xl"
+					inputClass="border border-orange-700 w-10 rounded py-1 sm:text-lg"
 					bind:inputValue={profileMyPlace[0].residents19_50}
 				/>
 				<NumberInput
 					name="residents51_70"
 					lable="51-70 years"
 					lableClass="tracking-wide text-orange-900 text-l font-bold mb-1"
-					inputClass="border border-orange-700 w-10 rounded py-1 sm:text-xl"
+					inputClass="border border-orange-700 w-10 rounded py-1 sm:text-lg"
 					bind:inputValue={profileMyPlace[0].residents51_70}
 				/>
 				<NumberInput
 					name="residents71_"
 					lable="71 years +"
 					lableClass="tracking-wide text-orange-900 text-l font-bold mb-1"
-					inputClass="border border-orange-700 w-10 rounded py-1 sm:text-xl"
+					inputClass="border border-orange-700 w-10 rounded py-1 sm:text-lg"
 					bind:inputValue={profileMyPlace[0].residents71_}
 				/>
 			</div>

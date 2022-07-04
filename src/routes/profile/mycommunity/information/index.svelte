@@ -38,9 +38,9 @@
 		<TextAreaInput
 			lableClass="tracking-wide mr-4 mt-1 text-orange-900 text-l font-bold mb-1"
 			headingText="Are there other information sheets that you would find useful?"
-			divClass="p-3 rounded-lg bg-orange-300 sm:text-xl"
+			divClass="p-2 rounded-lg bg-orange-300 sm:text-lg"
 			nameText="other_information_sheet"
-			textAreaClass="w-full resize-y sm:text-xl"
+			textAreaClass="w-full resize-y sm:text-lg"
 			bind:inputValue={profileInformation[0].other_information_sheet}
 		/>
 	</div>

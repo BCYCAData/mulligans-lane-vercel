@@ -12,11 +12,22 @@
 	import Step11 from '$components/form/surveyForm/Step11.svelte';
 	import Step12 from '$components/form/surveyForm/Step12.svelte';
 
+	const handleSubmit = async () => {};
+
 	export let active_step;
 	export let surveyData;
 </script>
 
-<form method="post" action="/api/userdata/survey" id="surveyForm">
+<div
+	class="p-1 text-center text-orange-700"
+	hidden={active_step == '1' || active_step == '12'}
+>
+	Please complete all steps and tap <span
+		class="p-1 rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"
+		>Save My Answers</span
+	> at Step 12
+</div>
+<form method="post" action="/survey" id="surveyForm">
 	<div hidden={active_step != '1'}>
 		<Step1 />
 	</div>
@@ -53,10 +64,12 @@
 	<div hidden={active_step != '12'}>
 		<Step12 {surveyData} />
 	</div>
-	<button
-		class="w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"
-		hidden={active_step != '11'}
-		type="submit"
-		form="surveyForm">Save My Answers</button
-	>
+	<div class="flex flex-col justify-center items-center sm:text-lg">
+		<button
+			class="w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"
+			hidden={active_step != '12'}
+			type="submit"
+			form="surveyForm">Save My Answers</button
+		>
+	</div>
 </form>

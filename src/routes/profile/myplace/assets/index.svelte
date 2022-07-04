@@ -121,7 +121,7 @@
 				type="number"
 				id="stortz_size"
 				name="stortz_size"
-				class="border border-orange-700 w-20 rounded ml-3 py-1 sm:text-xl"
+				class="border border-orange-700 w-20 rounded ml-3 py-1 sm:text-lg"
 				bind:value={profileAssets[0].stortz_size}
 			/>
 		</div>
