@@ -23,18 +23,18 @@
 	{/if}
 	<form
 		id="profileMeetingsForm"
-		on:change={(e) => {
+		on:change={() => {
 			unsaved = true;
 		}}
-		class="flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"
-		action="/profile/community/meetings"
+		class="flex flex-col py-3 mx-auto min-h-full w-full text-orange-900 bg-orange-300"
+		action="/profile/mycommunity/meetings"
 		method="POST"
 	>
 		<div class="flex flex-row">
 			<div class="w-1/3" />
 			<button
 				class="w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"
-				on:click={(e) => {
+				on:click={() => {
 					unsaved = false;
 				}}
 				hidden={!unsaved}
@@ -43,7 +43,7 @@
 			>
 			<button
 				class="w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"
-				on:click={(e) => {
+				on:click={() => {
 					unsaved = false;
 				}}
 				hidden={!unsaved}>Cancel</button

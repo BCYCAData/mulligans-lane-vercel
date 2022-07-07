@@ -1,7 +1,5 @@
 <script>
 	import { supabaseClient } from '$lib/dbClient';
-	import { session } from '$app/stores';
-	import AuthErrorMessage from '$components/form/AuthErrorMessage.svelte';
 
 	export let redirectType;
 

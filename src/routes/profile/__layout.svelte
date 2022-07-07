@@ -108,22 +108,12 @@
 			</h3>
 		</div>
 	</div>
-	<!-- <footer class="main-footer max-h-[45px] bg-stone-300">
-		<div
-			class="flex content-center items-center justify-center text-orange-900 w-full"
-		>
-			<h3>Building a safer connected community</h3>
-		</div>
-	</footer> -->
 </div>
 
 <style>
 	.main-head {
 		grid-area: header;
 	}
-	/* .content {
-		grid-area: content;
-	} */
 	.crumbs {
 		grid-area: crumbs;
 	}
@@ -159,7 +149,6 @@
 				'messaging  content';
 		}
 	}
-
 	@media (min-width: 1024px) {
 		.wrapper {
 			grid-template-columns: 1fr 4fr 1fr;

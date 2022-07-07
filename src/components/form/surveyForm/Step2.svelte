@@ -98,7 +98,7 @@
 			{#if lable === 'Yes'}
 				<li class="list-none sm:text-lg pr-3">
 					<input
-						on:change={(e) => {
+						on:change={() => {
 							rentingChecked = true;
 						}}
 						name="property_rented"
@@ -111,7 +111,7 @@
 			{:else}
 				<li class="list-none sm:text-lg pr-3">
 					<input
-						on:change={(e) => {
+						on:change={() => {
 							rentingChecked = false;
 						}}
 						name="property_rented"
@@ -177,7 +177,7 @@
 				<li class="sm:text-lg pr-3">
 					<div class="flex flex-row ">
 						<input
-							on:change={(e) => {
+							on:change={() => {
 								otherAccessChecked = !otherAccessChecked;
 							}}
 							name="truck_access"
@@ -199,7 +199,7 @@
 			{:else}
 				<li class="sm:text-lg pr-3">
 					<input
-						on:change={(e) => {
+						on:change={() => {
 							otherAccessChecked = false;
 						}}
 						name="truck_access"

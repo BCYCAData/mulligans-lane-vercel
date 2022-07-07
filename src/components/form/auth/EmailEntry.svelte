@@ -5,8 +5,6 @@
 	let submitText = '';
 	let email;
 
-	let validEmail;
-	$: validEmail = emailIsValid();
 	$: email;
 
 	if (redirectType == 'invite') {

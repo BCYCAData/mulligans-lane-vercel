@@ -1,5 +1,6 @@
 <script>
 	import { beforeNavigate } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	import Modal from '$components/Modal.svelte';
 	import SaveProfilePrompt from '$components/form/SaveProfilePrompt.svelte';
@@ -23,32 +24,34 @@
 	{/if}
 	<form
 		id="profileInformationForm"
-		on:change={(e) => {
+		on:change={() => {
 			unsaved = true;
 		}}
-		class="flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"
-		action="/profile/community/information"
+		class="flex flex-col py-3 mx-auto min-h-full w-full text-orange-900 bg-orange-300"
+		action="/profile/mycommunity/information"
 		method="POST"
 	>
-		<div class="flex flex-row">
-			<div class="w-1/3" />
-			<button
-				class="w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"
-				on:click={(e) => {
-					unsaved = false;
-				}}
-				hidden={!unsaved}
-				type="submit"
-				form="profileInformationForm">Save My Answers</button
-			>
-			<button
-				class="w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"
-				on:click={(e) => {
-					unsaved = false;
-				}}
-				hidden={!unsaved}>Cancel</button
-			>
-		</div>
+		{#if !unsaved && $page.url.pathname === '/profile/mycommunity/information'}
+			<div class="flex flex-row">
+				<div class="w-1/3" />
+				<button
+					class="w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"
+					on:click={() => {
+						unsaved = false;
+					}}
+					hidden={!unsaved}
+					type="submit"
+					form="profileInformationForm">Save My Answers</button
+				>
+				<button
+					class="w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"
+					on:click={() => {
+						unsaved = false;
+					}}
+					hidden={!unsaved}
+				/>
+			</div>
+		{/if}
 		<slot />
 	</form>
 </section>

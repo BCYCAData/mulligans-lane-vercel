@@ -1,12 +1,12 @@
-<script lang="ts">
+<script>
 	// Adapted from https://github.com/Schum123/svelte-loading-spinners/blob/master/src/Circle3.svelte
 	//
-	export let size: string | number = '60';
-	export let unit: string = 'px';
-	export let ballTopLeft: string = '#006400';
-	export let ballTopRight: string = '#FF3E00';
-	export let ballBottomLeft: string = '#44444';
-	export let ballBottomRight: string = '#F46524';
+	export let size = '60';
+	export let unit = 'px';
+	export let ballTopLeft = '#006400';
+	export let ballTopRight = '#FF3E00';
+	export let ballBottomLeft = '#44444';
+	export let ballBottomRight = '#F46524';
 	export let duration = '1.5s';
 </script>
 

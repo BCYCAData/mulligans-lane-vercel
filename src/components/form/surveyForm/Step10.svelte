@@ -27,7 +27,7 @@
 	lableClass="font-bold text-base sm:text-lg"
 	headingText="If there are other events you would be interested in, please add them
 			below."
-	divClass="p-2 rounded-lg bg-orange-300 sm:text-lg"
+	divClass="px-4 rounded-lg bg-orange-300 sm:text-lg"
 	nameText="other_community_meeting"
 	textAreaClass="w-full resize-y sm:text-lg"
 	bind:inputValue={surveyData.other_community_meeting}

@@ -6,7 +6,6 @@
 	import Modal from '$components/Modal.svelte';
 	import AddressChallenge from '$components/form/addressChallenge/AddressChallenge.svelte';
 
-	let loading = false;
 	let email;
 	let password;
 

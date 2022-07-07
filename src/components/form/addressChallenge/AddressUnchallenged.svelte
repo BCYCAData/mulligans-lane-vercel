@@ -19,7 +19,6 @@
 		searchAddress = `${streetaddress.toUpperCase()}, ${suburb.toUpperCase()}`;
 		let found = [];
 		let notFound = [];
-		let error = [];
 
 		const aliases = suburbAliases(
 			streetaddress.toUpperCase(),

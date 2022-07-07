@@ -1,10 +1,10 @@
 import {
 	supabaseServerClient,
-	withPageAuth
+	withApiAuth
 } from '@supabase/auth-helpers-sveltekit';
 
-export const get = async ({ locals, request }) =>
-	withPageAuth(
+export const get = async ({ locals }) =>
+	withApiAuth(
 		{
 			user: locals.user
 		},
@@ -23,7 +23,7 @@ export const get = async ({ locals, request }) =>
 				};
 			}
 			if (!profile[0]) {
-				const { data, error: errorAddProfile } = await supabaseServerClient(
+				const { error: errorAddProfile } = await supabaseServerClient(
 					locals.accessToken
 				)
 					.from('profile')
@@ -52,7 +52,6 @@ export const get = async ({ locals, request }) =>
 					resetProfile(surveyData[0], locals.user.id);
 				}
 			}
-			// const { data: profileComments, error: errorComments } = await db
 			const { data: profileComments, error: errorComments } =
 				await supabaseServerClient(locals.accessToken)
 					.from('profile')
@@ -71,74 +70,14 @@ export const get = async ({ locals, request }) =>
 		}
 	);
 
-// import { supabaseClient } from '$lib/dbClient';
-
-// export async function get() {
-// 	const _session = supabaseClient.auth.session();
-// 	const { data: profile, error: errorProfile } = await supabaseClient
-// 		.from('profile')
-// 		.select('id')
-// 		.eq('id', _session.user.id);
-// 	if (errorProfile) {
-// 		console.log('error Get Profile:', errorProfile);
-// 		return {
-// 			status: 400,
-// 			body: { errorProfile }
-// 		};
-// 	}
-// 	if (!profile[0]) {
-// 		// const { data, error: errorAddProfile } = await db
-// 		const { data, error: errorAddProfile } = await supabaseClient
-// 			.from('profile')
-// 			.insert([{ id: _session.user.id }]);
-// 		if (errorAddProfile) {
-// 			console.log('error Add Profile:', errorAddProfile);
-// 			return {
-// 				status: 400,
-// 				body: { errorAddProfile }
-// 			};
-// 		}
-// 		// const { data: surveyData, error: errorSurveyData } = await db
-// 		const { data: surveyData, error: errorSurveyData } = await supabaseClient
-// 			.from('survey_responses')
-// 			.select('*')
-// 			.eq('email_address', _session.user.email);
-// 		if (errorSurveyData) {
-// 			console.log('error Get Survey Data:', errorSurveyData);
-// 			return {
-// 				status: 400,
-// 				body: { errorSurveyData }
-// 			};
-// 		}
-// 		if (surveyData[0]) {
-// 			resetProfile(surveyData[0], _session.user.id);
-// 		}
-// 	}
-// 	// const { data: profileComments, error: errorComments } = await db
-// 	const { data: profileComments, error: errorComments } = await supabaseClient
-// 		.from('profile')
-// 		.select('other_comments')
-// 		.eq('id', _session.user.id);
-// 	if (errorComments) {
-// 		console.log('error Get Other Comments:', errorComments);
-// 		return {
-// 			status: 400,
-// 			body: { errorComments }
-// 		};
-// 	}
-// 	return {
-// 		body: { profileComments }
-// 	};
-// }
-
 async function resetProfile(survey, id) {
 	let stayInTouchChoices = [survey.stayInTouchChoices];
-	withPageAuth(
+	withApiAuth(
 		{
 			user: locals.user
 		},
 		async () => {
-			const { data, error } = await supabaseServerClient(locals.accessToken)
+			const { error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.update({
 					property_address_street: survey.property_address,

@@ -25,7 +25,7 @@
 <TextAreaInput
 	lableClass="font-bold text-base sm:text-lg"
 	headingText="Are there any other hazards on the property that should be noted?"
-	divClass="p-2 rounded-lg bg-orange-300 sm:text-lg"
+	divClass="px-4 rounded-lg bg-orange-300 sm:text-lg"
 	nameText="other_site_hazards"
 	textAreaClass="w-full resize-y sm:text-lg"
 	bind:inputValue={surveyData.other_site_hazards}
@@ -65,7 +65,7 @@
 <TextAreaInput
 	lableClass="font-bold text-base sm:text-lg"
 	headingText="Are there other areas that concern you or represent a potential threat?"
-	divClass="p-2 rounded-lg bg-orange-300 sm:text-lg"
+	divClass="px-4 rounded-lg bg-orange-300 sm:text-lg"
 	nameText="other_hazards"
 	textAreaClass="w-full resize-y sm:text-lg"
 	bind:inputValue={surveyData.other_hazards}

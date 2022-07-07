@@ -22,7 +22,7 @@
 						<input
 							name="stay_in_touch_choices"
 							type="checkbox"
-							bind:group={profileSettings[0].stay_in_touch_choices}
+							bind:group={profileSettings.stay_in_touch_choices}
 							{value}
 						/>
 						<label for="stay_in_touch_choices"> {lable}</label>
@@ -34,7 +34,7 @@
 </div> -->
 <h1>TBD</h1>
 <!-- Postal address -->
-<!-- <div class:hidden={!profileSettings[0].stay_in_touch_choices.includes(5)}>
+<!-- <div class:hidden={!profileSettings.stay_in_touch_choices.includes(5)}>
 	<div class="flex flex-row pt-3 mx-2">
 		<div class="flex flex-col basis-7/12 mx-2">
 			<label
@@ -48,10 +48,10 @@
 				placeholder="Street Address"
 				autocomplete="street-address"
 				style="text-transform:uppercase sm:text-lg"
-				on:change={(e) => {
+				on:change={() => {
 					validateAddress(e);
 				}}
-				bind:value={profileSettings[0].postal_address_street}
+				bind:value={profileSettings.postal_address_street}
 			/>
 		</div>
 		<div class="flex flex-col basis-3/12 mx-2">
@@ -69,7 +69,7 @@
 				on:change={(e) => {
 					validateAddress(e);
 				}}
-				bind:value={profileSettings[0].postal_address_suburb}
+				bind:value={profileSettings.postal_address_suburb}
 			/>
 		</div>
 		<div class="flex flex-col basis-2/12 mx-2">
@@ -86,7 +86,7 @@
 				on:change={(e) => {
 					validateAddress(e);
 				}}
-				bind:value={profileSettings[0].postal_address_postcode}
+				bind:value={profileSettings.postal_address_postcode}
 			/>
 		</div>
 	</div>

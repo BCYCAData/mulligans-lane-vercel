@@ -49,16 +49,16 @@
 // }
 import {
 	supabaseServerClient,
-	withPageAuth
+	withApiAuth
 } from '@supabase/auth-helpers-sveltekit';
 
-export const get = async ({ locals, request }) =>
-	withPageAuth(
+export const get = async ({ locals }) =>
+	withApiAuth(
 		{
 			user: locals.user
 		},
 		async () => {
-			const { data: profileHazards, error } = await supabaseServerClient(
+			const { data: profileData, error } = await supabaseServerClient(
 				locals.accessToken
 			)
 				.from('profile')
@@ -66,10 +66,7 @@ export const get = async ({ locals, request }) =>
 					'site_hazards,other_site_hazards,land_adjacent_hazard,other_hazards'
 				)
 				.eq('id', locals.user.id);
-			console.log('data', profileHazards);
-			if (null == profileHazards[0].site_hazards) {
-				profileHazards[0].site_hazards = [];
-			}
+			console.log('profileHazards', profileData);
 			if (error) {
 				console.log('error profileHazards:', error);
 				return {
@@ -77,21 +74,30 @@ export const get = async ({ locals, request }) =>
 					body: { error }
 				};
 			}
+			if (profileData.length === 1) {
+				let profileHazards = profileData[0];
+				if (null == profileHazards.site_hazards) {
+					profileHazards.site_hazards = [];
+				}
+				return {
+					status: 200,
+					body: { profileHazards }
+				};
+			}
 			return {
-				status: 200,
-				body: { profileHazards }
+				status: 400,
+				body: {}
 			};
 		}
 	);
 export const post = async ({ locals, request }) =>
-	withPageAuth(
+	withApiAuth(
 		{
 			user: locals.user
 		},
 		async () => {
 			const body = await request.formData();
-			console.log('first_name', body.get('first_name'));
-			const { data: profileHazards, error } = await supabaseServerClient(
+			const { data: profileData, error } = await supabaseServerClient(
 				locals.accessToken
 			)
 				.from('profile')
@@ -109,8 +115,16 @@ export const post = async ({ locals, request }) =>
 					body: { error }
 				};
 			}
+			if (profileData.length === 1) {
+				let profileHazards = profileData[0];
+				return {
+					status: 200,
+					body: { profileHazards }
+				};
+			}
 			return {
-				body: { profileHazards }
+				status: 400,
+				body: {}
 			};
 		}
 	);

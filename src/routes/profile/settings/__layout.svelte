@@ -7,7 +7,7 @@
 	let unsaved = false;
 	let modalVisible = false;
 
-	beforeNavigate(({ to, cancel }) => {
+	beforeNavigate(({}) => {
 		if (!unsaved) return; // nothing to do
 		modalVisible = !modalVisible;
 	});
@@ -21,15 +21,15 @@
 	{/if}
 	<form
 		id="settingsForm"
-		on:change={(e) => {
+		on:change={() => {
 			unsaved = true;
 		}}
-		class="flex flex-col mx-auto min-h-full w-full text-orange-900 bg-orange-300"
+		class="flex flex-col py-3 mx-auto min-h-full w-full text-orange-900 bg-orange-300"
 		action="/profile/settings"
 		method="POST"
 	>
 		<button
-			on:click={(e) => {
+			on:click={() => {
 				unsaved = false;
 			}}
 			hidden={!unsaved}

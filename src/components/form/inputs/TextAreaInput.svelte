@@ -7,14 +7,14 @@
 	export let inputValue;
 </script>
 
-<div class="w-full">
-	<label class={lableClass} for={nameText}>{headingText}</label>
-	<div class={divClass}>
-		<textarea
-			id={nameText}
-			name={nameText}
-			class={textAreaClass}
-			value={inputValue}
-		/>
-	</div>
+<!-- <div class="w-full"> -->
+<label class={lableClass} for={nameText}>{headingText}</label>
+<div class={divClass}>
+	<textarea
+		id={nameText}
+		name={nameText}
+		class={textAreaClass}
+		value={inputValue}
+	/>
 </div>
+<!-- </div> -->

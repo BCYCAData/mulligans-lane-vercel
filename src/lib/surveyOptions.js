@@ -2,12 +2,9 @@ export const residencyOptions = [
 	{ value: 1, lable: 'Resident at the property fulltime ' },
 	{ value: 2, lable: 'Present large proportion of time' },
 	{ value: 3, lable: 'Occasional short periods away' },
-	{ value: 4, lable: 'At the property regularly (at least every month)' },
+	{ value: 4, lable: 'At the property at least every month' },
 	{ value: 5, lable: 'At the property occasionally' },
-	{
-		value: 6,
-		lable: 'At the property for periods of time and then long absences'
-	},
+	{ value: 6, lable: 'Resident fulltime with long absences' },
 	{ value: 7, lable: 'Not very often at the property' }
 ];
 export const yesNoOptions = [
@@ -191,6 +188,7 @@ export let fire_hazard_reduction = [];
 export let land_adjacent_hazard = '';
 export let other_hazards = '';
 export let rfs_survival_plan = '';
+export let send_rfs_survival_plan = '';
 export let fire_fighting_experience = '';
 export let fire_trauma = false;
 export let plan_to_leave_before_fire = '';

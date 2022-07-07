@@ -6,7 +6,7 @@
 
 	let live_stock_present = surveyData.live_stock_present;
 	let live_stock_safe_area = surveyData.live_stock_safe_area;
-	let share_livestock_safe_area = surveyData.share_livestock_safe_area;
+	// let share_livestock_safe_area = surveyData.share_livestock_safe_area;
 </script>
 
 <h3 class="text-base sm:text-lg">
@@ -49,7 +49,7 @@
 	{#each yesNoOptions as { value, lable }}
 		<li class="list-none sm:text-lg pr-3">
 			<input
-				on:change={(e) => {
+				on:change={() => {
 					live_stock_present = value;
 				}}
 				name="live_stock_present"
@@ -71,7 +71,7 @@
 		{#each yesNoMaybeOptions as { value, lable }}
 			<li class="list-none sm:text-lg pr-3">
 				<input
-					on:change={(e) => {
+					on:change={() => {
 						live_stock_safe_area = value;
 					}}
 					name="live_stock_safe_area"
@@ -92,9 +92,6 @@
 			{#each yesNoMaybeOptions as { value, lable }}
 				<li class="list-none sm:text-lg pr-3">
 					<input
-						on:change={(e) => {
-							share_livestock_safe_area = value;
-						}}
 						name="share_livestock_safe_area"
 						type="radio"
 						live_stock_present

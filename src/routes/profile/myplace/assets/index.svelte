@@ -55,7 +55,7 @@
 							<input
 								name="static_water_available"
 								type="checkbox"
-								bind:group={profileAssets[0].static_water_available}
+								bind:group={profileAssets.static_water_available}
 								{value}
 								on:change={(e) => {
 									setStaticWater(e);
@@ -65,7 +65,7 @@
 							<input
 								name="static_water_available"
 								type="checkbox"
-								bind:group={profileAssets[0].static_water_available}
+								bind:group={profileAssets.static_water_available}
 								{value}
 								on:change={(e) => {
 									unCheckAllStaticWater(e);
@@ -99,7 +99,7 @@
 					<input
 						name="have_stortz"
 						type="radio"
-						bind:group={profileAssets[0].have_stortz}
+						bind:group={profileAssets.have_stortz}
 						{value}
 					/>
 					<label for="have_stortz"> {lable}</label>
@@ -110,7 +110,7 @@
 </div>
 
 <!-- stortz_size -->
-<div class:hidden={profileAssets[0].have_stortz === false}>
+<div class:hidden={profileAssets.have_stortz === false}>
 	<div class="flex flex-col mx-2">
 		<div class="flex justify-start p-2 rounded-lg bg-orange-300">
 			<label
@@ -122,7 +122,7 @@
 				id="stortz_size"
 				name="stortz_size"
 				class="border border-orange-700 w-20 rounded ml-3 py-1 sm:text-lg"
-				bind:value={profileAssets[0].stortz_size}
+				bind:value={profileAssets.stortz_size}
 			/>
 		</div>
 	</div>
@@ -150,7 +150,7 @@
 						<input
 							name="fire_fighting_assets"
 							type="checkbox"
-							bind:group={profileAssets[0].fire_fighting_assets}
+							bind:group={profileAssets.fire_fighting_assets}
 							{value}
 						/>
 						<label for="fire_fighting_assets"> {lable}</label>
@@ -180,7 +180,7 @@
 						<input
 							name="fire_hazard_reduction"
 							type="checkbox"
-							bind:group={profileAssets[0].fire_hazard_reduction}
+							bind:group={profileAssets.fire_hazard_reduction}
 							{value}
 						/>
 						<label for="fire_hazard_reduction"> {lable}</label>

@@ -25,7 +25,7 @@
 <TextAreaInput
 	lableClass="font-bold text-base sm:text-lg"
 	headingText="Do you have any other comments that you would like to add?"
-	divClass="p-2 rounded-lg bg-orange-300 sm:text-lg"
+	divClass="px-4 rounded-lg bg-orange-300 sm:text-lg"
 	nameText="other_comments"
 	textAreaClass="w-full resize-y sm:text-lg"
 	bind:inputValue={surveyData.other_comments}

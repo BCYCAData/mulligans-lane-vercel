@@ -63,7 +63,7 @@
 			<input
 				id="password"
 				type={showPassword ? 'text' : 'password'}
-				on:change={(e) => {
+				on:change={() => {
 					updatePassword = password;
 				}}
 				class="block border border-orange-700 w-full py-3 rounded mb-4"

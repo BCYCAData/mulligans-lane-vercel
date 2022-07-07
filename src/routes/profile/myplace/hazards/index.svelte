@@ -28,7 +28,7 @@
 						<input
 							name="site_hazards"
 							type="checkbox"
-							bind:group={profileHazards[0].site_hazards}
+							bind:group={profileHazards.site_hazards}
 							{value}
 						/>
 						<label for="site_hazards"> {lable}</label>
@@ -46,7 +46,7 @@
 			divClass="rounded-lg bg-orange-300 sm:text-lg"
 			nameText="other_site_hazards"
 			textAreaClass="w-full resize-y sm:text-lg"
-			bind:inputValue={profileHazards[0].other_site_hazards}
+			bind:inputValue={profileHazards.other_site_hazards}
 		/>
 	</div>
 
@@ -67,7 +67,7 @@
 					<input
 						name="land_adjacent_hazard"
 						type="radio"
-						bind:group={profileHazards[0].land_adjacent_hazard}
+						bind:group={profileHazards.land_adjacent_hazard}
 						{value}
 					/>
 					<label for="land_adjacent_hazard"> {lable}</label>
@@ -84,7 +84,7 @@
 			divClass="rounded-lg bg-orange-300 sm:text-lg"
 			nameText="other_hazards"
 			textAreaClass="w-full resize-y sm:text-lg"
-			bind:inputValue={profileHazards[0].other_hazards}
+			bind:inputValue={profileHazards.other_hazards}
 		/>
 	</div>
 </div>

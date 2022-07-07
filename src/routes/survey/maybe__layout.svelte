@@ -37,29 +37,10 @@
 	<form
 		on:submit|preventDefault
 		id="surveyForm"
-		on:change={(e) => {
+		on:change={() => {
 			unsaved = true;
 		}}
 	>
-		<!-- <div class="flex flex-row">
-			<div class="w-1/3" />
-			<button
-				class="w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"
-				on:click={(e) => {
-					unsaved = false;
-				}}
-				hidden={!unsaved}
-				type="submit"
-				form="profileMyPlaceForm">Save My Answers</button
-			>
-			<button
-				class="w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"
-				on:click={(e) => {
-					unsaved = false;
-				}}
-				hidden={!unsaved}>Cancel</button
-			>
-		</div> -->
 		<slot />
 		<div class=" mx-auto w-7/12">
 			<ProgressBar

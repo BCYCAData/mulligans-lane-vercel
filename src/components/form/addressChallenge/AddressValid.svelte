@@ -12,7 +12,6 @@
 	let strength = 0;
 	let validations = [];
 	let showPassword = false;
-	let loading = false;
 	let errorMessage = '';
 
 	$: password = '';

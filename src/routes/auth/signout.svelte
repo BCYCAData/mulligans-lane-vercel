@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	// import { session } from '$app/stores';
 
-	async function onSubmit(e) {
+	async function onSubmit() {
 		const { error } = await supabaseClient.auth.signOut();
 		if (error) {
 			console.log('Sign Out Error:  ', error.message);

@@ -47,16 +47,16 @@
 // }
 import {
 	supabaseServerClient,
-	withPageAuth
+	withApiAuth
 } from '@supabase/auth-helpers-sveltekit';
 
-export const get = async ({ locals, request }) =>
-	withPageAuth(
+export const get = async ({ locals }) =>
+	withApiAuth(
 		{
 			user: locals.user
 		},
 		async () => {
-			const { data: profileWorkshops, error } = await supabaseServerClient(
+			const { data: profileData, error } = await supabaseServerClient(
 				locals.accessToken
 			)
 				.from('profile')
@@ -64,10 +64,7 @@ export const get = async ({ locals, request }) =>
 					'community_workshop_choices,other_community_workshop,will_run_community_workshops'
 				)
 				.eq('id', locals.user.id);
-			if (null == profileWorkshops[0].community_workshop_choices) {
-				profileWorkshops[0].community_workshop_choices = [];
-			}
-			console.log('data', profileWorkshops);
+			console.log('profileWorkshops', profileData);
 			if (error) {
 				console.log('error profileWorkshops:', error);
 				return {
@@ -75,14 +72,24 @@ export const get = async ({ locals, request }) =>
 					body: { error }
 				};
 			}
+			if (profileData.length === 1) {
+				let profileWorkshops = profileData[0];
+				if (null == profileWorkshops.community_workshop_choices) {
+					profileWorkshops.community_workshop_choices = [];
+				}
+				return {
+					status: 200,
+					body: { profileWorkshops }
+				};
+			}
 			return {
-				status: 200,
-				body: { profileWorkshops }
+				status: 400,
+				body: {}
 			};
 		}
 	);
 export const post = async ({ locals, request }) =>
-	withPageAuth(
+	withApiAuth(
 		{
 			user: locals.user
 		},

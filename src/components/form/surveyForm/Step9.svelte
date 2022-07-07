@@ -27,7 +27,7 @@
 <TextAreaInput
 	lableClass="font-bold text-base sm:text-lg"
 	headingText="Are there other information sheets that you would find useful?"
-	divClass="p-2 rounded-lg bg-orange-300 sm:text-lg"
+	divClass="px-4 rounded-lg bg-orange-300 sm:text-lg"
 	nameText="other_information_sheet"
 	textAreaClass="w-full resize-y sm:text-lg"
 	bind:inputValue={surveyData.other_information_sheet}

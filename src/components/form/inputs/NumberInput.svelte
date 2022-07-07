@@ -6,7 +6,7 @@
 	export let inputValue;
 </script>
 
-<div class="flex flex-col justify-items-center mx-auto">
+<div class="flex flex-col justify-center items-center">
 	<label class={lableClass} for={name}>{lable}</label>
 	<input
 		type="number"
