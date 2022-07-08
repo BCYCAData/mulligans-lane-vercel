@@ -5,19 +5,30 @@
 
 	import Modal from '$components/Modal.svelte';
 	import AddressChallenge from '$components/form/addressChallenge/AddressChallenge.svelte';
-
+	/**
+	 * @type {boolean}
+	 */
+	let loading = false;
+	/**
+	 * @type {string}
+	 */
 	let email;
+	/**
+	 * @type {string}
+	 */
 	let password;
 
 	const handleSubmit = async () => {
 		try {
 			loading = true;
+			// @ts-ignore
 			const { error } = await supabaseClient.auth.signIn({
 				email: email,
 				password: password
 			});
 			if (error) throw error;
 		} catch (error) {
+			// @ts-ignore
 			alert(error.error_description || error.message);
 		} finally {
 			loading = false;
@@ -28,9 +39,7 @@
 </script>
 
 <div class="flex flex-col items-center max-w-sm max-w-screen-xsm mx-auto">
-	<div
-		class="bg-white p-6 sm:ml-0 rounded shadow-md text-black w-5/6 sm:w-full"
-	>
+	<div class="bg-white p-6 sm:ml-0 rounded shadow-md text-black w-5/6 sm:w-full">
 		<h1 class="text-2xl text-center">Welcome Back</h1>
 		<form on:submit|preventDefault={handleSubmit}>
 			<input
@@ -68,8 +77,9 @@
 			<button
 				type="submit"
 				class="w-full text-center py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1"
-				>Sign In</button
 			>
+				Sign In
+			</button>
 		</form>
 		{#if modalVisible}
 			<Modal on:exit={() => (modalVisible = !modalVisible)}>

@@ -1,5 +1,10 @@
 <script context="module">
+	import { supabaseClient } from '$lib/dbClient';
 	let showFooter = true;
+	let supabaseEvent = '';
+	supabaseClient.auth.onAuthStateChange((event) => {
+		supabaseEvent = event;
+	});
 </script>
 
 <script>
@@ -7,15 +12,21 @@
 
 	import { goto } from '$app/navigation';
 	import { page, session } from '$app/stores';
-	import { supabaseClient } from '$lib/dbClient';
+
 	import { SupaAuthHelper } from '@supabase/auth-helpers-svelte';
 	import Navbar from '$components/header/navbar/Navbar.svelte';
 
 	import '../app.css';
 	import 'uno.css';
 
+	// const onUserUpdate = null;
 	const onUserUpdate = async (user) => {
-		if (user) await goto('/');
+		// if (user) await goto('/');
+		if (user) {
+			if ((supabaseEvent == 'SIGNED_IN') | (supabaseEvent == 'TOKEN_REFRESHED')) {
+				await goto('/profile');
+			} else await goto('/');
+		}
 	};
 </script>
 
