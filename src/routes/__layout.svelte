@@ -1,10 +1,5 @@
 <script context="module">
-	import { supabaseClient } from '$lib/dbClient';
 	let showFooter = true;
-	let supabaseEvent = '';
-	supabaseClient.auth.onAuthStateChange((event) => {
-		supabaseEvent = event;
-	});
 </script>
 
 <script>
@@ -12,7 +7,7 @@
 
 	import { goto } from '$app/navigation';
 	import { page, session } from '$app/stores';
-
+	import { supabaseClient } from '$lib/dbClient';
 	import { SupaAuthHelper } from '@supabase/auth-helpers-svelte';
 	import Navbar from '$components/header/navbar/Navbar.svelte';
 
@@ -21,11 +16,16 @@
 
 	// const onUserUpdate = null;
 	const onUserUpdate = async (user) => {
-		// if (user) await goto('/');
 		if (user) {
-			if ((supabaseEvent == 'SIGNED_IN') | (supabaseEvent == 'TOKEN_REFRESHED')) {
+			if ($page.url.pathname.endsWith('/auth/updateuser')) {
+				if (!$page.url.pathname.startsWith('/auth/updateuser')) {
+					await goto('/auth/updateuser');
+					location.reload();
+				}
+			} else if (!$page.url.pathname.startsWith('/profile')) {
 				await goto('/profile');
-			} else await goto('/');
+				location.reload();
+			}
 		}
 	};
 </script>

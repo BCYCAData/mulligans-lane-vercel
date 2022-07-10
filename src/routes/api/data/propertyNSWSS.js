@@ -1,3 +1,4 @@
+// @ts-nocheck
 export async function post({ request }) {
 	const body = await request.json();
 	const addressURL =

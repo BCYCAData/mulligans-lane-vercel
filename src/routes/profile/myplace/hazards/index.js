@@ -1,3 +1,4 @@
+// @ts-nocheck
 // import { supabaseClient } from '$lib/dbClient';
 
 // export async function get() {
@@ -47,10 +48,7 @@
 // 		body: { profileHazards }
 // 	};
 // }
-import {
-	supabaseServerClient,
-	withApiAuth
-} from '@supabase/auth-helpers-sveltekit';
+import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
 export const get = async ({ locals }) =>
 	withApiAuth(
@@ -58,15 +56,11 @@ export const get = async ({ locals }) =>
 			user: locals.user
 		},
 		async () => {
-			const { data: profileData, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
-				.select(
-					'site_hazards,other_site_hazards,land_adjacent_hazard,other_hazards'
-				)
+				.select('site_hazards,other_site_hazards,land_adjacent_hazard,other_hazards')
 				.eq('id', locals.user.id);
-			console.log('profileHazards', profileData);
+			console.log('GET Data', profileData);
 			if (error) {
 				console.log('error profileHazards:', error);
 				return {
@@ -97,12 +91,10 @@ export const post = async ({ locals, request }) =>
 		},
 		async () => {
 			const body = await request.formData();
-			const { data: profileData, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.update({
-					site_hazards: body.get('site_hazards'),
+					site_hazards: body.getAll('site_hazards'),
 					other_site_hazards: body.get('other_site_hazards'),
 					land_adjacent_hazard: body.get('land_adjacent_hazard'),
 					other_hazards: body.get('other_hazards')

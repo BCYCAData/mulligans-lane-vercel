@@ -1,7 +1,5 @@
-import {
-	supabaseServerClient,
-	withApiAuth
-} from '@supabase/auth-helpers-sveltekit';
+// @ts-nocheck
+import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
 export const get = async ({ locals }) =>
 	withApiAuth(
@@ -9,13 +7,11 @@ export const get = async ({ locals }) =>
 			user: locals.user
 		},
 		async () => {
-			const { data: profileSettings, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.select('id')
 				.eq('id', locals.user.id);
-			console.log('data', profileSettings);
+
 			if (error) {
 				console.log('error profileSettings:', error);
 				return {
@@ -23,9 +19,17 @@ export const get = async ({ locals }) =>
 					body: { error }
 				};
 			}
+			if (profileData.length === 1) {
+				let profileSettings = profileData[0];
+				console.log('GET', profileSettings);
+				return {
+					status: 200,
+					body: { profileSettings }
+				};
+			}
 			return {
-				status: 200,
-				body: { profileSettings }
+				status: 400,
+				body: {}
 			};
 		}
 	);
@@ -37,9 +41,7 @@ export const post = async ({ locals, request }) =>
 		async () => {
 			const body = await request.formData();
 			console.log('first_name', body.get('first_name'));
-			const { data: profileSettings, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.update({})
 				.eq('id', locals.user.id);
@@ -50,8 +52,17 @@ export const post = async ({ locals, request }) =>
 					body: { error }
 				};
 			}
+			if (profileData.length === 1) {
+				let profileSettings = profileData[0];
+				console.log('PUT', profileSettings);
+				return {
+					status: 200,
+					body: { profileSettings }
+				};
+			}
 			return {
-				body: { profileSettings }
+				status: 400,
+				body: {}
 			};
 		}
 	);

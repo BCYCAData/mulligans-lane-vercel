@@ -1,3 +1,4 @@
+// @ts-nocheck
 // import { supabaseClient } from '$lib/dbClient';
 
 // export async function get() {
@@ -46,10 +47,7 @@
 // 		body: { profileAnimals }
 // 	};
 // }
-import {
-	supabaseServerClient,
-	withApiAuth
-} from '@supabase/auth-helpers-sveltekit';
+import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
 export const get = async ({ locals }) =>
 	withApiAuth(
@@ -57,9 +55,7 @@ export const get = async ({ locals }) =>
 			user: locals.user
 		},
 		async () => {
-			const { data: profileData, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.select(
 					'number_dogs,number_cats,number_birds,number_other_pets,live_stock_present,live_stock_safe_area,share_livestock_safe_area'
@@ -93,20 +89,15 @@ export const post = async ({ locals, request }) =>
 		},
 		async () => {
 			const body = await request.formData();
-			console.log('first_name', body.get('first_name'));
-			const { data: profileAnimals, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.update({
-					number_dogs: body.get('number_dogs'),
-					number_cats: body.get('number_cats'),
-					number_birds: body.get('number_birds'),
-					number_other_pets: body.get('number_other_pets'),
+					number_dogs: parseInt(body.get('number_dogs')) || 0,
+					number_cats: parseInt(body.get('number_cats')) || 0,
+					number_birds: parseInt(body.get('number_birds')) || 0,
+					number_other_pets: parseInt(body.get('number_other_pets')) || 0,
 					live_stock_present: body.get('live_stock_present'),
-					number_otlive_stock_safe_areaher_pets: body.get(
-						'live_stock_safe_area'
-					),
+					live_stock_safe_area: body.get('live_stock_safe_area'),
 					share_livestock_safe_area: body.get('share_livestock_safe_area')
 				})
 				.eq('id', locals.user.id);
@@ -117,8 +108,16 @@ export const post = async ({ locals, request }) =>
 					body: { error }
 				};
 			}
+			if (profileData.length === 1) {
+				let profileAnimals = profileData[0];
+				return {
+					status: 200,
+					body: { profileAnimals }
+				};
+			}
 			return {
-				body: { profileAnimals }
+				status: 400,
+				body: {}
 			};
 		}
 	);

@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	/**@type {string}
 	 * @description Text for the question
 	 */
@@ -76,13 +78,8 @@
 			<ul class={ulClass}>
 				{#each optionsArray as { value, lable }}
 					<li class={liClass}>
-						<input
-							name={inputName}
-							type="radio"
-							{value}
-							required={inputRequired}
-						/>
-						<label for={inputName}> {lable}</label>
+						<input name={inputName} type="radio" {value} required={inputRequired} />
+						<label for={inputName}>{lable}</label>
 					</li>
 				{/each}
 			</ul>

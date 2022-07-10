@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import { yesNoOptions, accessOptions } from '$lib/profileOptions';
 	import { formatMobile, formatPhone } from '$lib/utils';
 
@@ -106,7 +108,7 @@
 						bind:group={surveyData.property_rented}
 						{value}
 					/>
-					<label for="property_rented"> {lable}</label>
+					<label for="property_rented">{lable}</label>
 				</li>
 			{:else}
 				<li class="list-none sm:text-lg pr-3">
@@ -119,15 +121,13 @@
 						bind:group={surveyData.property_rented}
 						{value}
 					/>
-					<label for="property_rented"> {lable}</label>
+					<label for="property_rented">{lable}</label>
 				</li>
 			{/if}
 		{/each}
 	</div>
 	<div class="flex flex-row sm:text-lg">
-		<label class="pl-4" for="agent_name" hidden={rentingChecked === false}
-			>Agent Name</label
-		>
+		<label class="pl-4" for="agent_name" hidden={rentingChecked === false}>Agent Name</label>
 		<input
 			type="text"
 			class="border basis-7/12 border-orange-700 sm:text-lg rounded"
@@ -136,9 +136,7 @@
 			hidden={rentingChecked === false}
 			bind:value={surveyData.agent_name}
 		/>
-		<label class="pl-4" for="agent_phone" hidden={rentingChecked === false}
-			>Agent Phone</label
-		>
+		<label class="pl-4" for="agent_phone" hidden={rentingChecked === false}>Agent Phone</label>
 		<input
 			type="text"
 			class="border basis-1/12 border-orange-700 sm:text-lg rounded"
@@ -156,20 +154,13 @@
 <div class="p-2 flex justify-start rounded-lg bg-orange-300">
 	{#each yesNoOptions as { value, lable }}
 		<li class="list-none sm:text-lg pr-3">
-			<input
-				name="sign_posted"
-				type="radio"
-				bind:group={surveyData.sign_posted}
-				{value}
-			/>
-			<label for="sign_posted"> {lable}</label>
+			<input name="sign_posted" type="radio" bind:group={surveyData.sign_posted} {value} />
+			<label for="sign_posted">{lable}</label>
 		</li>
 	{/each}
 </div>
 
-<h3 class="text-base sm:text-lg">
-	Is there easy truck access to the property and paddocks?
-</h3>
+<h3 class="text-base sm:text-lg">Is there easy truck access to the property and paddocks?</h3>
 <div class="p-2 flex justify-start rounded-lg bg-orange-300">
 	<ul class="list-none w-full pl-0 m-0">
 		{#each accessOptions as { value, lable }}
@@ -185,7 +176,7 @@
 							bind:group={surveyData.truck_access}
 							{value}
 						/>
-						<label class="ml-1" for="truck_access"> {lable}</label>
+						<label class="ml-1" for="truck_access">{lable}</label>
 						<input
 							type="text"
 							class="border w-full border-orange-700 rounded ml-2 sm:text-lg"
@@ -207,7 +198,7 @@
 						bind:group={surveyData.truck_access}
 						{value}
 					/>
-					<label for="truck_access"> {lable}</label>
+					<label for="truck_access">{lable}</label>
 				</li>
 			{/if}
 		{/each}
@@ -230,9 +221,7 @@
 				} else {
 					e.preventDefault();
 					surveyData.mobile = e.currentTarget.value;
-					if (
-						['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key)
-					) {
+					if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key)) {
 						surveyData.mobile = formatMobile(surveyData.mobile, e.key);
 					}
 				}
@@ -253,9 +242,7 @@
 				} else {
 					e.preventDefault();
 					surveyData.phone = e.currentTarget.value;
-					if (
-						['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key)
-					) {
+					if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key)) {
 						surveyData.phone = formatPhone(surveyData.phone, e.key);
 					}
 				}
@@ -266,14 +253,10 @@
 	</div>
 </div>
 
-<h3 class="text-base sm:text-lg">
-	What is the quality of your mobile reception at the property?
-</h3>
+<h3 class="text-base sm:text-lg">What is the quality of your mobile reception at the property?</h3>
 <div class="p-1 rounded-lg bg-orange-300">
 	<ul class="flex my-0 items-center list-none sm:text-lg sm:w-1/2 sm:mx-auto">
-		<div class="flex-auto font-semibold text-sm sm:text-base text-orange-700">
-			Poor
-		</div>
+		<div class="flex-auto font-semibold text-sm sm:text-base text-orange-700">Poor</div>
 		{#each Array(5) as _, i}
 			<li class="flex-auto">
 				<input
@@ -287,8 +270,6 @@
 				</label>
 			</li>
 		{/each}
-		<div class="flex-auto font-semibold text-sm sm:text-base text-orange-700">
-			Excellent
-		</div>
+		<div class="flex-auto font-semibold text-sm sm:text-base text-orange-700">Excellent</div>
 	</ul>
 </div>

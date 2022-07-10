@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import AddressValid from '$components/form/addressChallenge/AddressValid.svelte';
 	import AddressError from '$components/form/addressChallenge/AddressError.svelte';
 	import AddressNotFound from '$components/form/addressChallenge/AddressNotFound.svelte';

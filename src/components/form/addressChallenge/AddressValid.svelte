@@ -1,5 +1,6 @@
 <script>
-	// import { session } from '$app/stores';
+	// @ts-nocheck
+
 	import AuthErrorMessage from '$components/form/AuthErrorMessage.svelte';
 
 	import { supabaseClient, supabaseRedirectBase } from '$lib/dbClient';
@@ -66,16 +67,13 @@
 <h3 class="text-center">is part of the</h3>
 <h3 class="text-center">{community}</h3>
 <h3 class="text-center">community.</h3>
-<div
-	class="max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
->
+<div class="max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
 	<div class="px-6 py-2 rounded shadow-md text-black w-full">
 		<!-- <form action="/api/auth/signup" method="post"> -->
 		<form on:submit|preventDefault={handleSubmit}>
-			<label
-				class="inline uppercase tracking-wide text-orange-500 text-xs font-bold"
-				for="email">Email:</label
-			>
+			<label class="inline uppercase tracking-wide text-orange-500 text-xs font-bold" for="email">
+				Email:
+			</label>
 			<input
 				id="email"
 				type="email"
@@ -89,14 +87,16 @@
 			<label
 				class="inline uppercase tracking-wide text-orange-500 text-xs font-bold"
 				for="password"
-				>Password:<span
+			>
+				Password:
+				<span
 					class="toggle-password text-3xl text-gray-700 font-normal ml-3  align-middle "
 					on:mouseenter={() => (showPassword = true)}
 					on:mouseleave={() => (showPassword = false)}
 				>
 					{showPassword ? '👁' : '👁'}
-				</span></label
-			>
+				</span>
+			</label>
 			<input
 				id="password"
 				type="password"
@@ -111,14 +111,16 @@
 			<label
 				class="inline uppercase tracking-wide text-orange-500 text-xs font-bold"
 				for="confirmPassword"
-				>Confirm Password:<span
+			>
+				Confirm Password:
+				<span
 					class="toggle-password text-3xl text-gray-700 font-normal ml-3  align-middle "
 					on:mouseenter={() => (showPassword = true)}
 					on:mouseleave={() => (showPassword = false)}
 				>
 					{showPassword ? '👁' : '👁'}
-				</span></label
-			>
+				</span>
+			</label>
 
 			<input
 				id="confirmPassword"
@@ -141,19 +143,19 @@
 			<ul>
 				<li>
 					<span class="text-[10px]">{validations[0] ? '✔️' : '❌'}</span>
-					<span class="text-sm"> must be at least 5 characters</span>
+					<span class="text-sm">must be at least 5 characters</span>
 				</li>
 				<li>
 					<span class="text-[10px]">{validations[1] ? '✔️' : '❌'}</span>
-					<span class="text-sm"> must contain a capital letter</span>
+					<span class="text-sm">must contain a capital letter</span>
 				</li>
 				<li>
 					<span class="text-[10px]">{validations[2] ? '✔️' : '❌'}</span>
-					<span class="text-sm"> must contain a number</span>
+					<span class="text-sm">must contain a number</span>
 				</li>
 				<li>
 					<span class="text-[10px]">{validations[3] ? '✔️' : '❌'}</span>
-					<span class="text-sm"> must contain one symbol ($&+,:;=?#^!)</span>
+					<span class="text-sm">must contain one symbol ($&+,:;=?#^!)</span>
 				</li>
 			</ul>
 			{#if errorMessage !== ''}
@@ -163,8 +165,10 @@
 				type="submit"
 				class="w-full text-center py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"
 				value=""
-				disabled={!canGo}>Create Account</button
+				disabled={!canGo}
 			>
+				Create Account
+			</button>
 		</form>
 		<div class="text-center text-sm text-grey-dark mt-1">
 			By signing up, you agree to the
@@ -175,10 +179,7 @@
 				Terms of Service
 			</a>
 			and
-			<a
-				class="no-underline border-b border-grey-dark text-orange-700"
-				href="/policies/privacy"
-			>
+			<a class="no-underline border-b border-grey-dark text-orange-700" href="/policies/privacy">
 				Privacy Policy
 			</a>
 		</div>
@@ -186,12 +187,8 @@
 
 	<div class="text-grey-dark mt-3">
 		Already have an account?
-		<a
-			class="no-underline border-b border-blue text-blue"
-			href="../auth/signin/"
-		>
-			Sign in
-		</a>.
+		<a class="no-underline border-b border-blue text-blue" href="../auth/signin/">Sign in</a>
+		.
 	</div>
 </div>
 

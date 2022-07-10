@@ -1,7 +1,5 @@
-import {
-	supabaseServerClient,
-	withApiAuth
-} from '@supabase/auth-helpers-sveltekit';
+// @ts-nocheck
+import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
 export const get = async ({ locals }) =>
 	withApiAuth(
@@ -9,9 +7,7 @@ export const get = async ({ locals }) =>
 			user: locals.user
 		},
 		async () => {
-			const { data: profileData, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.select(
 					'stay_in_touch_choices,postal_address_street,postal_address_suburb,postal_address_postcode,other_comments'
@@ -30,7 +26,6 @@ export const get = async ({ locals }) =>
 				if (null == profileCommunity.stay_in_touch_choices) {
 					profileCommunity.stay_in_touch_choices = [];
 				}
-				console.log('profileCommunity', profileCommunity);
 				return {
 					status: 200,
 					body: { profileCommunity }
@@ -50,12 +45,10 @@ export const post = async ({ locals, request }) =>
 		},
 		async () => {
 			const body = await request.formData();
-			const { data: profileCommunity, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.update({
-					stay_in_touch_choices: body.get('stay_in_touch_choices'),
+					stay_in_touch_choices: body.getAll('stay_in_touch_choices'),
 					postal_address_street: body.get('postal_address_street'),
 					postal_address_suburb: body.get('postal_address_suburb'),
 					postal_address_postcode: body.get('postal_address_postcode'),
@@ -69,8 +62,16 @@ export const post = async ({ locals, request }) =>
 					body: { error }
 				};
 			}
+			if (profileData.length === 1) {
+				let profileCommunity = profileData[0];
+				return {
+					status: 200,
+					body: { profileCommunity }
+				};
+			}
 			return {
-				body: { profileCommunity }
+				status: 400,
+				body: {}
 			};
 		}
 	);

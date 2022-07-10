@@ -1,14 +1,14 @@
 <script>
+	// @ts-nocheck
+
 	// import AuthErrorMessage from '$components/form/AuthErrorMessage.svelte';
 
 	import { supabaseClient } from '$lib/dbClient';
+	import { goto, invalidate } from '$app/navigation';
 
 	import Modal from '$components/Modal.svelte';
 	import AddressChallenge from '$components/form/addressChallenge/AddressChallenge.svelte';
-	/**
-	 * @type {boolean}
-	 */
-	let loading = false;
+
 	/**
 	 * @type {string}
 	 */
@@ -19,19 +19,15 @@
 	let password;
 
 	const handleSubmit = async () => {
-		try {
-			loading = true;
-			// @ts-ignore
-			const { error } = await supabaseClient.auth.signIn({
-				email: email,
-				password: password
-			});
-			if (error) throw error;
-		} catch (error) {
-			// @ts-ignore
+		const { error } = await supabaseClient.auth.signIn({
+			email: email,
+			password: password
+		});
+		if (error) {
 			alert(error.error_description || error.message);
-		} finally {
-			loading = false;
+		} else {
+			console.log('profile');
+			window.location.assign('http://localhost:3000/profile');
 		}
 	};
 
@@ -42,6 +38,7 @@
 	<div class="bg-white p-6 sm:ml-0 rounded shadow-md text-black w-5/6 sm:w-full">
 		<h1 class="text-2xl text-center">Welcome Back</h1>
 		<form on:submit|preventDefault={handleSubmit}>
+			<!-- <form action="/api/auth/signin" method="POST"> -->
 			<input
 				id="email"
 				type="email"

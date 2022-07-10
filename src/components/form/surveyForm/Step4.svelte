@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import { yesNoMaybeOptions, yesNoOptions } from '$lib/profileOptions';
 	import NumberInput from '$components/form/inputs/NumberInput.svelte';
 
@@ -9,9 +11,7 @@
 	// let share_livestock_safe_area = surveyData.share_livestock_safe_area;
 </script>
 
-<h3 class="text-base sm:text-lg">
-	Please record the number of pets you have on this property
-</h3>
+<h3 class="text-base sm:text-lg">Please record the number of pets you have on this property</h3>
 <div class="p-2 rounded-lg bg-orange-300">
 	<ul class="flex pl-0 m-0 justify-start list-none sm:text-lg">
 		<NumberInput
@@ -57,15 +57,14 @@
 				bind:group={surveyData.live_stock_present}
 				{value}
 			/>
-			<label for="live_stock_present"> {lable}</label>
+			<label for="live_stock_present">{lable}</label>
 		</li>
 	{/each}
 </div>
 
 {#if live_stock_present === true}
 	<h3 class="text-base sm:text-lg">
-		Do you have an area which would be safe for stock in the event of a bushfire
-		or flood?
+		Do you have an area which would be safe for stock in the event of a bushfire or flood?
 	</h3>
 	<div class="p-2 flex justify-start rounded-lg bg-orange-300">
 		{#each yesNoMaybeOptions as { value, lable }}
@@ -79,14 +78,14 @@
 					bind:group={surveyData.live_stock_safe_area}
 					{value}
 				/>
-				<label for="live_stock_safe_area"> {lable}</label>
+				<label for="live_stock_safe_area">{lable}</label>
 			</li>
 		{/each}
 	</div>
 	{#if live_stock_present && live_stock_safe_area != 'N'}
 		<h3 class="text-base sm:text-lg">
-			Would you be happy for other people to leave their stock on your property,
-			in your safe area, for a short period in an emergency?
+			Would you be happy for other people to leave their stock on your property, in your safe area,
+			for a short period in an emergency?
 		</h3>
 		<div class="p-2 flex justify-start rounded-lg bg-orange-300">
 			{#each yesNoMaybeOptions as { value, lable }}
@@ -98,7 +97,7 @@
 						bind:group={surveyData.share_livestock_safe_area}
 						{value}
 					/>
-					<label for="share_livestock_safe_area"> {lable}</label>
+					<label for="share_livestock_safe_area">{lable}</label>
 				</li>
 			{/each}
 		</div>

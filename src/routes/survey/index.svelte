@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import SurveyFormContainer from '$components/form/surveyForm/SurveyFormContainer.svelte';
 	import ProgressBar from '$components/form/ProgressBar.svelte';
 
@@ -31,12 +33,16 @@
 		<button
 			class="px-[20px] py-[6px] text-white bg-orange-500 rounded-xl focus:outline-none active:transform scale 98 disabled:cursor-not-allowed disabled:bg-slate-300"
 			on:click={() => handleProgress(-1)}
-			disabled={currentActive == 1}>Prev</button
+			disabled={currentActive == 1}
 		>
+			Prev
+		</button>
 		<button
 			class="px-[20px] py-[6px] text-white bg-orange-500 rounded-xl focus:outline-none active:transform scale 98 disabled:cursor-not-allowed disabled:bg-slate-300"
 			on:click={() => handleProgress(+1)}
-			hidden={currentActive == steps.length}>Next</button
+			hidden={currentActive == steps.length}
 		>
+			Next
+		</button>
 	</div>
 </section>

@@ -1,9 +1,7 @@
 <script>
-	import {
-		staticWaterOptions,
-		yesNoMaybeOptions,
-		fireFightingAssets
-	} from '$lib/profileOptions';
+	// @ts-nocheck
+
+	import { staticWaterOptions, yesNoMaybeOptions, fireFightingAssets } from '$lib/profileOptions';
 
 	let selectedStaticSources = new Set();
 	const unCheckAllStaticWater = (e) => {
@@ -32,9 +30,7 @@
 	let have_stortzChecked = surveyData.have_stortz;
 </script>
 
-<h3 class="text-base sm:text-lg">
-	Are there any static water supplies on the property?
-</h3>
+<h3 class="text-base sm:text-lg">Are there any static water supplies on the property?</h3>
 <div class="p-2 flex justify-start rounded-lg bg-orange-300">
 	<ul class="list-none w-full pl-0 my-0">
 		{#each staticWaterOptions as { value, lable }}
@@ -49,7 +45,7 @@
 							setStaticWater(e);
 						}}
 					/>
-					<label for="static_water_available"> {lable}</label>
+					<label for="static_water_available">{lable}</label>
 				</li>
 			{:else}
 				<li class="sm:text-lg pr-3">
@@ -63,16 +59,14 @@
 						}}
 						checked={noneChecked}
 					/>
-					<label for="static_water_available"> {lable}</label>
+					<label for="static_water_available">{lable}</label>
 				</li>
 			{/if}
 		{/each}
 	</ul>
 </div>
 
-<h3 class="text-base sm:text-lg">
-	Do you have a Stortz fitting attached to a water tank?
-</h3>
+<h3 class="text-base sm:text-lg">Do you have a Stortz fitting attached to a water tank?</h3>
 <div class="p-2 flex justify-start rounded-lg bg-orange-300">
 	{#each yesNoMaybeOptions as { value, lable }}
 		<li class="list-none sm:text-lg pr-3">
@@ -85,7 +79,7 @@
 				bind:group={surveyData.have_stortz}
 				{value}
 			/>
-			<label for="have_stortz"> {lable}</label>
+			<label for="have_stortz">{lable}</label>
 		</li>
 	{/each}
 </div>
@@ -102,9 +96,7 @@
 		/>
 	</div>
 {/if}
-<h3 class="text-base sm:text-lg">
-	Do you have any of the following at this property?
-</h3>
+<h3 class="text-base sm:text-lg">Do you have any of the following at this property?</h3>
 <div class="p-2 flex justify-start rounded-lg bg-orange-300">
 	<ul class="list-none w-full pl-0 my-0">
 		{#each fireFightingAssets as { value, lable }}
@@ -115,7 +107,7 @@
 					bind:group={surveyData.fire_fighting_assets}
 					{value}
 				/>
-				<label for="fire_fighting_assets"> {lable}</label>
+				<label for="fire_fighting_assets">{lable}</label>
 			</li>
 		{/each}
 	</ul>

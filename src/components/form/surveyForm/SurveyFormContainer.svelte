@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import Step1 from '$components/form/surveyForm/Step1.svelte';
 	import Step2 from '$components/form/surveyForm/Step2.svelte';
 	import Step3 from '$components/form/surveyForm/Step3.svelte';
@@ -18,14 +20,13 @@
 	export let surveyData;
 </script>
 
-<div
-	class="p-1 text-center text-orange-700"
-	hidden={active_step == '1' || active_step == '12'}
->
+<div class="p-1 text-center text-orange-700" hidden={active_step == '1' || active_step == '12'}>
 	Please complete all steps and tap <span
 		class="p-1 rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"
-		>Save My Answers</span
-	> at Step 12
+	>
+		Save My Answers
+	</span>
+	 at Step 12
 </div>
 <form method="post" action="/survey" id="surveyForm">
 	<div hidden={active_step != '1'}>
@@ -69,7 +70,9 @@
 			class="w-1/3 mx-auto rounded-lg text-base font-semibold bg-rose-100 text-rose-700 border-rose-700"
 			hidden={active_step != '12'}
 			type="submit"
-			form="surveyForm">Save My Answers</button
+			form="surveyForm"
 		>
+			Save My Answers
+		</button>
 	</div>
 </form>

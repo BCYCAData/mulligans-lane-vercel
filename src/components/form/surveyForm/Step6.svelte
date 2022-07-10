@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import {
 		siteHazardsOptions,
 		fireHazardReductionOptions,
@@ -9,15 +11,13 @@
 	export let surveyData;
 </script>
 
-<h3 class="text-base sm:text-lg">
-	Do you have any of the following on your property?
-</h3>
+<h3 class="text-base sm:text-lg">Do you have any of the following on your property?</h3>
 <div class="p-2 flex justify-start rounded-lg bg-orange-300">
 	<ul class="list-none w-full pl-0  my-0">
 		{#each siteHazardsOptions as { value, lable }}
 			<li class="sm:text-lg pr-3">
 				<input name="site_hazards" type="checkbox" {value} />
-				<label for="site_hazards"> {lable}</label>
+				<label for="site_hazards">{lable}</label>
 			</li>
 		{/each}
 	</ul>
@@ -41,14 +41,12 @@
 					bind:group={surveyData.fire_hazard_reduction}
 					{value}
 				/>
-				<label for="fire_hazard_reduction"> {lable}</label>
+				<label for="fire_hazard_reduction">{lable}</label>
 			</li>
 		{/each}
 	</ul>
 </div>
-<h3 class="text-base sm:text-lg">
-	Does any adjoining land represent a hazard?
-</h3>
+<h3 class="text-base sm:text-lg">Does any adjoining land represent a hazard?</h3>
 <div class="p-2 flex justify-start rounded-lg bg-orange-300">
 	{#each yesNoMaybeOptions as { value, lable }}
 		<li class="list-none sm:text-lg pr-3">
@@ -58,7 +56,7 @@
 				bind:group={surveyData.land_adjacent_hazard}
 				{value}
 			/>
-			<label for="land_adjacent_hazard"> {lable}</label>
+			<label for="land_adjacent_hazard">{lable}</label>
 		</li>
 	{/each}
 </div>

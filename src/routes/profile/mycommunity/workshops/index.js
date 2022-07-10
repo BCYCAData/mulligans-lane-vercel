@@ -1,3 +1,4 @@
+// @ts-nocheck
 // import { supabaseClient } from '$lib/dbClient';
 
 // export async function get() {
@@ -45,10 +46,7 @@
 // 		body: { profileWorkshops }
 // 	};
 // }
-import {
-	supabaseServerClient,
-	withApiAuth
-} from '@supabase/auth-helpers-sveltekit';
+import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
 export const get = async ({ locals }) =>
 	withApiAuth(
@@ -56,13 +54,9 @@ export const get = async ({ locals }) =>
 			user: locals.user
 		},
 		async () => {
-			const { data: profileData, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
-				.select(
-					'community_workshop_choices,other_community_workshop,will_run_community_workshops'
-				)
+				.select('community_workshop_choices,other_community_workshop,will_run_community_workshops')
 				.eq('id', locals.user.id);
 			console.log('profileWorkshops', profileData);
 			if (error) {
@@ -96,12 +90,10 @@ export const post = async ({ locals, request }) =>
 		async () => {
 			const body = await request.formData();
 			console.log('first_name', body.get('first_name'));
-			const { data: profileWorkshops, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.update({
-					community_workshop_choices: body.get('community_workshop_choices'),
+					community_workshop_choices: body.getAll('community_workshop_choices'),
 					other_community_workshop: body.get('other_community_workshop'),
 					will_run_community_workshops: body.get('will_run_community_workshops')
 				})
@@ -113,8 +105,16 @@ export const post = async ({ locals, request }) =>
 					body: { error }
 				};
 			}
+			if (profileData.length === 1) {
+				let profileWorkshops = profileData[0];
+				return {
+					status: 200,
+					body: { profileWorkshops }
+				};
+			}
 			return {
-				body: { profileWorkshops }
+				status: 400,
+				body: {}
 			};
 		}
 	);

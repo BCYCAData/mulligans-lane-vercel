@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import Spinner from '$components/Spinner.svelte';
 	import { PIP } from '$lib/spatialUtils';
 	import communityPolygons from '$lib/geojsonData/communities';
@@ -20,10 +22,7 @@
 		let found = [];
 		let notFound = [];
 
-		const aliases = suburbAliases(
-			streetaddress.toUpperCase(),
-			suburb.toUpperCase()
-		);
+		const aliases = suburbAliases(streetaddress.toUpperCase(), suburb.toUpperCase());
 		for (let address of aliases) {
 			const response = await fetch('/api/data/propertyNSWSS', {
 				method: 'POST',
@@ -72,9 +71,7 @@
 {#if status === 'addressNotFound'}
 	<h2 class=" text-center mt-5">This address could not be found.</h2>
 {:else}
-	<h2 class=" text-center mt-5">
-		Membership is restricted to specific Communities
-	</h2>
+	<h2 class=" text-center mt-5">Membership is restricted to specific Communities</h2>
 	<p class="text-center mb-2">
 		Please enter your Street Address and Suburb to check your qualification
 	</p>
@@ -107,7 +104,8 @@
 		<button
 			type="submit"
 			class="w-24 m-4 text-center py-1 rounded-full  cursor-pointer bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1"
-			>Check</button
 		>
+			Check
+		</button>
 	</div>
 </form>

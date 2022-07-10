@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	export let headingText;
 	export let nameText;
 	export let requiredText;

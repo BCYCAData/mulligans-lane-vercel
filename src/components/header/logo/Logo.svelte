@@ -1,5 +1,4 @@
 <script>
-	// import logo from './hall_logo_image.png';
 	import logo from './hall_logo_image_90px.png';
 </script>
 

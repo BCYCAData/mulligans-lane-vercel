@@ -1,6 +1,9 @@
 <script>
-	import { supabaseClient } from '$lib/dbClient';
-	export let redirectType;
+	// @ts-nocheck
+
+	// import { supabaseClient } from '$lib/dbClient';
+	// export let redirectType;
+	// export let token;
 
 	let strength = 0;
 	let validations = [];
@@ -11,13 +14,10 @@
 	$: confirmPassword = '';
 	$: canGo = password === confirmPassword && strength === 4;
 
-	export let heading = 'Please set your new password.';
-	export let submitText = 'Submit';
-
-	if (redirectType == 'invite') {
-		heading = 'Please Set a Password';
-		submitText = 'Set Password';
-	}
+	// if (redirectType == 'invite') {
+	// 	heading = 'Thank you for accepting our invitation.';
+	// 	submitText = 'Please Set a Password';
+	// }
 
 	function validatePassword(e) {
 		const passwordValue = e.target.value;
@@ -30,36 +30,34 @@
 		strength = validations.reduce((acc, cur) => acc + cur, 0);
 	}
 
-	async function setPassword() {
-		const _session = await supabaseClient.auth.session();
-		const token = _session?.access_token;
-
-		supabaseClient.auth.setAuth(token);
-		const { data, error } = await supabaseClient.auth.update({
-			password: password
-		});
-		console.log('data', data);
-		console.log('error', error);
-	}
+	// const handleSubmit = async () => {
+	// 	supabaseClient.auth.setAuth(token);
+	// 	console.log(supabaseClient.auth);
+	// 	// const { data, error } = await supabaseClient.auth.update({
+	// 	// 	password: password
+	// 	// });
+	// 	console.log('data', data);
+	// 	console.log('error', error);
+	// };
 </script>
 
-<div
-	class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
->
+<div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
 	<div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-		<form on:submit|preventDefault={setPassword()}>
-			<!-- <form action="/api/auth/updateuser" method="POST"> -->
+		<!-- <form on:submit|preventDefault={handleSubmit()}> -->
+		<form action="/api/auth/updateuser" method="POST">
 			<label
 				class="inline uppercase tracking-wide text-orange-900 text-xs font-bold"
 				for="password"
-				>Password:<span
+			>
+				Password:
+				<span
 					class="toggle-password text-3xl text-gray-700 font-normal ml-3  align-middle "
 					on:mouseenter={() => (showPassword = true)}
 					on:mouseleave={() => (showPassword = false)}
 				>
 					{showPassword ? '👁' : '👁'}
-				</span></label
-			>
+				</span>
+			</label>
 			<input
 				id="password"
 				type={showPassword ? 'text' : 'password'}
@@ -77,14 +75,16 @@
 			<label
 				class="inline uppercase tracking-wide text-orange-900 text-xs font-bold"
 				for="confirmPassword"
-				>Confirm Password:<span
+			>
+				Confirm Password:
+				<span
 					class="toggle-password text-3xl text-gray-700 font-normal ml-3  align-middle "
 					on:mouseenter={() => (showPassword = true)}
 					on:mouseleave={() => (showPassword = false)}
 				>
 					{showPassword ? '👁' : '👁'}
-				</span></label
-			>
+				</span>
+			</label>
 
 			<input
 				id="confirmPassword"
@@ -107,27 +107,27 @@
 			<ul>
 				<li>
 					<span class="text-xs">{validations[0] ? '✔️' : '❌'}</span>
-					<span class="text-sm"> must be at least 5 characters</span>
+					<span class="text-sm">must be at least 5 characters</span>
 				</li>
 				<li>
 					<span class="text-xs">{validations[1] ? '✔️' : '❌'}</span>
-					<span class="text-sm"> must contain a capital letter</span>
+					<span class="text-sm">must contain a capital letter</span>
 				</li>
 				<li>
 					<span class="text-xs">{validations[2] ? '✔️' : '❌'}</span>
-					<span class="text-sm"> must contain a number</span>
+					<span class="text-sm">must contain a number</span>
 				</li>
 				<li>
 					<span class="text-xs">{validations[3] ? '✔️' : '❌'}</span>
-					<span class="text-sm"> must contain one symbol ($&+,:;=?#^!)</span>
+					<span class="text-sm">must contain one symbol ($&+,:;=?#^!)</span>
 				</li>
 			</ul>
 
 			<button
 				type="submit"
 				class="w-full text-center text-xl py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"
-				disabled={!canGo}>{submitText}</button
-			>
+				disabled={!canGo}
+			/>
 		</form>
 	</div>
 </div>

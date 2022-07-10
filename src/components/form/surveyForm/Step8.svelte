@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import { communityWorkshopOptions } from '$lib/profileOptions';
 	import TextAreaInput from '../inputs/TextAreaInput.svelte';
 
@@ -18,7 +20,7 @@
 					bind:group={surveyData.community_workshop_choices}
 					{value}
 				/>
-				<label for="community_workshop_choices"> {lable}</label>
+				<label for="community_workshop_choices">{lable}</label>
 			</li>
 		{/each}
 	</ul>

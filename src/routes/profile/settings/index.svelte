@@ -1,10 +1,49 @@
 <script>
+	// @ts-nocheck
+
 	import { stayInTouchOptions } from '$lib/profileOptions';
+	import { beforeNavigate } from '$app/navigation';
+
+	import Modal from '$components/Modal.svelte';
+	import SaveProfilePrompt from '$components/form/SaveProfilePrompt.svelte';
+
+	let unsaved = false;
+	let modalVisible = false;
+
+	beforeNavigate(({}) => {
+		if (!unsaved) return; // nothing to do
+		modalVisible = !modalVisible;
+	});
 	// export let profileSettings;
 </script>
 
-<!--stay_in_touch_choices -->
-<!-- <div class="flex flex-row justify-start items-center mx-2">
+<section class="min-h-full bg-orange-300">
+	{#if modalVisible}
+		<Modal on:exit={() => (modalVisible = !modalVisible)}>
+			<SaveProfilePrompt />
+		</Modal>
+	{/if}
+	<form
+		id="settingsForm"
+		on:change={() => {
+			unsaved = true;
+		}}
+		class="flex flex-col py-3 mx-auto min-h-full w-full text-orange-900 bg-orange-300"
+		action="/profile/settings"
+		method="POST"
+	>
+		<button
+			on:click={() => {
+				unsaved = false;
+			}}
+			hidden={!unsaved}
+			type="submit"
+			form="settingsForm"
+		>
+			Save My Answers
+		</button>
+		<!--stay_in_touch_choices -->
+		<!-- <div class="flex flex-row justify-start items-center mx-2">
 	<div class="flex flex-row justify-start items-center mt-3 mx-2">
 		<label
 			class="tracking-wide mr-4 mt-1 text-lg font-bold mb-1"
@@ -32,9 +71,9 @@
 		</div>
 	</div>
 </div> -->
-<h1>TBD</h1>
-<!-- Postal address -->
-<!-- <div class:hidden={!profileSettings.stay_in_touch_choices.includes(5)}>
+		<h1>TBD</h1>
+		<!-- Postal address -->
+		<!-- <div class:hidden={!profileSettings.stay_in_touch_choices.includes(5)}>
 	<div class="flex flex-row pt-3 mx-2">
 		<div class="flex flex-col basis-7/12 mx-2">
 			<label
@@ -91,3 +130,5 @@
 		</div>
 	</div>
 </div> -->
+	</form>
+</section>

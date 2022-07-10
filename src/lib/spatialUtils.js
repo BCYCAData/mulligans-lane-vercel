@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Copied from https://www.algorithms-and-technologies.com/point_in_polygon/javascript
  *

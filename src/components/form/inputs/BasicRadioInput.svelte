@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	export let headingRadio;
 	export let optionsArrayRadio;
 	export let nameRadio;
@@ -10,7 +12,7 @@
 		{#each optionsArrayRadio as { value, lable }}
 			<li>
 				<input name={nameRadio} type="radio" {value} />
-				<label for={nameRadio}> {lable}</label>
+				<label for={nameRadio}>{lable}</label>
 			</li>
 		{/each}
 	</ul>

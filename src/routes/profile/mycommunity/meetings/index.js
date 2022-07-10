@@ -1,7 +1,5 @@
-import {
-	supabaseServerClient,
-	withApiAuth
-} from '@supabase/auth-helpers-sveltekit';
+// @ts-nocheck
+import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
 export const get = async ({ locals }) =>
 	withApiAuth(
@@ -9,9 +7,7 @@ export const get = async ({ locals }) =>
 			user: locals.user
 		},
 		async () => {
-			const { data: profileData, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.select('community_meeting_choices,other_community_meeting')
 				.eq('id', locals.user.id);
@@ -47,12 +43,10 @@ export const post = async ({ locals, request }) =>
 		async () => {
 			const body = await request.formData();
 			console.log('first_name', body.get('first_name'));
-			const { data: profileMeetings, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.update({
-					community_meeting_choices: body.get('community_meeting_choices'),
+					community_meeting_choices: body.getAll('community_meeting_choices'),
 					other_community_meeting: body.get('other_community_meeting')
 				})
 				.eq('id', locals.user.id);
@@ -63,8 +57,16 @@ export const post = async ({ locals, request }) =>
 					body: { error }
 				};
 			}
+			if (profileData.length === 1) {
+				let profileMeetings = profileData[0];
+				return {
+					status: 200,
+					body: { profileMeetings }
+				};
+			}
 			return {
-				body: { profileMeetings }
+				status: 400,
+				body: {}
 			};
 		}
 	);

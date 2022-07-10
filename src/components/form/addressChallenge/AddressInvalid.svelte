@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	export let searchAddress;
 </script>
 
@@ -9,7 +11,6 @@
 
 <div class=" mt-3">
 	<p>If you would like more information please</p>
-	<a class="no-underline border-b border-blue text-blue" href="../contact/">
-		Contact us
-	</a>.
+	<a class="no-underline border-b border-blue text-blue" href="../contact/">Contact us</a>
+	.
 </div>

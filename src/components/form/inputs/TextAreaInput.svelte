@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	export let lableClass;
 	export let headingText;
 	export let nameText;
@@ -10,11 +12,6 @@
 <!-- <div class="w-full"> -->
 <label class={lableClass} for={nameText}>{headingText}</label>
 <div class={divClass}>
-	<textarea
-		id={nameText}
-		name={nameText}
-		class={textAreaClass}
-		value={inputValue}
-	/>
+	<textarea id={nameText} name={nameText} class={textAreaClass} value={inputValue} />
 </div>
 <!-- </div> -->

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // import { supabaseClient } from '$lib/dbClient';
 
 // export async function get() {
@@ -42,10 +43,7 @@
 // 		body: { profileInformation }
 // 	};
 // }
-import {
-	supabaseServerClient,
-	withApiAuth
-} from '@supabase/auth-helpers-sveltekit';
+import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
 export const get = async ({ locals }) =>
 	withApiAuth(
@@ -53,9 +51,7 @@ export const get = async ({ locals }) =>
 			user: locals.user
 		},
 		async () => {
-			const { data: profileData, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.select('information_sheet_choices,other_information_sheet')
 				.eq('id', locals.user.id);
@@ -90,13 +86,10 @@ export const post = async ({ locals, request }) =>
 		},
 		async () => {
 			const body = await request.formData();
-			console.log('first_name', body.get('first_name'));
-			const { data: profileInformation, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.update({
-					information_sheet_choices: body.get('information_sheet_choices'),
+					information_sheet_choices: body.getAll('information_sheet_choices'),
 					other_information_sheet: body.get('other_information_sheet')
 				})
 				.eq('id', locals.user.id);
@@ -107,8 +100,16 @@ export const post = async ({ locals, request }) =>
 					body: { error }
 				};
 			}
+			if (profileData.length === 1) {
+				let profileInformation = profileData[0];
+				return {
+					status: 200,
+					body: { profileInformation }
+				};
+			}
 			return {
-				body: { profileInformation }
+				status: 400,
+				body: {}
 			};
 		}
 	);

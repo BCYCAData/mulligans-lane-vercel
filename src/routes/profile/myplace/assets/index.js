@@ -1,7 +1,5 @@
-import {
-	supabaseServerClient,
-	withApiAuth
-} from '@supabase/auth-helpers-sveltekit';
+// @ts-nocheck
+import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
 export const get = async ({ locals }) =>
 	withApiAuth(
@@ -9,15 +7,13 @@ export const get = async ({ locals }) =>
 			user: locals.user
 		},
 		async () => {
-			const { data: profileData, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.select(
 					'static_water_available,have_stortz,stortz_size,fire_fighting_assets,fire_hazard_reduction'
 				)
 				.eq('id', locals.user.id);
-			console.log('profileAssets', profileData);
+
 			if (error) {
 				console.log('error profileAssets:', error);
 				return {
@@ -36,6 +32,7 @@ export const get = async ({ locals }) =>
 				if (null == profileAssets.fire_hazard_reduction) {
 					profileAssets.fire_hazard_reduction = [];
 				}
+				console.log('GET profileAssets', profileAssets);
 				return {
 					status: 200,
 					body: { profileAssets }
@@ -54,17 +51,14 @@ export const post = async ({ locals, request }) =>
 		},
 		async () => {
 			const body = await request.formData();
-			console.log('first_name', body.get('first_name'));
-			const { data: profileAssets, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.update({
-					static_water_available: body.get('static_water_available'),
+					static_water_available: body.getAll('static_water_available'),
 					have_stortz: body.get('have_stortz'),
-					stortz_size: body.get('stortz_size'),
-					fire_fighting_assets: body.get('fire_fighting_assets'),
-					fire_hazard_reduction: body.get('fire_hazard_reduction')
+					stortz_size: parseInt(body.get('stortz_size')) || 0,
+					fire_fighting_assets: body.getAll('fire_fighting_assets'),
+					fire_hazard_reduction: body.getAll('fire_hazard_reduction')
 				})
 				.eq('id', locals.user.id);
 			if (error) {
@@ -74,8 +68,27 @@ export const post = async ({ locals, request }) =>
 					body: { error }
 				};
 			}
+			if (profileData.length === 1) {
+				let profileAssets = profileData[0];
+				console.log('PUT profileAssets', profileAssets);
+				return {
+					status: 200,
+					body: { profileAssets }
+				};
+			}
 			return {
-				body: { profileAssets }
+				status: 400,
+				body: {}
 			};
 		}
 	);
+function setArray(value) {
+	if (value == null) {
+		return [];
+	} else if (Array.isArray(value)) {
+		return value;
+	}
+	let result = new Array();
+	result[0] = value;
+	return result;
+}

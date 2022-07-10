@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	export let steps = [];
 	export let currentActive = 1;
 	let circles, progress;
@@ -37,8 +39,7 @@
 
 		const actives = document.querySelectorAll('.active');
 
-		progress.style.width =
-			((actives.length - 1) / (circles.length - 1)) * 100 + '%';
+		progress.style.width = ((actives.length - 1) / (circles.length - 1)) * 100 + '%';
 	}
 
 	export const skipTo = (

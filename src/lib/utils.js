@@ -1,3 +1,4 @@
+// @ts-nocheck
 import locations from '$lib/geojsonData/locations';
 
 export const suburbAliases = (street, suburb) => {
@@ -7,10 +8,7 @@ export const suburbAliases = (street, suburb) => {
 	let aliases = [`${street.toUpperCase()} ${suburb.toUpperCase()}`];
 	if (result.length > 0) {
 		for (let address of result[0].alternative) {
-			aliases = [
-				...aliases,
-				`${street.toUpperCase()}, ${address.toUpperCase()}`
-			];
+			aliases = [...aliases, `${street.toUpperCase()}, ${address.toUpperCase()}`];
 		}
 	}
 	return aliases;
@@ -51,8 +49,7 @@ export const getFormBody = (body) => {
 		let value = v;
 		if (value === 'true') value = true;
 		if (value === 'false') value = false;
-		if (k in data)
-			data[k] = Array.isArray(data[k]) ? [...data[k], value] : [data[k], value];
+		if (k in data) data[k] = Array.isArray(data[k]) ? [...data[k], value] : [data[k], value];
 		else data[k] = value;
 		return data;
 	}, {});

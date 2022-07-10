@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import { residencyOptions, yesNoOptions } from '$lib/profileOptions';
 	import NumberInput from '$components/form/inputs/NumberInput.svelte';
 
@@ -16,7 +18,7 @@
 					bind:group={surveyData.residency_profile}
 					{value}
 				/>
-				<label for="residency_profile"> {lable}</label>
+				<label for="residency_profile">{lable}</label>
 			</li>
 		{/each}
 	</ul>
@@ -58,9 +60,7 @@
 	</ul>
 </div>
 <div>
-	<h3 class="text-base sm:text-lg">
-		Do you consider any person on the property to be vulnerable?
-	</h3>
+	<h3 class="text-base sm:text-lg">Do you consider any person on the property to be vulnerable?</h3>
 	<div class="p-2 flex justify-start rounded-lg bg-orange-300">
 		{#each yesNoOptions as { value, lable }}
 			<li class="list-none sm:text-lg pr-3">
@@ -70,7 +70,7 @@
 					bind:group={surveyData.vulnerable_residents}
 					{value}
 				/>
-				<label for="vulnerable_residents"> {lable}</label>
+				<label for="vulnerable_residents">{lable}</label>
 			</li>
 		{/each}
 	</div>

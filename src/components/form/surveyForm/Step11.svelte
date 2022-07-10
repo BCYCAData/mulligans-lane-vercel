@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import { stayInTouchOptions } from '$lib/profileOptions';
 	import TextAreaInput from '../inputs/TextAreaInput.svelte';
 
@@ -16,7 +18,7 @@
 					bind:group={surveyData.stay_in_touch_choices}
 					{value}
 				/>
-				<label for="stay_in_touch_choices"> {lable}</label>
+				<label for="stay_in_touch_choices">{lable}</label>
 			</li>
 		{/each}
 	</ul>

@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import Icon from '@iconify/svelte';
 	export let path;
 	let pathLables = {
@@ -45,10 +47,10 @@
 			</li>
 		{:else}
 			<li>
-				<a class="flex items-center" href={c.href}
-					><span><Icon icon={c.icon} style="padding-right:4px" />{c.label}</span
-					></a
-				>;
+				<a class="flex items-center" href={c.href}>
+					<span><Icon icon={c.icon} style="padding-right:4px" />{c.label}</span>
+				</a>
+				;
 			</li>
 		{/if}
 	{/each}

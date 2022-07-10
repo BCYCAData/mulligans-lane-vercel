@@ -1,55 +1,56 @@
 <script>
-	import { supabaseClient } from '$lib/dbClient';
+	// @ts-nocheck
 
-	export let redirectType;
+	// import { supabaseClient } from '$lib/dbClient';
+	import { page } from '$app/stores';
 
-	let email = '';
-	let strength = 0;
-	let validations = [];
-	let showPassword = false;
+	import PasswordEntry from '$components/form/auth/PasswordEntry.svelte';
 
-	$: password = '';
-	$: confirmPassword = '';
-	$: canGo = validEmail && password === confirmPassword && strength === 4;
+	const redirectType = new URLSearchParams($page.url.hash.substring(1)).get('type');
 
-	$: validEmail = validateEmail(email);
+	// let email = '';
+	// let strength = 0;
+	// let validations = [];
+	// let showPassword = false;
+	// let heading = '';
+	// let submitText = '';
 
-	if (redirectType == 'invite') {
-		heading = 'Please Set a Password';
-		submitText = 'Set Password';
-	}
+	// $: password = '';
+	// $: confirmPassword = '';
+	// $: canGo = validEmail && password === confirmPassword && strength === 4;
 
-	supabaseClient.auth.onAuthStateChange(async (event, _session) => {
-		email = _session.user.email;
-		console.log('Supabase event: ', event);
-	});
+	// $: validEmail = validateEmail(email);
 
-	function validatePassword(e) {
-		const passwordValue = e.target.value;
-		validations = [
-			passwordValue.length > 8,
-			passwordValue.search(/[A-Z]/) > -1,
-			passwordValue.search(/[0-9]/) > -1,
-			passwordValue.search(/[$&+,:;=?#^!]/) > -1
-		];
-		strength = validations.reduce((acc, cur) => acc + cur, 0);
-	}
+	// if (redirectType == 'invite') {
+	// 	heading = 'Please Set a Password';
+	// 	submitText = 'Set Password';
+	// }
 
-	function validateEmail(email) {
-		var emailRegEx =
-			/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		return emailRegEx.test(String(email).toLowerCase());
-	}
+	// function validatePassword(e) {
+	// 	const passwordValue = e.target.value;
+	// 	validations = [
+	// 		passwordValue.length > 8,
+	// 		passwordValue.search(/[A-Z]/) > -1,
+	// 		passwordValue.search(/[0-9]/) > -1,
+	// 		passwordValue.search(/[$&+,:;=?#^!]/) > -1
+	// 	];
+	// 	strength = validations.reduce((acc, cur) => acc + cur, 0);
+	// }
+
+	// function validateEmail(email) {
+	// 	var emailRegEx =
+	// 		/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	// 	return emailRegEx.test(String(email).toLowerCase());
+	// }
 </script>
 
-<div
-	class="flex flex-col items-center bg-white p-6 max-w-sm max-w-screen-xsm mx-auto"
->
+<!-- <div class="flex flex-col items-center bg-white p-6 max-w-sm max-w-screen-xsm mx-auto">
+	<h3>{heading}</h3>
+	<h3>{submitText}</h3>
 	<form action="/api/auth/updateuser" method="POST">
-		<label
-			class="inline uppercase tracking-wide text-orange-500 text-xs font-bold"
-			for="email">Email:</label
-		>
+		<label class="inline uppercase tracking-wide text-orange-500 text-xs font-bold" for="email">
+			Email:
+		</label>
 		<input
 			id="email"
 			type="email"
@@ -60,17 +61,16 @@
 			autocomplete="email"
 			bind:value={email}
 		/>
-		<label
-			class="inline uppercase tracking-wide text-orange-500 text-xs font-bold"
-			for="password"
-			>Password:<span
+		<label class="inline uppercase tracking-wide text-orange-500 text-xs font-bold" for="password">
+			Password:
+			<span
 				class="toggle-password text-3xl text-gray-700 font-normal ml-3  align-middle "
 				on:mouseenter={() => (showPassword = true)}
 				on:mouseleave={() => (showPassword = false)}
 			>
 				{showPassword ? '👁' : '👁'}
-			</span></label
-		>
+			</span>
+		</label>
 		<input
 			id="password"
 			type={showPassword ? 'text' : 'password'}
@@ -84,14 +84,16 @@
 		<label
 			class="inline uppercase tracking-wide text-orange-500 text-xs font-bold"
 			for="confirmPassword"
-			>Confirm Password:<span
+		>
+			Confirm Password:
+			<span
 				class="toggle-password text-3xl text-gray-700 font-normal ml-3  align-middle "
 				on:mouseenter={() => (showPassword = true)}
 				on:mouseleave={() => (showPassword = false)}
 			>
 				{showPassword ? '👁' : '👁'}
-			</span></label
-		>
+			</span>
+		</label>
 
 		<input
 			id="confirmPassword"
@@ -113,34 +115,36 @@
 		<ul>
 			<li>
 				<span class="text-[10px]">{validations[0] ? '✔️' : '❌'}</span>
-				<span class="text-sm"> must be at least 5 characters</span>
+				<span class="text-sm">must be at least 5 characters</span>
 			</li>
 			<li>
 				<span class="text-[10px]">{validations[1] ? '✔️' : '❌'}</span>
-				<span class="text-sm"> must contain a capital letter</span>
+				<span class="text-sm">must contain a capital letter</span>
 			</li>
 			<li>
 				<span class="text-[10px]">{validations[2] ? '✔️' : '❌'}</span>
-				<span class="text-sm"> must contain a number</span>
+				<span class="text-sm">must contain a number</span>
 			</li>
 			<li>
 				<span class="text-[10px]">{validations[3] ? '✔️' : '❌'}</span>
-				<span class="text-sm"> must contain one symbol ($&+,:;=?#^!)</span>
+				<span class="text-sm">must contain one symbol ($&+,:;=?#^!)</span>
 			</li>
-		</ul>
-		<!-- {#if $session['signInError'] !== 'none' && $session['signInError'] !== ''}
+		</ul> -->
+<!-- {#if $session['signInError'] !== 'none' && $session['signInError'] !== ''}
 				<AuthErrorMessage message={$session['signInError']} />
 			{/if} -->
-		<button
+<!-- <button
 			type="submit"
 			class="w-full text-center py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"
 			value=""
-			disabled={!canGo}>Create Account</button
+			disabled={!canGo}
 		>
+			Create Account
+		</button>
 	</form>
-</div>
+</div> -->
 
-<style>
+<!-- <style>
 	.strength {
 		display: flex;
 		height: 20px;
@@ -171,4 +175,13 @@
 	.bar:last-child {
 		margin-right: 0;
 	}
-</style>
+</style> -->
+
+{#if redirectType === 'invite'}
+	<div class="flex flex-col items-center bg-white p-6 max-w-sm max-w-screen-xsm mx-auto">
+		<h3>Thank you for accepting our invitation.</h3>
+		<h3>'Please Set a Password'</h3>
+	</div>
+
+	<PasswordEntry />
+{/if}

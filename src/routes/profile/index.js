@@ -1,7 +1,5 @@
-import {
-	supabaseServerClient,
-	withApiAuth
-} from '@supabase/auth-helpers-sveltekit';
+// @ts-nocheck
+import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
 export const get = async ({ locals }) =>
 	withApiAuth(
@@ -9,9 +7,7 @@ export const get = async ({ locals }) =>
 			user: locals.user
 		},
 		async () => {
-			const { data: profile, error: errorProfile } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profile, error: errorProfile } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.select('*')
 				.eq('id', locals.user.id);
@@ -23,9 +19,7 @@ export const get = async ({ locals }) =>
 				};
 			}
 			if (!profile[0]) {
-				const { error: errorAddProfile } = await supabaseServerClient(
-					locals.accessToken
-				)
+				const { error: errorAddProfile } = await supabaseServerClient(locals.accessToken)
 					.from('profile')
 					.insert([{ id: locals.user.id }]);
 				if (errorAddProfile) {
@@ -36,11 +30,12 @@ export const get = async ({ locals }) =>
 					};
 				}
 				// const { data: surveyData, error: errorSurveyData } = await db
-				const { data: surveyData, error: errorSurveyData } =
-					await supabaseServerClient(locals.accessToken)
-						.from('survey_responses')
-						.select('*')
-						.eq('email_address', locals.user.email);
+				const { data: surveyData, error: errorSurveyData } = await supabaseServerClient(
+					locals.accessToken
+				)
+					.from('survey_responses')
+					.select('*')
+					.eq('email_address', locals.user.email);
 				if (errorSurveyData) {
 					console.log('error Get Survey Data:', errorSurveyData);
 					return {
@@ -52,11 +47,12 @@ export const get = async ({ locals }) =>
 					resetProfile(surveyData[0], locals.user.id);
 				}
 			}
-			const { data: profileComments, error: errorComments } =
-				await supabaseServerClient(locals.accessToken)
-					.from('profile')
-					.select('other_comments')
-					.eq('id', locals.user.id);
+			const { data: profileComments, error: errorComments } = await supabaseServerClient(
+				locals.accessToken
+			)
+				.from('profile')
+				.select('other_comments')
+				.eq('id', locals.user.id);
 			if (errorComments) {
 				console.log('error Get Other Comments:', errorComments);
 				return {

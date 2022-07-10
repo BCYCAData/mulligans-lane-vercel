@@ -1,7 +1,5 @@
-import {
-	supabaseServerClient,
-	withApiAuth
-} from '@supabase/auth-helpers-sveltekit';
+// @ts-nocheck
+import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 import { getFormBody } from '$lib/utils';
 
 export const get = async ({ locals }) =>
@@ -10,9 +8,7 @@ export const get = async ({ locals }) =>
 			user: locals.user
 		},
 		async () => {
-			const { data: profile, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profile, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.select('*');
 			if (error) {
@@ -67,12 +63,8 @@ export const post = async ({ locals, request }) =>
 		},
 		async () => {
 			const body = await request.formData();
-			console.log('body', body.get('residents0_18'));
 			const bodyObject = setMissing(getFormBody(body));
-			console.log('bodyObject', bodyObject.residents0_18);
-			const { data: surveyAnswers, error } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: surveyAnswers, error } = await supabaseServerClient(locals.accessToken)
 				.from('profile')
 				.update({
 					first_name: bodyObject.first_name,
@@ -85,8 +77,7 @@ export const post = async ({ locals, request }) =>
 					agent_phone: bodyObject.agent_phone,
 					sign_posted: bodyObject.sign_posted,
 					truck_access: parseInt(bodyObject.truck_access),
-					truck_access_other_information:
-						bodyObject.truck_access_other_information,
+					truck_access_other_information: bodyObject.truck_access_other_information,
 					mobile: bodyObject.mobile,
 					phone: bodyObject.phone,
 					mobile_reception: parseInt(bodyObject.mobile_reception),
@@ -114,28 +105,16 @@ export const post = async ({ locals, request }) =>
 					other_hazards: bodyObject.other_hazards,
 					rfs_survival_plan: bodyObject.rfs_survival_plan,
 					send_rfs_survival_plan: bodyObject.send_rfs_survival_plan,
-					fire_fighting_experience: parseInt(
-						bodyObject.fire_fighting_experience
-					),
+					fire_fighting_experience: parseInt(bodyObject.fire_fighting_experience),
 					fire_trauma: bodyObject.fire_trauma,
-					plan_to_leave_before_fire: parseInt(
-						bodyObject.plan_to_leave_before_fire
-					),
-					plan_to_leave_before_flood: parseInt(
-						bodyObject.plan_to_leave_before_flood
-					),
-					community_workshop_choices: setArray(
-						bodyObject.community_workshop_choices
-					),
+					plan_to_leave_before_fire: parseInt(bodyObject.plan_to_leave_before_fire),
+					plan_to_leave_before_flood: parseInt(bodyObject.plan_to_leave_before_flood),
+					community_workshop_choices: setArray(bodyObject.community_workshop_choices),
 					other_community_workshop: bodyObject.other_community_workshop,
 					will_run_community_workshops: bodyObject.will_run_community_workshops,
-					information_sheet_choices: setArray(
-						bodyObject.information_sheet_choices
-					),
+					information_sheet_choices: setArray(bodyObject.information_sheet_choices),
 					other_information_sheet: bodyObject.other_information_sheet,
-					community_meeting_choices: setArray(
-						bodyObject.community_meeting_choices
-					),
+					community_meeting_choices: setArray(bodyObject.community_meeting_choices),
 					other_community_meeting: bodyObject.other_community_meeting,
 					stay_in_touch_choices: setArray(bodyObject.stay_in_touch_choices),
 					other_comments: bodyObject.other_comments

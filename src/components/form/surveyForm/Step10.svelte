@@ -1,13 +1,13 @@
 <script>
+	// @ts-nocheck
+
 	import { communityMeetingOptions } from '$lib/profileOptions';
 	import TextAreaInput from '../inputs/TextAreaInput.svelte';
 
 	export let surveyData;
 </script>
 
-<h3 class="text-base sm:text-lg">
-	What community meetings would be useful to you?
-</h3>
+<h3 class="text-base sm:text-lg">What community meetings would be useful to you?</h3>
 <div class="p-2 flex justify-start rounded-lg bg-orange-300">
 	<ul class="list-none w-full pl-0 my-0">
 		{#each communityMeetingOptions as { value, lable }}
@@ -18,7 +18,7 @@
 					bind:group={surveyData.community_meeting_choices}
 					{value}
 				/>
-				<label for="community_meeting_choices"> {lable}</label>
+				<label for="community_meeting_choices">{lable}</label>
 			</li>
 		{/each}
 	</ul>
