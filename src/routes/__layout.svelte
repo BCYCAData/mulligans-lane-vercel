@@ -17,6 +17,7 @@
 	// const onUserUpdate = null;
 	const onUserUpdate = async (user) => {
 		if (user) {
+			console.log($page.url.pathname);
 			if ($page.url.pathname.endsWith('/auth/updateuser')) {
 				if (!$page.url.pathname.startsWith('/auth/updateuser')) {
 					await goto('/auth/updateuser');
