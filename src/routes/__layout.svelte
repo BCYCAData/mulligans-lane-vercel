@@ -17,12 +17,12 @@
 	// const onUserUpdate = null;
 	const onUserUpdate = async (user) => {
 		if (user) {
-			if (page.url.pathname.endsWith('/auth/updateuser')) {
-				if (!page.url.pathname.startsWith('/auth/updateuser')) {
+			if ($page.url.pathname.endsWith('/auth/updateuser')) {
+				if (!$page.url.pathname.startsWith('/auth/updateuser')) {
 					await goto('/auth/updateuser');
 					location.reload();
 				}
-			} else if (!page.url.pathname.startsWith('/profile')) {
+			} else if (!$page.url.pathname.startsWith('/profile')) {
 				await goto('/profile');
 				location.reload();
 			}
