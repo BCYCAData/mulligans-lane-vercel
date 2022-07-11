@@ -14,10 +14,12 @@
 	import '../app.css';
 	import 'uno.css';
 
+	let deb = '';
+
 	// const onUserUpdate = null;
 	const onUserUpdate = async (user) => {
 		if (user) {
-			console.log($page.url.pathname);
+			deb = deb + ',' + $page.url.pathname;
 			if ($page.url.pathname.endsWith('/auth/updateuser')) {
 				if (!$page.url.pathname.startsWith('/auth/updateuser')) {
 					await goto('/auth/updateuser');
@@ -31,6 +33,7 @@
 	};
 </script>
 
+{deb}
 <SupaAuthHelper {supabaseClient} {session} {onUserUpdate}>
 	<div class="grid w-11/12 mx-auto min-h-screen" id="wrapper">
 		<header class="col-span-8 row-span-1">
