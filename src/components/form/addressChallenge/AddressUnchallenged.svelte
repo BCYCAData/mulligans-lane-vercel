@@ -38,7 +38,6 @@
 				found = ['addressFound', await response.json()];
 			}
 		}
-		console.log(found[1]);
 		if (found.length === 2) {
 			for (let i = 0; i < communityPolygons.features.length; i++) {
 				let polygon = communityPolygons.features[i].geometry.coordinates[0];

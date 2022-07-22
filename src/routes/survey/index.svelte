@@ -15,6 +15,7 @@
 	const skipTo = (e) => {
 		progressBar.skipTo(e);
 	};
+	console.log('Survey Form here');
 
 	export let surveyData;
 </script>

@@ -1,13 +1,14 @@
 // @ts-nocheck
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
-export const GET = async ({ locals }) =>
+export const GET = async ({ locals, request }) =>
 	withApiAuth(
 		{
+			redirectTo: '/auth/signin',
 			user: locals.user
 		},
 		async () => {
-			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
+			const { data: profileData, error } = await supabaseServerClient(request)
 				.from('profile')
 				.select(
 					'stay_in_touch_choices,postal_address_street,postal_address_suburb,postal_address_postcode,other_comments'
@@ -41,11 +42,12 @@ export const GET = async ({ locals }) =>
 export const POST = async ({ locals, request }) =>
 	withApiAuth(
 		{
+			redirectTo: '/auth/signin',
 			user: locals.user
 		},
 		async () => {
 			const body = await request.formData();
-			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
+			const { data: profileData, error } = await supabaseServerClient(request)
 				.from('profile')
 				.update({
 					stay_in_touch_choices: body.getAll('stay_in_touch_choices'),

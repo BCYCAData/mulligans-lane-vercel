@@ -1,18 +1,9 @@
 <script>
 	// @ts-nocheck
-
-	import { goto } from '$app/navigation';
 	import Logo from '$components/header/logo/Logo.svelte';
-	import { supabaseClient } from '$lib/dbClient';
 	import { page, session } from '$app/stores';
 
 	let menuOpen = true;
-
-	const handleSubmit = async () => {
-		await supabaseClient.auth.signOut();
-		await goto('/');
-		location.reload();
-	};
 
 	const handleNav = () => {
 		menuOpen = !menuOpen;
@@ -41,25 +32,23 @@
 	</div>
 
 	<!-- Secondary Navbar items -->
-	<div class="hidden md:flex items-center">
-		{#if $session.user}
-			<button
-				on:click={handleSubmit}
-				href="/"
+	<div class="md:flex items-center">
+		{#if $session?.user?.id}
+			<a
+				href="/api/auth/logout"
 				class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl
 				outline-black"
 			>
 				Sign Out
-			</button>
+			</a>
 		{:else}
 			<a
+				class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"
 				class:active={$page.url.pathname.endsWith('/signin')}
 				sveltekit:prefetch
 				href="/auth/signin"
 			>
-				<button class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black">
-					Sign In
-				</button>
+				Sign In
 			</a>
 		{/if}
 	</div>
@@ -126,24 +115,22 @@
 				</a>
 			</li>
 			<li>
-				{#if $session.user}
-					<button
-						on:click={handleSubmit}
-						class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"
+				{#if $session?.user?.id}
+					<a
+						href="/api/auth/logout"
+						class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl
+				outline-black"
 					>
 						Sign Out
-					</button>
+					</a>
 				{:else}
 					<a
 						class:active={$page.url.pathname.endsWith('/signin')}
+						class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"
 						sveltekit:prefetch
 						href="/auth/signin"
 					>
-						<button
-							class="py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"
-						>
-							Sign In
-						</button>
+						Sign In
 					</a>
 				{/if}
 			</li>
@@ -152,7 +139,7 @@
 </nav>
 
 <style>
-	a.active button {
+	a.active {
 		background-color: transparent;
 		color: rgb(249, 115, 22);
 	}

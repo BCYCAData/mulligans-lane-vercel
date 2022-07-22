@@ -1,13 +1,14 @@
 // @ts-nocheck
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
-export const GET = async ({ locals }) =>
+export const GET = async ({ locals, request }) =>
 	withApiAuth(
 		{
+			redirectTo: '/auth/signin',
 			user: locals.user
 		},
 		async () => {
-			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
+			const { data: profileData, error } = await supabaseServerClient(request)
 				.from('profile')
 				.select(
 					'property_address_street,property_address_suburb,property_address_postcode,residency_profile,property_rented,agent_name,agent_phone,sign_posted,truck_access,truck_access_other_information,residents0_18,residents19_50,residents51_70,residents71_,vulnerable_residents'
@@ -38,11 +39,12 @@ export const GET = async ({ locals }) =>
 export const POST = async ({ locals, request }) =>
 	withApiAuth(
 		{
+			redirectTo: '/auth/signin',
 			user: locals.user
 		},
 		async () => {
 			const body = await request.formData();
-			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
+			const { data: profileData, error } = await supabaseServerClient(request)
 				.from('profile')
 				.update({
 					property_address_street: body.get('property_address_street'),

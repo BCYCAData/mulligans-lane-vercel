@@ -48,13 +48,14 @@
 // }
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
-export const GET = async ({ locals }) =>
+export const GET = async ({ locals, request }) =>
 	withApiAuth(
 		{
+			redirectTo: '/auth/signin',
 			user: locals.user
 		},
 		async () => {
-			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
+			const { data: profileData, error } = await supabaseServerClient(request)
 				.from('profile')
 				.select('community_workshop_choices,other_community_workshop,will_run_community_workshops')
 				.eq('id', locals.user.id);
@@ -85,12 +86,13 @@ export const GET = async ({ locals }) =>
 export const POST = async ({ locals, request }) =>
 	withApiAuth(
 		{
+			redirectTo: '/auth/signin',
 			user: locals.user
 		},
 		async () => {
 			const body = await request.formData();
 			console.log('first_name', body.get('first_name'));
-			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
+			const { data: profileData, error } = await supabaseServerClient(request)
 				.from('profile')
 				.update({
 					community_workshop_choices: body.getAll('community_workshop_choices'),

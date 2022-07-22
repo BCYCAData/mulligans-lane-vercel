@@ -2,17 +2,19 @@
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 import { getFormBody } from '$lib/utils';
 
-export const GET = async ({ locals }) =>
+export const GET = async ({ locals, request }) =>
 	withApiAuth(
 		{
+			redirectTo: '/auth/signin',
 			user: locals.user
 		},
 		async () => {
-			const { data: profile, error } = await supabaseServerClient(locals.accessToken)
+			const { data: profile, error } = await supabaseServerClient(request)
 				.from('profile')
-				.select('*');
+				.select('*')
+				.eq('id', locals.user.id);
 			if (error) {
-				console.log('error Get Profile:', error);
+				console.log('error Get Profile for Survey:', error);
 				return {
 					status: 400,
 					body: { error }
@@ -50,15 +52,67 @@ export const GET = async ({ locals }) =>
 				};
 			}
 			return {
-				status: 400,
+				status: 200,
 				body: {}
 			};
 		}
 	);
 
+// export const GET = async ({ locals, request }) => {
+// 	console.log('Survey request', locals);
+// 	// const { data: profile, error } = await supabaseServerClient(locals.accessToken)
+// 	const { data: profile, error } = await supabaseServerClient(request)
+// 		.from('profile')
+// 		.select('*')
+// 		.eq('id', locals.user.id);
+// 	if (error) {
+// 		console.log('error Get Profile for Survey:', error);
+// 		return {
+// 			status: 400,
+// 			body: { error }
+// 		};
+// 	}
+// 	if (profile.length === 1) {
+// 		let surveyData = profile[0];
+// 		if (null == surveyData.static_water_available) {
+// 			surveyData.static_water_available = [];
+// 		}
+// 		if (null == surveyData.static_water_available) {
+// 			surveyData.static_water_available = [];
+// 		}
+// 		if (null == surveyData.fire_fighting_assets) {
+// 			surveyData.fire_fighting_assets = [];
+// 		}
+// 		if (null == surveyData.fire_hazard_reduction) {
+// 			surveyData.fire_hazard_reduction = [];
+// 		}
+// 		if (null == surveyData.communityWorkshopChoices) {
+// 			surveyData.community_workshop_choices = [];
+// 		}
+// 		if (null == surveyData.informationSheetChoices) {
+// 			surveyData.information_sheet_choices = [];
+// 		}
+// 		if (null == surveyData.community_meeting_choices) {
+// 			surveyData.community_meeting_choices = [];
+// 		}
+// 		if (null == surveyData.stay_in_touch_choices) {
+// 			surveyData.stay_in_touch_choices = [];
+// 		}
+// 		return {
+// 			status: 200,
+// 			body: { surveyData }
+// 		};
+// 	}
+// 	return {
+// 		status: 400,
+// 		body: {}
+// 	};
+// };
+
 export const POST = async ({ locals, request }) =>
 	withApiAuth(
 		{
+			redirectTo: '/auth/signin',
 			user: locals.user
 		},
 		async () => {
@@ -120,7 +174,6 @@ export const POST = async ({ locals, request }) =>
 					other_comments: bodyObject.other_comments
 				})
 				.eq('id', locals.user.id);
-			console.log('Body Object:  ', bodyObject);
 			if (error) {
 				console.log('update error profileCommunity:', error);
 				return {
@@ -128,7 +181,6 @@ export const POST = async ({ locals, request }) =>
 					body: { error }
 				};
 			}
-			console.log('Data:  ', surveyAnswers);
 			return {
 				status: 200,
 				body: { surveyAnswers }

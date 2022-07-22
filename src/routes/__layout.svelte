@@ -5,7 +5,6 @@
 <script>
 	// @ts-nocheck
 
-	import { goto } from '$app/navigation';
 	import { page, session } from '$app/stores';
 	import { supabaseClient } from '$lib/dbClient';
 	import { SupaAuthHelper } from '@supabase/auth-helpers-svelte';
@@ -13,24 +12,9 @@
 
 	import '../app.css';
 	import 'uno.css';
-
-	// const onUserUpdate = null;
-	const onUserUpdate = async (user) => {
-		if (user) {
-			if ($page.url.pathname.endsWith('/auth/updateuser')) {
-				if (!$page.url.pathname.startsWith('/auth/updateuser')) {
-					await goto('/auth/updateuser');
-					location.reload();
-				}
-			} else if (!$page.url.pathname.startsWith('/profile')) {
-				await goto('/profile');
-				location.reload();
-			}
-		}
-	};
 </script>
 
-<SupaAuthHelper {supabaseClient} {session} {onUserUpdate}>
+<SupaAuthHelper {supabaseClient} {session}>
 	<div class="grid w-11/12 mx-auto min-h-screen" id="wrapper">
 		<header class="col-span-8 row-span-1">
 			<Navbar />

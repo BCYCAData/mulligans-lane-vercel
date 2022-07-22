@@ -1,23 +1,23 @@
 <script>
 	// @ts-nocheck
 
-	// import { supabaseClient } from '$lib/dbClient';
-	// export let redirectType;
-	// export let token;
+	export let redirectType;
 
 	let strength = 0;
 	let validations = [];
 	let showPassword = false;
 	let updatePassword = '';
+	let heading = '';
+	let submitText = '';
 
 	$: password = '';
 	$: confirmPassword = '';
 	$: canGo = password === confirmPassword && strength === 4;
 
-	// if (redirectType == 'invite') {
-	// 	heading = 'Thank you for accepting our invitation.';
-	// 	submitText = 'Please Set a Password';
-	// }
+	if (redirectType == 'invite') {
+		heading = 'Thank you for accepting our invitation.';
+		submitText = 'Please Set a Password';
+	}
 
 	function validatePassword(e) {
 		const passwordValue = e.target.value;
@@ -29,22 +29,12 @@
 		];
 		strength = validations.reduce((acc, cur) => acc + cur, 0);
 	}
-
-	// const handleSubmit = async () => {
-	// 	supabaseClient.auth.setAuth(token);
-	// 	console.log(supabaseClient.auth);
-	// 	// const { data, error } = await supabaseClient.auth.update({
-	// 	// 	password: password
-	// 	// });
-	// 	console.log('data', data);
-	// 	console.log('error', error);
-	// };
 </script>
 
 <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
 	<div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-		<!-- <form on:submit|preventDefault={handleSubmit()}> -->
 		<form action="/api/auth/updateuser" method="POST">
+			<h1 class="mb-8 text-3xl text-center">{heading}</h1>
 			<label
 				class="inline uppercase tracking-wide text-orange-900 text-xs font-bold"
 				for="password"
@@ -127,7 +117,9 @@
 				type="submit"
 				class="w-full text-center text-xl py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"
 				disabled={!canGo}
-			/>
+			>
+				{submitText}
+			</button>
 		</form>
 	</div>
 </div>

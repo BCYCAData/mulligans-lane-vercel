@@ -4,7 +4,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 
 export const handle = sequence(
 	...handleAuth({
-		cookieOptions: { lifetime: 1 * 365 * 24 * 60 * 60 }
+		logout: { returnTo: '/auth/signin' }
 	})
 );
 

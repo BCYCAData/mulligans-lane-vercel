@@ -1,12 +1,9 @@
 <script>
 	// @ts-nocheck
-
-	// import AuthErrorMessage from '$components/form/AuthErrorMessage.svelte';
-
-	import { supabaseClient } from '$lib/dbClient';
-
 	import Modal from '$components/Modal.svelte';
 	import AddressChallenge from '$components/form/addressChallenge/AddressChallenge.svelte';
+
+	import AuthErrorMessage from '$components/form/AuthErrorMessage.svelte';
 
 	/**
 	 * @type {string}
@@ -17,27 +14,15 @@
 	 */
 	let password;
 
-	const handleSubmit = async () => {
-		const { error } = await supabaseClient.auth.signIn({
-			email: email,
-			password: password
-		});
-		if (error) {
-			alert(error.error_description || error.message);
-		} else {
-			console.log('profile');
-			window.location.assign('http://localhost:3000/profile');
-		}
-	};
-
 	let modalVisible = false;
+	export let errorMessage = '';
 </script>
 
 <div class="flex flex-col items-center max-w-sm max-w-screen-xsm mx-auto">
 	<div class="bg-white p-6 sm:ml-0 rounded shadow-md text-black w-5/6 sm:w-full">
 		<h1 class="text-2xl text-center">Welcome Back</h1>
-		<form on:submit|preventDefault={handleSubmit}>
-			<!-- <form action="/api/auth/signin" method="POST"> -->
+		<!-- <form on:submit|preventDefault={handleSubmit}> -->
+		<form method="POST">
 			<input
 				id="email"
 				type="email"
@@ -66,10 +51,9 @@
 					Forgot Your Password? &lt&lt&lt
 				</a>
 			</div>
-			<!-- {#if $session['signInError'] !== 'none' && $session['signInError'] !== ''}
-				<AuthErrorMessage message={$session['signInError']} />
-			{/if} -->
-
+			{#if errorMessage !== ''}
+				<AuthErrorMessage message={errorMessage} />
+			{/if}
 			<button
 				type="submit"
 				class="w-full text-center py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1"

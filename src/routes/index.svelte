@@ -1,12 +1,14 @@
-<script context="module">
+<!-- <script context="module">
 	export const prerender = true;
-</script>
-
+</script> -->
 <script>
+	import { page } from '$app/stores';
 	import Modal from '$components/Modal.svelte';
 	import AddressChallenge from '$components/form/addressChallenge/AddressChallenge.svelte';
 
 	let modalVisible = false;
+
+	const url = $page.url;
 </script>
 
 <svelte:head>
@@ -43,15 +45,14 @@
 	>
 		Tap here to find out if you qualify
 	</p>
-	<!-- <div>DBUser = {$dbUser}</div> -->
-	<p class="text-base md:text-lg mt-3 ">
+	<!-- <p class="text-base md:text-lg mt-3 ">
 		Please complete our initial online survey at <br />
 		<span>
 			<a class="text-blue-600" href="https://forms.gle/z6dHgPxJbS7AhGLa6">
 				https://forms.gle/z6dHgPxJbS7AhGLa6
 			</a>
 		</span>
-	</p>
+	</p> -->
 	<p class="text-sm md:text-lg mt-1 font-semibold">Want more information?</p>
 	<p class="text-sm md:text-lg mt-0 font-semibold">Call Helen 0424 515 963</p>
 </section>

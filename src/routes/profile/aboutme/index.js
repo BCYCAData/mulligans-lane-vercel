@@ -1,13 +1,21 @@
 // @ts-nocheck
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
-export const GET = async ({ locals }) =>
+export const GET = async ({ locals, request }) =>
 	withApiAuth(
 		{
+			redirectTo: '/auth/signin',
+			redirectTo: '/auth/signin',
+			redirectTo: '/auth/signin',
+			redirectTo: '/auth/signin',
+			redirectTo: '/auth/signin',
+			redirectTo: '/auth/signin',
+			redirectTo: '/auth/signin',
+			redirectTo: '/auth/signin',
 			user: locals.user
 		},
 		async () => {
-			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
+			const { data: profileData, error } = await supabaseServerClient(request)
 				.from('profile')
 				.select(
 					'first_name,family_name,mobile,phone,mobile_reception,rfs_survival_plan,send_rfs_survival_plan,fire_fighting_experience,fire_trauma,plan_to_leave_before_fire,plan_to_leave_before_flood'
@@ -44,7 +52,7 @@ export const POST = async ({ locals, request }) =>
 		async () => {
 			const body = await request.formData();
 			console.log('first_name', body.get('first_name'));
-			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
+			const { data: profileData, error } = await supabaseServerClient(request)
 				.from('profile')
 				.update({
 					first_name: body.get('first_name'),

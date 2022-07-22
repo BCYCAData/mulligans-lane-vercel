@@ -1,13 +1,14 @@
 // @ts-nocheck
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
-export const GET = async ({ locals }) =>
+export const GET = async ({ locals, request }) =>
 	withApiAuth(
 		{
+			redirectTo: '/auth/signin',
 			user: locals.user
 		},
 		async () => {
-			const { data: profile, error: errorProfile } = await supabaseServerClient(locals.accessToken)
+			const { data: profile, error: errorProfile } = await supabaseServerClient(request)
 				.from('profile')
 				.select('*')
 				.eq('id', locals.user.id);
@@ -19,7 +20,7 @@ export const GET = async ({ locals }) =>
 				};
 			}
 			if (!profile[0]) {
-				const { error: errorAddProfile } = await supabaseServerClient(locals.accessToken)
+				const { error: errorAddProfile } = await supabaseServerClient(request)
 					.from('profile')
 					.insert([{ id: locals.user.id }]);
 				if (errorAddProfile) {
@@ -30,9 +31,7 @@ export const GET = async ({ locals }) =>
 					};
 				}
 				// const { data: surveyData, error: errorSurveyData } = await db
-				const { data: surveyData, error: errorSurveyData } = await supabaseServerClient(
-					locals.accessToken
-				)
+				const { data: surveyData, error: errorSurveyData } = await supabaseServerClient(request)
 					.from('survey_responses')
 					.select('*')
 					.eq('email_address', locals.user.email);
@@ -47,9 +46,7 @@ export const GET = async ({ locals }) =>
 					resetProfile(surveyData[0], locals.user.id);
 				}
 			}
-			const { data: profileComments, error: errorComments } = await supabaseServerClient(
-				locals.accessToken
-			)
+			const { data: profileComments, error: errorComments } = await supabaseServerClient(request)
 				.from('profile')
 				.select('other_comments')
 				.eq('id', locals.user.id);
@@ -73,7 +70,7 @@ async function resetProfile(survey, id) {
 			user: locals.user
 		},
 		async () => {
-			const { error } = await supabaseServerClient(locals.accessToken)
+			const { error } = await supabaseServerClient(request)
 				.from('profile')
 				.update({
 					property_address_street: survey.property_address,

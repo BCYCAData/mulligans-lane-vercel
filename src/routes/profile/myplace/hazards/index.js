@@ -50,13 +50,14 @@
 // }
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 
-export const GET = async ({ locals }) =>
+export const GET = async ({ locals, request }) =>
 	withApiAuth(
 		{
+			redirectTo: '/auth/signin',
 			user: locals.user
 		},
 		async () => {
-			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
+			const { data: profileData, error } = await supabaseServerClient(request)
 				.from('profile')
 				.select('site_hazards,other_site_hazards,land_adjacent_hazard,other_hazards')
 				.eq('id', locals.user.id);
@@ -87,11 +88,12 @@ export const GET = async ({ locals }) =>
 export const POST = async ({ locals, request }) =>
 	withApiAuth(
 		{
+			redirectTo: '/auth/signin',
 			user: locals.user
 		},
 		async () => {
 			const body = await request.formData();
-			const { data: profileData, error } = await supabaseServerClient(locals.accessToken)
+			const { data: profileData, error } = await supabaseServerClient(request)
 				.from('profile')
 				.update({
 					site_hazards: body.getAll('site_hazards'),

@@ -2,6 +2,7 @@
 	// @ts-nocheck
 
 	import AuthErrorMessage from '$components/form/AuthErrorMessage.svelte';
+	import AuthSuccessMessage from '$components/form/AuthSuccessMessage.svelte';
 
 	import { supabaseClient, supabaseRedirectBase } from '$lib/dbClient';
 
@@ -13,7 +14,6 @@
 	let strength = 0;
 	let validations = [];
 	let showPassword = false;
-	let errorMessage = '';
 
 	$: password = '';
 	$: confirmPassword = '';
@@ -37,23 +37,25 @@
 		strength = validations.reduce((acc, cur) => acc + cur, 0);
 	}
 
+	let successMessage = '';
+	let errorMessage = '';
+
 	const handleSubmit = async () => {
 		try {
-			loading = true;
 			const { error } = await supabaseClient.auth.signUp(
 				{
 					email: email,
 					password: password
 				},
 				{
-					redirectTo: `${supabaseRedirectBase}/survey`
+					redirectTo: `${supabaseRedirectBase}/auth/redirect`
 				}
 			);
 			if (error) throw error;
 		} catch (error) {
 			errorMessage = error.message;
 		} finally {
-			loading = false;
+			successMessage = 'Please check your email for a confirmation link to log into the website.';
 		}
 	};
 </script>
@@ -69,7 +71,6 @@
 <h3 class="text-center">community.</h3>
 <div class="max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
 	<div class="px-6 py-2 rounded shadow-md text-black w-full">
-		<!-- <form action="/api/auth/signup" method="post"> -->
 		<form on:submit|preventDefault={handleSubmit}>
 			<label class="inline uppercase tracking-wide text-orange-500 text-xs font-bold" for="email">
 				Email:
@@ -161,14 +162,27 @@
 			{#if errorMessage !== ''}
 				<AuthErrorMessage message={errorMessage} />
 			{/if}
-			<button
-				type="submit"
-				class="w-full text-center py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"
-				value=""
-				disabled={!canGo}
-			>
-				Create Account
-			</button>
+			{#if successMessage === ''}
+				<button
+					type="submit"
+					class="w-full text-center py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"
+					value=""
+					disabled={!canGo}
+				>
+					Create Account
+				</button>
+			{/if}
+			{#if successMessage !== ''}
+				<AuthSuccessMessage message={successMessage} />
+
+				<a
+					type="button"
+					class="cursor-pointer max-w-80 no-underline hover:underline mt-1 p-1 font-semibold text-grey bg-green-500 rounded-xl"
+					href="/auth/redirect"
+				>
+					Tap here to continue...
+				</a>
+			{/if}
 		</form>
 		<div class="text-center text-sm text-grey-dark mt-1">
 			By signing up, you agree to the
