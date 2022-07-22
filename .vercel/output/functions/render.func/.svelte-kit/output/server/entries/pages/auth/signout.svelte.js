@@ -1,5 +1,5 @@
-import { c as create_ssr_component } from "../../../immutable/chunks/index-917ed570.js";
-import "../../../immutable/chunks/dbClient-64f7d521.js";
+import { c as create_ssr_component } from "../../../_app/immutable/chunks/index-9cfba6ed.js";
+import "../../../_app/immutable/chunks/dbClient-0cf002cd.js";
 import "@supabase/auth-helpers-sveltekit";
 const Signout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `<div class="${"flex flex-col items-center bg-white p-6 max-w-sm max-w-screen-xsm mx-auto"}"><h1 class="${"mb-8 text-3xl text-center"}">Thankyou for Participating</h1>

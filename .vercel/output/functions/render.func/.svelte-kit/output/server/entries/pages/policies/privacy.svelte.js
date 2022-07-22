@@ -1,4 +1,4 @@
-import { c as create_ssr_component } from "../../../immutable/chunks/index-917ed570.js";
+import { c as create_ssr_component } from "../../../_app/immutable/chunks/index-9cfba6ed.js";
 const Privacy = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `<h1>PRIVACY POLICY</h1>
 <section class="${"flex flex-col mx-auto h-full max-w-3xl text-gray-800"}"><p class="${"m-1"}">Last updated: 1/7/22</p>

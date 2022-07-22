@@ -13,7 +13,7 @@ const getFormBody = (body) => {
     return data;
   }, {});
 };
-const get = async ({ locals }) => withApiAuth({
+const GET = async ({ locals }) => withApiAuth({
   user: locals.user
 }, async () => {
   const { data: profile, error } = await supabaseServerClient(locals.accessToken).from("profile").select("*");
@@ -60,7 +60,7 @@ const get = async ({ locals }) => withApiAuth({
     body: {}
   };
 });
-const post = async ({ locals, request }) => withApiAuth({
+const POST = async ({ locals, request }) => withApiAuth({
   user: locals.user
 }, async () => {
   const body = await request.formData();
@@ -202,6 +202,6 @@ function setArray(value) {
   return result;
 }
 export {
-  get,
-  post
+  GET,
+  POST
 };

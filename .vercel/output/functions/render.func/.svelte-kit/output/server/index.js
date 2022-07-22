@@ -1,4 +1,4 @@
-import { c as create_ssr_component, s as setContext, v as validate_component, m as missing_component } from "./immutable/chunks/index-917ed570.js";
+import { c as create_ssr_component, s as setContext, v as validate_component, m as missing_component } from "./_app/immutable/chunks/index-9cfba6ed.js";
 function afterUpdate() {
 }
 const Root = create_ssr_component(($$result, $$props, $$bindings, slots) => {
@@ -116,12 +116,6 @@ function lowercase_keys(obj) {
     clone[key2.toLowerCase()] = obj[key2];
   }
   return clone;
-}
-function decode_params(params) {
-  for (const key2 in params) {
-    params[key2] = params[key2].replace(/%23/g, "#").replace(/%3[Bb]/g, ";").replace(/%2[Cc]/g, ",").replace(/%2[Ff]/g, "/").replace(/%3[Ff]/g, "?").replace(/%3[Aa]/g, ":").replace(/%40/g, "@").replace(/%26/g, "&").replace(/%3[Dd]/g, "=").replace(/%2[Bb]/g, "+").replace(/%24/g, "$");
-  }
-  return params;
 }
 function is_pojo(body) {
   if (typeof body !== "object")
@@ -855,6 +849,12 @@ function normalize_path(path, trailing_slash) {
   }
   return path;
 }
+function decode_params(params) {
+  for (const key2 in params) {
+    params[key2] = params[key2].replace(/%23/g, "#").replace(/%3[Bb]/g, ";").replace(/%2[Cc]/g, ",").replace(/%2[Ff]/g, "/").replace(/%3[Ff]/g, "?").replace(/%3[Aa]/g, ":").replace(/%40/g, "@").replace(/%26/g, "&").replace(/%3[Dd]/g, "=").replace(/%2[Bb]/g, "+").replace(/%24/g, "$");
+  }
+  return params;
+}
 class LoadURL extends URL {
   get hash() {
     throw new Error("url.hash is inaccessible from load. Consider accessing hash from the page store within the script tag of your component.");
@@ -901,7 +901,8 @@ async function render_response({
   let rendered;
   let is_private = false;
   let cache;
-  if (error2) {
+  const stack = error2 == null ? void 0 : error2.stack;
+  if (options.dev && error2) {
     error2.stack = options.get_stack(error2);
   }
   if (resolve_opts.ssr) {
@@ -927,17 +928,12 @@ async function render_response({
       is_private = (cache == null ? void 0 : cache.private) ?? uses_credentials;
     }
     const session = writable($session);
+    is_private = is_private || ((cache == null ? void 0 : cache.private) ?? (!!$session && Object.keys($session).length > 0));
     const props = {
       stores: {
         page: writable(null),
         navigating: writable(null),
-        session: {
-          ...session,
-          subscribe: (fn) => {
-            is_private = (cache == null ? void 0 : cache.private) ?? true;
-            return session.subscribe(fn);
-          }
-        },
+        session,
         updated
       },
       page: {
@@ -1079,6 +1075,9 @@ async function render_response({
     if (report_only_header) {
       headers.set("content-security-policy-report-only", report_only_header);
     }
+  }
+  if (options.dev && error2) {
+    error2.stack = stack;
   }
   return new Response(html, {
     status,
@@ -2361,7 +2360,7 @@ class Server {
       manifest,
       method_override: { "parameter": "_method", "allowed": [] },
       paths: { base, assets },
-      prefix: assets + "/_app/",
+      prefix: assets + "/",
       prerender: {
         default: false,
         enabled: true
@@ -2380,7 +2379,7 @@ class Server {
       throw new Error("The first argument to server.respond must be a Request object. See https://github.com/sveltejs/kit/pull/3384 for details");
     }
     if (!this.options.hooks) {
-      const module = await import("./immutable/chunks/hooks-6b6969c0.js");
+      const module = await import("./_app/immutable/chunks/hooks-ead1c174.js");
       this.options.hooks = {
         getSession: module.getSession || (() => ({})),
         handle: module.handle || (({ event, resolve: resolve2 }) => resolve2(event)),

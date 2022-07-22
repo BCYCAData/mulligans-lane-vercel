@@ -2,7 +2,7 @@
 import { supabaseServerClient, withApiAuth } from '@supabase/auth-helpers-sveltekit';
 import { getFormBody } from '$lib/utils';
 
-export const get = async ({ locals }) =>
+export const GET = async ({ locals }) =>
 	withApiAuth(
 		{
 			user: locals.user
@@ -56,7 +56,7 @@ export const get = async ({ locals }) =>
 		}
 	);
 
-export const post = async ({ locals, request }) =>
+export const POST = async ({ locals, request }) =>
 	withApiAuth(
 		{
 			user: locals.user

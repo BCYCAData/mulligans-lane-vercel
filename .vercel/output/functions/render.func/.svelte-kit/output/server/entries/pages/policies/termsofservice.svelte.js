@@ -1,4 +1,4 @@
-import { c as create_ssr_component } from "../../../immutable/chunks/index-917ed570.js";
+import { c as create_ssr_component } from "../../../_app/immutable/chunks/index-9cfba6ed.js";
 const Termsofservice = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `<h1 class="${"sm:mt-5 mt-10"}">Strengthening Our Community</h1>
 <h2 class="${"text-center"}">Terms of Use June 2022</h2>

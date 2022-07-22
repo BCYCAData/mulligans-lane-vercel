@@ -3,21 +3,13 @@
     "file": "immutable/assets/hall_logo_image_90px-c8a9d17c.png",
     "src": "src/components/header/logo/hall_logo_image_90px.png"
   },
-  "node_modules/@fontsource/fira-mono/files/fira-mono-cyrillic-ext-400-normal.woff2": {
-    "file": "immutable/assets/fira-mono-cyrillic-ext-400-normal-3df7909e.woff2",
-    "src": "node_modules/@fontsource/fira-mono/files/fira-mono-cyrillic-ext-400-normal.woff2"
-  },
-  "node_modules/@fontsource/fira-mono/files/fira-mono-greek-400-normal.woff2": {
-    "file": "immutable/assets/fira-mono-greek-400-normal-a8be01ce.woff2",
-    "src": "node_modules/@fontsource/fira-mono/files/fira-mono-greek-400-normal.woff2"
-  },
-  "node_modules/@fontsource/fira-mono/files/fira-mono-latin-400-normal.woff2": {
-    "file": "immutable/assets/fira-mono-latin-400-normal-e43b3538.woff2",
-    "src": "node_modules/@fontsource/fira-mono/files/fira-mono-latin-400-normal.woff2"
-  },
   "node_modules/@fontsource/fira-mono/files/fira-mono-greek-ext-400-normal.woff2": {
     "file": "immutable/assets/fira-mono-greek-ext-400-normal-9e2fe623.woff2",
     "src": "node_modules/@fontsource/fira-mono/files/fira-mono-greek-ext-400-normal.woff2"
+  },
+  "node_modules/@fontsource/fira-mono/files/fira-mono-cyrillic-ext-400-normal.woff2": {
+    "file": "immutable/assets/fira-mono-cyrillic-ext-400-normal-3df7909e.woff2",
+    "src": "node_modules/@fontsource/fira-mono/files/fira-mono-cyrillic-ext-400-normal.woff2"
   },
   "node_modules/@fontsource/fira-mono/files/fira-mono-cyrillic-400-normal.woff2": {
     "file": "immutable/assets/fira-mono-cyrillic-400-normal-c7d433fd.woff2",
@@ -27,12 +19,20 @@
     "file": "immutable/assets/fira-mono-latin-ext-400-normal-6bfabd30.woff2",
     "src": "node_modules/@fontsource/fira-mono/files/fira-mono-latin-ext-400-normal.woff2"
   },
+  "node_modules/@fontsource/fira-mono/files/fira-mono-greek-400-normal.woff2": {
+    "file": "immutable/assets/fira-mono-greek-400-normal-a8be01ce.woff2",
+    "src": "node_modules/@fontsource/fira-mono/files/fira-mono-greek-400-normal.woff2"
+  },
+  "node_modules/@fontsource/fira-mono/files/fira-mono-latin-400-normal.woff2": {
+    "file": "immutable/assets/fira-mono-latin-400-normal-e43b3538.woff2",
+    "src": "node_modules/@fontsource/fira-mono/files/fira-mono-latin-400-normal.woff2"
+  },
   "node_modules/@fontsource/fira-mono/files/fira-mono-all-400-normal.woff": {
     "file": "immutable/assets/fira-mono-all-400-normal-1e3b098c.woff",
     "src": "node_modules/@fontsource/fira-mono/files/fira-mono-all-400-normal.woff"
   },
   ".svelte-kit/runtime/client/start.js": {
-    "file": "immutable/start-a9bfc895.js",
+    "file": "immutable/start-45357613.js",
     "src": ".svelte-kit/runtime/client/start.js",
     "isEntry": true,
     "imports": [
@@ -74,7 +74,7 @@
     ]
   },
   "src/routes/__layout.svelte": {
-    "file": "immutable/pages/__layout.svelte-496eb40d.js",
+    "file": "immutable/pages/__layout.svelte-63de442e.js",
     "src": "src/routes/__layout.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
@@ -82,7 +82,7 @@
       "_index-0c810e59.js",
       "_navigation-7ffe60d0.js",
       "_stores-75cecb32.js",
-      "_dbClient-be06f3b2.js",
+      "_dbClient-fae2f7e9.js",
       "_index-4f730b79.js",
       "_singletons-cdeec3fd.js",
       "_preload-helper-4c397a37.js"
@@ -149,7 +149,7 @@
     ]
   },
   "src/routes/auth/redirect.svelte": {
-    "file": "immutable/pages/auth/redirect.svelte-e074b0ff.js",
+    "file": "immutable/pages/auth/redirect.svelte-fdecd34d.js",
     "src": "src/routes/auth/redirect.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
@@ -160,40 +160,36 @@
     ]
   },
   "src/routes/auth/requestresetpassword.svelte": {
-    "file": "immutable/pages/auth/requestresetpassword.svelte-92413da2.js",
+    "file": "immutable/pages/auth/requestresetpassword.svelte-fd7e0cf8.js",
     "src": "src/routes/auth/requestresetpassword.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_index-0c810e59.js",
-      "_dbClient-be06f3b2.js",
-      "_preload-helper-4c397a37.js"
+      "_index-0c810e59.js"
     ]
   },
   "src/routes/auth/signin.svelte": {
-    "file": "immutable/pages/auth/signin.svelte-3f17dee0.js",
+    "file": "immutable/pages/auth/signin.svelte-a3d5242b.js",
     "src": "src/routes/auth/signin.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
       "_index-0c810e59.js",
-      "_dbClient-be06f3b2.js",
-      "_navigation-7ffe60d0.js",
+      "_dbClient-fae2f7e9.js",
       "_Modal-81269e6d.js",
-      "_AddressChallenge-2f72e789.js",
+      "_AddressChallenge-b9536712.js",
       "_preload-helper-4c397a37.js",
-      "_singletons-cdeec3fd.js",
       "_utils-deac8ccf.js"
     ]
   },
   "src/routes/auth/signout.svelte": {
-    "file": "immutable/pages/auth/signout.svelte-83970220.js",
+    "file": "immutable/pages/auth/signout.svelte-6e69d813.js",
     "src": "src/routes/auth/signout.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
       "_index-0c810e59.js",
-      "_dbClient-be06f3b2.js",
+      "_dbClient-fae2f7e9.js",
       "_navigation-7ffe60d0.js",
       "_preload-helper-4c397a37.js",
       "_singletons-cdeec3fd.js"
@@ -229,15 +225,15 @@
     ]
   },
   "src/routes/index.svelte": {
-    "file": "immutable/pages/index.svelte-dab5f7fe.js",
+    "file": "immutable/pages/index.svelte-b53df988.js",
     "src": "src/routes/index.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
       "_index-0c810e59.js",
       "_Modal-81269e6d.js",
-      "_AddressChallenge-2f72e789.js",
-      "_dbClient-be06f3b2.js",
+      "_AddressChallenge-b9536712.js",
+      "_dbClient-fae2f7e9.js",
       "_preload-helper-4c397a37.js",
       "_utils-deac8ccf.js"
     ]
@@ -426,7 +422,7 @@
     ]
   },
   "src/routes/survey/index.svelte": {
-    "file": "immutable/pages/survey/index.svelte-3c9bda14.js",
+    "file": "immutable/pages/survey/index.svelte-75094409.js",
     "src": "src/routes/survey/index.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
@@ -480,8 +476,8 @@
       "_index-0c810e59.js"
     ]
   },
-  "_dbClient-be06f3b2.js": {
-    "file": "immutable/chunks/dbClient-be06f3b2.js",
+  "_dbClient-fae2f7e9.js": {
+    "file": "immutable/chunks/dbClient-fae2f7e9.js",
     "imports": [
       "_preload-helper-4c397a37.js"
     ],
@@ -507,11 +503,11 @@
       "immutable/assets/Modal-88e49c16.css"
     ]
   },
-  "_AddressChallenge-2f72e789.js": {
-    "file": "immutable/chunks/AddressChallenge-2f72e789.js",
+  "_AddressChallenge-b9536712.js": {
+    "file": "immutable/chunks/AddressChallenge-b9536712.js",
     "imports": [
       "_index-0c810e59.js",
-      "_dbClient-be06f3b2.js",
+      "_dbClient-fae2f7e9.js",
       "_utils-deac8ccf.js"
     ],
     "css": [
@@ -563,25 +559,17 @@
     "file": "immutable/assets/__layout-a5b8027d.css",
     "src": "src/routes/profile\\__layout.css"
   },
-  "PasswordEntry.css": {
-    "file": "immutable/assets/PasswordEntry-9027e2ce.css",
-    "src": "PasswordEntry.css"
+  "src/routes/about\\index.css": {
+    "file": "immutable/assets/index-c28a4d3f.css",
+    "src": "src/routes/about\\index.css"
   },
   "src/routes/survey\\index.css": {
     "file": "immutable/assets/index-9fa00d4e.css",
     "src": "src/routes/survey\\index.css"
   },
-  "src/routes/survey\\pagefuture.css": {
-    "file": "immutable/assets/pagefuture-3b8a00c3.css",
-    "src": "src/routes/survey\\pagefuture.css"
-  },
-  "src/routes/about\\index.css": {
-    "file": "immutable/assets/index-c28a4d3f.css",
-    "src": "src/routes/about\\index.css"
-  },
-  "AddressChallenge.css": {
-    "file": "immutable/assets/AddressChallenge-f6953ffd.css",
-    "src": "AddressChallenge.css"
+  "PasswordEntry.css": {
+    "file": "immutable/assets/PasswordEntry-9027e2ce.css",
+    "src": "PasswordEntry.css"
   },
   "Modal.css": {
     "file": "immutable/assets/Modal-88e49c16.css",
@@ -590,5 +578,13 @@
   "src/routes\\__layout.css": {
     "file": "immutable/assets/__layout-83da706e.css",
     "src": "src/routes\\__layout.css"
+  },
+  "src/routes/survey\\pagefuture.css": {
+    "file": "immutable/assets/pagefuture-3b8a00c3.css",
+    "src": "src/routes/survey\\pagefuture.css"
+  },
+  "AddressChallenge.css": {
+    "file": "immutable/assets/AddressChallenge-f6953ffd.css",
+    "src": "AddressChallenge.css"
   }
 }

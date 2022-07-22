@@ -2,6 +2,6 @@ import * as module from '../entries/pages/profile/aboutme/index.svelte.js';
 
 export { module };
 export const index = 15;
-export const file = 'immutable/pages/profile/aboutme/index.svelte-65f05eea.js';
-export const imports = ["immutable/pages/profile/aboutme/index.svelte-65f05eea.js","immutable/chunks/index-0c810e59.js","immutable/chunks/navigation-7ffe60d0.js","immutable/chunks/singletons-cdeec3fd.js","immutable/chunks/utils-deac8ccf.js","immutable/chunks/profileOptions-1cfe764b.js","immutable/chunks/Modal-81269e6d.js","immutable/chunks/SaveProfilePrompt-4e986229.js"];
-export const stylesheets = ["immutable/assets/Modal-88e49c16.css"];
+export const file = '_app/immutable/pages/profile/aboutme/index.svelte-7878fff5.js';
+export const imports = ["_app/immutable/pages/profile/aboutme/index.svelte-7878fff5.js","_app/immutable/chunks/index-1b426719.js","_app/immutable/chunks/navigation-6ce14b0f.js","_app/immutable/chunks/singletons-eca981c1.js","_app/immutable/chunks/utils-7d28d940.js","_app/immutable/chunks/profileOptions-a101d701.js","_app/immutable/chunks/Modal-6b781413.js","_app/immutable/chunks/SaveProfilePrompt-87393c69.js"];
+export const stylesheets = ["_app/immutable/assets/Modal-88e49c16.css"];

@@ -1,6 +1,6 @@
-import { c as create_ssr_component, d as add_attribute } from "../../../immutable/chunks/index-917ed570.js";
-import "../../../immutable/chunks/dbClient-64f7d521.js";
-/* empty css                                                                      *//* empty css                                                                        */import "@supabase/auth-helpers-sveltekit";
+import { c as create_ssr_component, d as add_attribute } from "../../../_app/immutable/chunks/index-9cfba6ed.js";
+import "../../../_app/immutable/chunks/dbClient-0cf002cd.js";
+/* empty css                                                                           *//* empty css                                                                             */import "@supabase/auth-helpers-sveltekit";
 const Signin = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let email;
   let password;

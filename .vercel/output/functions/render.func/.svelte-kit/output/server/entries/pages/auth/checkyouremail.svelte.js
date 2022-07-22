@@ -1,4 +1,4 @@
-import { c as create_ssr_component } from "../../../immutable/chunks/index-917ed570.js";
+import { c as create_ssr_component } from "../../../_app/immutable/chunks/index-9cfba6ed.js";
 const Checkyouremail = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `<section class="${"text-gray-800"}"><div class="${"container mx-auto flex px-5 py-4 items-center justify-center flex-col"}"><div class="${"text-center lg:w-3/6 w-full"}"><h1 class="${"title-font font-bold underline hidden md:block md:text-4xl md:mb-4 md:font-medium text-orange-600"}">Strengthening OUR Community
 			</h1>

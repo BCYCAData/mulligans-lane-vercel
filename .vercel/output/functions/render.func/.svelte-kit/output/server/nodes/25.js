@@ -2,6 +2,6 @@ import * as module from '../entries/pages/profile/myplace/index.svelte.js';
 
 export { module };
 export const index = 25;
-export const file = 'immutable/pages/profile/myplace/index.svelte-8969c93c.js';
-export const imports = ["immutable/pages/profile/myplace/index.svelte-8969c93c.js","immutable/chunks/index-0c810e59.js","immutable/chunks/navigation-7ffe60d0.js","immutable/chunks/singletons-cdeec3fd.js","immutable/chunks/profileOptions-1cfe764b.js","immutable/chunks/Modal-81269e6d.js","immutable/chunks/SaveProfilePrompt-4e986229.js","immutable/chunks/NumberInput-3b26ca3c.js"];
-export const stylesheets = ["immutable/assets/Modal-88e49c16.css"];
+export const file = '_app/immutable/pages/profile/myplace/index.svelte-93371189.js';
+export const imports = ["_app/immutable/pages/profile/myplace/index.svelte-93371189.js","_app/immutable/chunks/index-1b426719.js","_app/immutable/chunks/navigation-6ce14b0f.js","_app/immutable/chunks/singletons-eca981c1.js","_app/immutable/chunks/profileOptions-a101d701.js","_app/immutable/chunks/Modal-6b781413.js","_app/immutable/chunks/SaveProfilePrompt-87393c69.js","_app/immutable/chunks/NumberInput-fd0a086a.js"];
+export const stylesheets = ["_app/immutable/assets/Modal-88e49c16.css"];

@@ -1,24 +1,24 @@
 <script>
 	// @ts-nocheck
 
-	import { supabaseClient, supabaseRedirectBase } from '$lib/dbClient';
+	// import { supabaseClient, supabaseRedirectBase } from '$lib/dbClient';
 
 	let systemError = false;
 
-	async function resetPassword() {
-		console.log('Base: ', supabaseRedirectBase);
-		const { data, error } = await supabaseClient.auth.api.resetPasswordForEmail(
-			'bcycadata@outlook.com',
-			{
-				redirectTo: `${supabaseRedirectBase}/auth/resetpassword`
-			}
-		);
-		console.log('Data: ', data);
-		console.log('Error: ', error);
-		if (error) {
-			systemError = true;
-		}
-	}
+	// async function resetPassword() {
+	// 	console.log('Base: ', supabaseRedirectBase);
+	// 	const { data, error } = await supabaseClient.auth.api.resetPasswordForEmail(
+	// 		'bcycadata@outlook.com',
+	// 		{
+	// 			redirectTo: `${supabaseRedirectBase}/auth/resetpassword`
+	// 		}
+	// 	);
+	// 	console.log('Data: ', data);
+	// 	console.log('Error: ', error);
+	// 	if (error) {
+	// 		systemError = true;
+	// 	}
+	// }
 </script>
 
 <div class="flex flex-col items-center max-w-sm max-w-screen-xsm mx-auto">

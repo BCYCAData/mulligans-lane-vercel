@@ -1,6 +1,6 @@
-import { s as supabaseClient } from "../../../../immutable/chunks/dbClient-64f7d521.js";
+import { s as supabaseClient } from "../../../../_app/immutable/chunks/dbClient-0cf002cd.js";
 import "@supabase/auth-helpers-sveltekit";
-const post = async ({ locals, request }) => {
+const POST = async ({ locals, request }) => {
   const body = await request.formData();
   supabaseClient.auth.setAuth(locals.accessToken);
   const { data, error } = await supabaseClient.auth.signIn({
@@ -21,5 +21,5 @@ const post = async ({ locals, request }) => {
   };
 };
 export {
-  post
+  POST
 };

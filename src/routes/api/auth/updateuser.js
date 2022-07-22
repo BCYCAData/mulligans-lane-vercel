@@ -1,10 +1,11 @@
 // @ts-nocheck
 import { supabaseClient } from '$lib/dbClient';
 
-export const post = async ({ locals, request }) => {
+export const POST = async ({ locals, request }) => {
 	const body = await request.formData();
 	supabaseClient.auth.setAuth(locals.accessToken);
-	const { data, error } = await supabaseClient.auth.update({
+	// const { data, error } = await supabaseClient.auth.update({
+	const { error } = await supabaseClient.auth.update({
 		password: body.get('password')
 	});
 	if (error) {

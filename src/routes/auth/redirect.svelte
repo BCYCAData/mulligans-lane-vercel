@@ -6,9 +6,9 @@
 	// import EmailEntry from '$components/form/auth/EmailEntry.svelte';
 
 	const redirectType = new URLSearchParams($page.url.hash.substring(1)).get('type');
-	const id = new URLSearchParams($page.url.hash.substring(1)).get('id');
+	// const id = new URLSearchParams($page.url.hash.substring(1)).get('id');
 	const token = new URLSearchParams($page.url.hash.substring(1)).get('access_token');
-	const url = $page.url;
+	// const url = $page.url;
 
 	// let email = '';
 </script>

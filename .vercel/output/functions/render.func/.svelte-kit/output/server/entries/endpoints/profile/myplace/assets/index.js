@@ -1,5 +1,5 @@
 import { withApiAuth, supabaseServerClient } from "@supabase/auth-helpers-sveltekit";
-const get = async ({ locals }) => withApiAuth({
+const GET = async ({ locals }) => withApiAuth({
   user: locals.user
 }, async () => {
   const { data: profileData, error } = await supabaseServerClient(locals.accessToken).from("profile").select("static_water_available,have_stortz,stortz_size,fire_fighting_assets,fire_hazard_reduction").eq("id", locals.user.id);
@@ -32,7 +32,7 @@ const get = async ({ locals }) => withApiAuth({
     body: {}
   };
 });
-const post = async ({ locals, request }) => withApiAuth({
+const POST = async ({ locals, request }) => withApiAuth({
   user: locals.user
 }, async () => {
   const body = await request.formData();
@@ -64,6 +64,6 @@ const post = async ({ locals, request }) => withApiAuth({
   };
 });
 export {
-  get,
-  post
+  GET,
+  POST
 };

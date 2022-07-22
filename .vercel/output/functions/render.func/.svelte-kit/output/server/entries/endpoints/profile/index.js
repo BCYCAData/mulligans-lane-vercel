@@ -1,5 +1,5 @@
 import { withApiAuth, supabaseServerClient } from "@supabase/auth-helpers-sveltekit";
-const get = async ({ locals: locals2 }) => withApiAuth({
+const GET = async ({ locals: locals2 }) => withApiAuth({
   user: locals2.user
 }, async () => {
   const { data: profile, error: errorProfile } = await supabaseServerClient(locals2.accessToken).from("profile").select("*").eq("id", locals2.user.id);
@@ -103,5 +103,5 @@ async function resetProfile(survey, id) {
   });
 }
 export {
-  get
+  GET
 };

@@ -1,4 +1,4 @@
-import { c as create_ssr_component, v as validate_component } from "../../../immutable/chunks/index-917ed570.js";
+import { c as create_ssr_component, v as validate_component } from "../../../_app/immutable/chunks/index-9cfba6ed.js";
 const BasicMap_svelte_svelte_type_style_lang = "";
 const css = {
   code: "@import 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.css';",

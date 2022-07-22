@@ -4,7 +4,6 @@
 	// import AuthErrorMessage from '$components/form/AuthErrorMessage.svelte';
 
 	import { supabaseClient } from '$lib/dbClient';
-	import { goto, invalidate } from '$app/navigation';
 
 	import Modal from '$components/Modal.svelte';
 	import AddressChallenge from '$components/form/addressChallenge/AddressChallenge.svelte';

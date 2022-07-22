@@ -14,7 +14,7 @@
 	import Step11 from '$components/form/surveyForm/Step11.svelte';
 	import Step12 from '$components/form/surveyForm/Step12.svelte';
 
-	const handleSubmit = async () => {};
+	// const handleSubmit = async () => {};
 
 	export let active_step;
 	export let surveyData;
@@ -26,7 +26,7 @@
 	>
 		Save My Answers
 	</span>
-	 at Step 12
+	at Step 12
 </div>
 <form method="post" action="/survey" id="surveyForm">
 	<div hidden={active_step != '1'}>

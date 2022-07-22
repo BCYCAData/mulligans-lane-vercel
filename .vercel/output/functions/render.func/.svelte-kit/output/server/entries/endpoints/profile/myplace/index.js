@@ -1,5 +1,5 @@
 import { withApiAuth, supabaseServerClient } from "@supabase/auth-helpers-sveltekit";
-const get = async ({ locals }) => withApiAuth({
+const GET = async ({ locals }) => withApiAuth({
   user: locals.user
 }, async () => {
   const { data: profileData, error } = await supabaseServerClient(locals.accessToken).from("profile").select("property_address_street,property_address_suburb,property_address_postcode,residency_profile,property_rented,agent_name,agent_phone,sign_posted,truck_access,truck_access_other_information,residents0_18,residents19_50,residents51_70,residents71_,vulnerable_residents").eq("id", locals.user.id);
@@ -23,7 +23,7 @@ const get = async ({ locals }) => withApiAuth({
     body: {}
   };
 });
-const post = async ({ locals, request }) => withApiAuth({
+const POST = async ({ locals, request }) => withApiAuth({
   user: locals.user
 }, async () => {
   const body = await request.formData();
@@ -65,6 +65,6 @@ const post = async ({ locals, request }) => withApiAuth({
   };
 });
 export {
-  get,
-  post
+  GET,
+  POST
 };
