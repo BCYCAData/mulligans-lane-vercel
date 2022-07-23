@@ -13,12 +13,13 @@ const getFormBody = (body) => {
     return data;
   }, {});
 };
-const GET = async ({ locals }) => withApiAuth({
+const GET = async ({ locals, request }) => withApiAuth({
+  redirectTo: "/auth/signin",
   user: locals.user
 }, async () => {
-  const { data: profile, error } = await supabaseServerClient(locals.accessToken).from("profile").select("*");
+  const { data: profile, error } = await supabaseServerClient(request).from("profile").select("*").eq("id", locals.user.id);
   if (error) {
-    console.log("error Get Profile:", error);
+    console.log("error Get Profile for Survey:", error);
     return {
       status: 400,
       body: { error }
@@ -56,11 +57,12 @@ const GET = async ({ locals }) => withApiAuth({
     };
   }
   return {
-    status: 400,
+    status: 200,
     body: {}
   };
 });
 const POST = async ({ locals, request }) => withApiAuth({
+  redirectTo: "/auth/signin",
   user: locals.user
 }, async () => {
   const body = await request.formData();
@@ -118,7 +120,6 @@ const POST = async ({ locals, request }) => withApiAuth({
     stay_in_touch_choices: setArray(bodyObject.stay_in_touch_choices),
     other_comments: bodyObject.other_comments
   }).eq("id", locals.user.id);
-  console.log("Body Object:  ", bodyObject);
   if (error) {
     console.log("update error profileCommunity:", error);
     return {
@@ -126,7 +127,6 @@ const POST = async ({ locals, request }) => withApiAuth({
       body: { error }
     };
   }
-  console.log("Data:  ", surveyAnswers);
   return {
     status: 200,
     body: { surveyAnswers }

@@ -1,8 +1,9 @@
 import { withApiAuth, supabaseServerClient } from "@supabase/auth-helpers-sveltekit";
-const GET = async ({ locals }) => withApiAuth({
+const GET = async ({ locals, request }) => withApiAuth({
+  redirectTo: "/auth/signin",
   user: locals.user
 }, async () => {
-  const { data: profileData, error } = await supabaseServerClient(locals.accessToken).from("profile").select("id").eq("id", locals.user.id);
+  const { data: profileData, error } = await supabaseServerClient(request).from("profile").select("id").eq("id", locals.user.id);
   if (error) {
     console.log("error profileSettings:", error);
     return {
@@ -24,11 +25,12 @@ const GET = async ({ locals }) => withApiAuth({
   };
 });
 const POST = async ({ locals, request }) => withApiAuth({
+  redirectTo: "/auth/signin",
   user: locals.user
 }, async () => {
   const body = await request.formData();
   console.log("first_name", body.get("first_name"));
-  const { data: profileData, error } = await supabaseServerClient(locals.accessToken).from("profile").update({}).eq("id", locals.user.id);
+  const { data: profileData, error } = await supabaseServerClient(request).from("profile").update({}).eq("id", locals.user.id);
   if (error) {
     console.log("update error profileSettings:", error);
     return {

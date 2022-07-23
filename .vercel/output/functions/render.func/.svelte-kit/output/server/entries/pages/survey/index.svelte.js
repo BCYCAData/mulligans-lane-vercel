@@ -605,6 +605,7 @@ const Survey = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let steps = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
   let currentActive = 1;
   let progressBar;
+  console.log("Survey Form here");
   let { surveyData } = $$props;
   if ($$props.surveyData === void 0 && $$bindings.surveyData && surveyData !== void 0)
     $$bindings.surveyData(surveyData);

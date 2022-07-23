@@ -1,8 +1,9 @@
 import { withApiAuth, supabaseServerClient } from "@supabase/auth-helpers-sveltekit";
-const GET = async ({ locals }) => withApiAuth({
+const GET = async ({ locals, request }) => withApiAuth({
+  redirectTo: "/auth/signin",
   user: locals.user
 }, async () => {
-  const { data: profileData, error } = await supabaseServerClient(locals.accessToken).from("profile").select("community_meeting_choices,other_community_meeting").eq("id", locals.user.id);
+  const { data: profileData, error } = await supabaseServerClient(request).from("profile").select("community_meeting_choices,other_community_meeting").eq("id", locals.user.id);
   console.log("profileMeetings", profileData);
   if (error) {
     console.log("error profileMeetings:", error);
@@ -27,11 +28,12 @@ const GET = async ({ locals }) => withApiAuth({
   };
 });
 const POST = async ({ locals, request }) => withApiAuth({
+  redirectTo: "/auth/signin",
   user: locals.user
 }, async () => {
   const body = await request.formData();
   console.log("first_name", body.get("first_name"));
-  const { data: profileData, error } = await supabaseServerClient(locals.accessToken).from("profile").update({
+  const { data: profileData, error } = await supabaseServerClient(request).from("profile").update({
     community_meeting_choices: body.getAll("community_meeting_choices"),
     other_community_meeting: body.get("other_community_meeting")
   }).eq("id", locals.user.id);

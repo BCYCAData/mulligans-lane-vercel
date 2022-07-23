@@ -8,13 +8,22 @@ const PasswordEntry = create_ssr_component(($$result, $$props, $$bindings, slots
   let password;
   let confirmPassword;
   let canGo;
+  let { redirectType } = $$props;
   let strength = 0;
+  let heading = "";
+  let submitText = "";
+  if (redirectType == "invite") {
+    heading = "Thank you for accepting our invitation.";
+    submitText = "Please Set a Password";
+  }
+  if ($$props.redirectType === void 0 && $$bindings.redirectType && redirectType !== void 0)
+    $$bindings.redirectType(redirectType);
   $$result.css.add(css);
   password = "";
   confirmPassword = "";
   canGo = password === confirmPassword && strength === 4;
-  return `<div class="${"container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"}"><div class="${"bg-white px-6 py-8 rounded shadow-md text-black w-full"}">
-		<form action="${"/api/auth/updateuser"}" method="${"POST"}"><label class="${"inline uppercase tracking-wide text-orange-900 text-xs font-bold"}" for="${"password"}">Password:
+  return `<div class="${"container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"}"><div class="${"bg-white px-6 py-8 rounded shadow-md text-black w-full"}"><form action="${"/api/auth/updateuser"}" method="${"POST"}"><h1 class="${"mb-8 text-3xl text-center"}">${escape(heading)}</h1>
+			<label class="${"inline uppercase tracking-wide text-orange-900 text-xs font-bold"}" for="${"password"}">Password:
 				<span class="${"toggle-password text-3xl text-gray-700 font-normal ml-3 align-middle "}">${escape("\u{1F441}")}</span></label>
 			<input id="${"password"}"${add_attribute("type", "password", 0)} class="${"block border border-orange-700 w-full py-3 rounded mb-4"}" name="${"password"}" ${"required"} placeholder="${"New Password"}" autocomplete="${"new-password"}"${add_attribute("value", password, 0)}>
 			<label class="${"inline uppercase tracking-wide text-orange-900 text-xs font-bold"}" for="${"confirmPassword"}">Confirm Password:
@@ -35,7 +44,7 @@ const PasswordEntry = create_ssr_component(($$result, $$props, $$bindings, slots
 				<li><span class="${"text-xs"}">${escape("\u274C")}</span>
 					<span class="${"text-sm"}">must contain one symbol ($&amp;+,:;=?#^!)</span></li></ul>
 
-			<button type="${"submit"}" class="${"w-full text-center text-xl py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"}" ${!canGo ? "disabled" : ""}></button></form></div>
+			<button type="${"submit"}" class="${"w-full text-center text-xl py-3 rounded-full bg-orange-500 text-white hover:bg-orange-700 focus:outline-none my-1 disabled:opacity-25"}" ${!canGo ? "disabled" : ""}>${escape(submitText)}</button></form></div>
 </div>`;
 });
 export {

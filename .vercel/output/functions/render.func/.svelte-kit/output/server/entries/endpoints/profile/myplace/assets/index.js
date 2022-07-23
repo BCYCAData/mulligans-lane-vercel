@@ -1,8 +1,9 @@
 import { withApiAuth, supabaseServerClient } from "@supabase/auth-helpers-sveltekit";
-const GET = async ({ locals }) => withApiAuth({
+const GET = async ({ locals, request }) => withApiAuth({
+  redirectTo: "/auth/signin",
   user: locals.user
 }, async () => {
-  const { data: profileData, error } = await supabaseServerClient(locals.accessToken).from("profile").select("static_water_available,have_stortz,stortz_size,fire_fighting_assets,fire_hazard_reduction").eq("id", locals.user.id);
+  const { data: profileData, error } = await supabaseServerClient(request).from("profile").select("static_water_available,have_stortz,stortz_size,fire_fighting_assets,fire_hazard_reduction").eq("id", locals.user.id);
   if (error) {
     console.log("error profileAssets:", error);
     return {
@@ -33,10 +34,11 @@ const GET = async ({ locals }) => withApiAuth({
   };
 });
 const POST = async ({ locals, request }) => withApiAuth({
+  redirectTo: "/auth/signin",
   user: locals.user
 }, async () => {
   const body = await request.formData();
-  const { data: profileData, error } = await supabaseServerClient(locals.accessToken).from("profile").update({
+  const { data: profileData, error } = await supabaseServerClient(request).from("profile").update({
     static_water_available: body.getAll("static_water_available"),
     have_stortz: body.get("have_stortz"),
     stortz_size: parseInt(body.get("stortz_size")) || 0,

@@ -3,37 +3,48 @@ export const manifest = {
 	assets: new Set(["favicon.png"]),
 	mimeTypes: {".png":"image/png"},
 	_: {
-		entry: {"file":"_app/immutable/start-c171f237.js","imports":["_app/immutable/start-c171f237.js","_app/immutable/chunks/index-1b426719.js","_app/immutable/chunks/index-7867539a.js","_app/immutable/chunks/preload-helper-c28b9807.js","_app/immutable/chunks/singletons-eca981c1.js"],"stylesheets":[]},
+		entry: {"file":"_app/immutable/start-a51a2f20.js","imports":["_app/immutable/start-a51a2f20.js","_app/immutable/chunks/index-84b22e2d.js","_app/immutable/chunks/index-b8e1f907.js","_app/immutable/chunks/preload-helper-c28b9807.js","_app/immutable/chunks/singletons-eca981c1.js"],"stylesheets":[]},
 		nodes: [
 			() => import('../output/server/nodes/0.js'),
 			() => import('../output/server/nodes/1.js'),
+			() => import('../output/server/nodes/11.js'),
 			() => import('../output/server/nodes/3.js'),
 			() => import('../output/server/nodes/2.js'),
-			() => import('../output/server/nodes/16.js'),
-			() => import('../output/server/nodes/27.js'),
+			() => import('../output/server/nodes/15.js'),
+			() => import('../output/server/nodes/26.js'),
 			() => import('../output/server/nodes/4.js'),
 			() => import('../output/server/nodes/5.js'),
 			() => import('../output/server/nodes/6.js'),
 			() => import('../output/server/nodes/7.js'),
 			() => import('../output/server/nodes/8.js'),
-			() => import('../output/server/nodes/9.js'),
-			() => import('../output/server/nodes/11.js'),
+			() => import('../output/server/nodes/10.js'),
+			() => import('../output/server/nodes/12.js'),
 			() => import('../output/server/nodes/13.js'),
 			() => import('../output/server/nodes/14.js'),
-			() => import('../output/server/nodes/15.js'),
+			() => import('../output/server/nodes/16.js'),
 			() => import('../output/server/nodes/17.js'),
-			() => import('../output/server/nodes/18.js'),
+			() => import('../output/server/nodes/24.js'),
 			() => import('../output/server/nodes/25.js'),
-			() => import('../output/server/nodes/26.js'),
-			() => import('../output/server/nodes/28.js'),
+			() => import('../output/server/nodes/27.js'),
+			() => import('../output/server/nodes/18.js'),
 			() => import('../output/server/nodes/19.js'),
 			() => import('../output/server/nodes/20.js'),
 			() => import('../output/server/nodes/21.js'),
 			() => import('../output/server/nodes/22.js'),
-			() => import('../output/server/nodes/23.js'),
-			() => import('../output/server/nodes/24.js')
+			() => import('../output/server/nodes/23.js')
 		],
 		routes: [
+			{
+				type: 'page',
+				id: "",
+				pattern: /^\/$/,
+				names: [],
+				types: [],
+				path: "/",
+				shadow: null,
+				a: [0,2],
+				b: [1]
+			},
 			{
 				type: 'page',
 				id: "about",
@@ -42,7 +53,7 @@ export const manifest = {
 				types: [],
 				path: "/about",
 				shadow: null,
-				a: [0,2],
+				a: [0,3],
 				b: [1]
 			},
 			{
@@ -53,7 +64,7 @@ export const manifest = {
 				types: [],
 				path: "/profile",
 				shadow: () => import('../output/server/entries/endpoints/profile/index.js'),
-				a: [0,3,4],
+				a: [0,4,5],
 				b: [1]
 			},
 			{
@@ -64,17 +75,6 @@ export const manifest = {
 				types: [],
 				path: "/survey",
 				shadow: () => import('../output/server/entries/endpoints/survey/index.js'),
-				a: [0,5],
-				b: [1]
-			},
-			{
-				type: 'page',
-				id: "auth/checkyouremail",
-				pattern: /^\/auth\/checkyouremail\/?$/,
-				names: [],
-				types: [],
-				path: "/auth/checkyouremail",
-				shadow: null,
 				a: [0,6],
 				b: [1]
 			},
@@ -107,18 +107,18 @@ export const manifest = {
 				names: [],
 				types: [],
 				path: "/auth/signin",
-				shadow: null,
+				shadow: () => import('../output/server/entries/endpoints/auth/signin/index.js'),
 				a: [0,9],
 				b: [1]
 			},
 			{
 				type: 'page',
-				id: "auth/signout",
-				pattern: /^\/auth\/signout\/?$/,
+				id: "auth/update",
+				pattern: /^\/auth\/update\/?$/,
 				names: [],
 				types: [],
-				path: "/auth/signout",
-				shadow: null,
+				path: "/auth/update",
+				shadow: () => import('../output/server/entries/endpoints/auth/update/index.js'),
 				a: [0,10],
 				b: [1]
 			},
@@ -174,7 +174,7 @@ export const manifest = {
 				types: [],
 				path: "/profile/aboutme",
 				shadow: () => import('../output/server/entries/endpoints/profile/aboutme/index.js'),
-				a: [0,3,15],
+				a: [0,4,15],
 				b: [1]
 			},
 			{
@@ -185,7 +185,7 @@ export const manifest = {
 				types: [],
 				path: "/profile/map",
 				shadow: null,
-				a: [0,3,16],
+				a: [0,4,16],
 				b: [1]
 			},
 			{
@@ -196,7 +196,7 @@ export const manifest = {
 				types: [],
 				path: "/profile/mycommunity",
 				shadow: () => import('../output/server/entries/endpoints/profile/mycommunity/index.js'),
-				a: [0,3,17],
+				a: [0,4,17],
 				b: [1]
 			},
 			{
@@ -207,7 +207,7 @@ export const manifest = {
 				types: [],
 				path: "/profile/myplace",
 				shadow: () => import('../output/server/entries/endpoints/profile/myplace/index.js'),
-				a: [0,3,18],
+				a: [0,4,18],
 				b: [1]
 			},
 			{
@@ -218,7 +218,7 @@ export const manifest = {
 				types: [],
 				path: "/profile/settings",
 				shadow: () => import('../output/server/entries/endpoints/profile/settings/index.js'),
-				a: [0,3,19],
+				a: [0,4,19],
 				b: [1]
 			},
 			{
@@ -242,14 +242,6 @@ export const manifest = {
 			},
 			{
 				type: 'endpoint',
-				id: "api/auth/user",
-				pattern: /^\/api\/auth\/user\/?$/,
-				names: [],
-				types: [],
-				load: () => import('../output/server/entries/endpoints/api/auth/user.js')
-			},
-			{
-				type: 'endpoint',
 				id: "api/auth/updateuser",
 				pattern: /^\/api\/auth\/updateuser\/?$/,
 				names: [],
@@ -265,14 +257,6 @@ export const manifest = {
 				load: () => import('../output/server/entries/endpoints/api/auth/signin.js')
 			},
 			{
-				type: 'endpoint',
-				id: "api/auth/callback",
-				pattern: /^\/api\/auth\/callback\/?$/,
-				names: [],
-				types: [],
-				load: () => import('../output/server/entries/endpoints/api/auth/callback.js')
-			},
-			{
 				type: 'page',
 				id: "profile/mycommunity/information",
 				pattern: /^\/profile\/mycommunity\/information\/?$/,
@@ -280,7 +264,7 @@ export const manifest = {
 				types: [],
 				path: "/profile/mycommunity/information",
 				shadow: () => import('../output/server/entries/endpoints/profile/mycommunity/information/index.js'),
-				a: [0,3,21],
+				a: [0,4,21],
 				b: [1]
 			},
 			{
@@ -291,7 +275,7 @@ export const manifest = {
 				types: [],
 				path: "/profile/mycommunity/meetings",
 				shadow: () => import('../output/server/entries/endpoints/profile/mycommunity/meetings/index.js'),
-				a: [0,3,22],
+				a: [0,4,22],
 				b: [1]
 			},
 			{
@@ -302,7 +286,7 @@ export const manifest = {
 				types: [],
 				path: "/profile/mycommunity/workshops",
 				shadow: () => import('../output/server/entries/endpoints/profile/mycommunity/workshops/index.js'),
-				a: [0,3,23],
+				a: [0,4,23],
 				b: [1]
 			},
 			{
@@ -313,7 +297,7 @@ export const manifest = {
 				types: [],
 				path: "/profile/myplace/animals",
 				shadow: () => import('../output/server/entries/endpoints/profile/myplace/animals/index.js'),
-				a: [0,3,24],
+				a: [0,4,24],
 				b: [1]
 			},
 			{
@@ -324,7 +308,7 @@ export const manifest = {
 				types: [],
 				path: "/profile/myplace/assets",
 				shadow: () => import('../output/server/entries/endpoints/profile/myplace/assets/index.js'),
-				a: [0,3,25],
+				a: [0,4,25],
 				b: [1]
 			},
 			{
@@ -335,7 +319,7 @@ export const manifest = {
 				types: [],
 				path: "/profile/myplace/hazards",
 				shadow: () => import('../output/server/entries/endpoints/profile/myplace/hazards/index.js'),
-				a: [0,3,26],
+				a: [0,4,26],
 				b: [1]
 			}
 		],

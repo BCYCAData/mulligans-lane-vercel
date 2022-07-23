@@ -1,8 +1,9 @@
 import { withApiAuth, supabaseServerClient } from "@supabase/auth-helpers-sveltekit";
-const GET = async ({ locals: locals2 }) => withApiAuth({
+const GET = async ({ locals: locals2, request: request2 }) => withApiAuth({
+  redirectTo: "/auth/signin",
   user: locals2.user
 }, async () => {
-  const { data: profile, error: errorProfile } = await supabaseServerClient(locals2.accessToken).from("profile").select("*").eq("id", locals2.user.id);
+  const { data: profile, error: errorProfile } = await supabaseServerClient(request2).from("profile").select("*").eq("id", locals2.user.id);
   if (errorProfile) {
     console.log("error Get Profile:", errorProfile);
     return {
@@ -11,7 +12,7 @@ const GET = async ({ locals: locals2 }) => withApiAuth({
     };
   }
   if (!profile[0]) {
-    const { error: errorAddProfile } = await supabaseServerClient(locals2.accessToken).from("profile").insert([{ id: locals2.user.id }]);
+    const { error: errorAddProfile } = await supabaseServerClient(request2).from("profile").insert([{ id: locals2.user.id }]);
     if (errorAddProfile) {
       console.log("error Add Profile:", errorAddProfile);
       return {
@@ -19,7 +20,7 @@ const GET = async ({ locals: locals2 }) => withApiAuth({
         body: { errorAddProfile }
       };
     }
-    const { data: surveyData, error: errorSurveyData } = await supabaseServerClient(locals2.accessToken).from("survey_responses").select("*").eq("email_address", locals2.user.email);
+    const { data: surveyData, error: errorSurveyData } = await supabaseServerClient(request2).from("survey_responses").select("*").eq("email_address", locals2.user.email);
     if (errorSurveyData) {
       console.log("error Get Survey Data:", errorSurveyData);
       return {
@@ -31,7 +32,7 @@ const GET = async ({ locals: locals2 }) => withApiAuth({
       resetProfile(surveyData[0], locals2.user.id);
     }
   }
-  const { data: profileComments, error: errorComments } = await supabaseServerClient(locals2.accessToken).from("profile").select("other_comments").eq("id", locals2.user.id);
+  const { data: profileComments, error: errorComments } = await supabaseServerClient(request2).from("profile").select("other_comments").eq("id", locals2.user.id);
   if (errorComments) {
     console.log("error Get Other Comments:", errorComments);
     return {
@@ -48,7 +49,7 @@ async function resetProfile(survey, id) {
   withApiAuth({
     user: locals.user
   }, async () => {
-    const { error } = await supabaseServerClient(locals.accessToken).from("profile").update({
+    const { error } = await supabaseServerClient(request).from("profile").update({
       property_address_street: survey.property_address,
       property_address_suburb: survey.suburb,
       residency_profile: survey.residencyProfile,

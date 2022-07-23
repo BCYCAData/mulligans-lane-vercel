@@ -1,8 +1,9 @@
 import { withApiAuth, supabaseServerClient } from "@supabase/auth-helpers-sveltekit";
-const GET = async ({ locals }) => withApiAuth({
+const GET = async ({ locals, request }) => withApiAuth({
+  redirectTo: "/auth/signin",
   user: locals.user
 }, async () => {
-  const { data: profileData, error } = await supabaseServerClient(locals.accessToken).from("profile").select("stay_in_touch_choices,postal_address_street,postal_address_suburb,postal_address_postcode,other_comments").eq("id", locals.user.id);
+  const { data: profileData, error } = await supabaseServerClient(request).from("profile").select("stay_in_touch_choices,postal_address_street,postal_address_suburb,postal_address_postcode,other_comments").eq("id", locals.user.id);
   console.log("profileCommunity", profileData);
   if (error) {
     console.log("error profileCommunity:", error);
@@ -27,10 +28,11 @@ const GET = async ({ locals }) => withApiAuth({
   };
 });
 const POST = async ({ locals, request }) => withApiAuth({
+  redirectTo: "/auth/signin",
   user: locals.user
 }, async () => {
   const body = await request.formData();
-  const { data: profileData, error } = await supabaseServerClient(locals.accessToken).from("profile").update({
+  const { data: profileData, error } = await supabaseServerClient(request).from("profile").update({
     stay_in_touch_choices: body.getAll("stay_in_touch_choices"),
     postal_address_street: body.get("postal_address_street"),
     postal_address_suburb: body.get("postal_address_suburb"),

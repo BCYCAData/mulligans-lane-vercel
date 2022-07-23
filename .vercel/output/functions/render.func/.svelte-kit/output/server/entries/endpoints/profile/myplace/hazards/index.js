@@ -1,8 +1,9 @@
 import { withApiAuth, supabaseServerClient } from "@supabase/auth-helpers-sveltekit";
-const GET = async ({ locals }) => withApiAuth({
+const GET = async ({ locals, request }) => withApiAuth({
+  redirectTo: "/auth/signin",
   user: locals.user
 }, async () => {
-  const { data: profileData, error } = await supabaseServerClient(locals.accessToken).from("profile").select("site_hazards,other_site_hazards,land_adjacent_hazard,other_hazards").eq("id", locals.user.id);
+  const { data: profileData, error } = await supabaseServerClient(request).from("profile").select("site_hazards,other_site_hazards,land_adjacent_hazard,other_hazards").eq("id", locals.user.id);
   console.log("GET Data", profileData);
   if (error) {
     console.log("error profileHazards:", error);
@@ -27,10 +28,11 @@ const GET = async ({ locals }) => withApiAuth({
   };
 });
 const POST = async ({ locals, request }) => withApiAuth({
+  redirectTo: "/auth/signin",
   user: locals.user
 }, async () => {
   const body = await request.formData();
-  const { data: profileData, error } = await supabaseServerClient(locals.accessToken).from("profile").update({
+  const { data: profileData, error } = await supabaseServerClient(request).from("profile").update({
     site_hazards: body.getAll("site_hazards"),
     other_site_hazards: body.get("other_site_hazards"),
     land_adjacent_hazard: body.get("land_adjacent_hazard"),

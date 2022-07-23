@@ -1056,9 +1056,10 @@ async function render_response({
   }
   const segments = event.url.pathname.slice(options.paths.base.length).split("/").slice(2);
   const assets2 = options.paths.assets || (segments.length > 0 ? segments.map(() => "..").join("/") : ".");
-  const html = await resolve_opts.transformPage({
-    html: options.template({ head, body, assets: assets2, nonce: csp.nonce })
-  });
+  const html = await resolve_opts.transformPageChunk({
+    html: options.template({ head, body, assets: assets2, nonce: csp.nonce }),
+    done: true
+  }) || "";
   const headers = new Headers({
     "content-type": "text/html",
     etag: `"${hash(html)}"`
@@ -2180,7 +2181,7 @@ async function respond(request, options, state) {
   });
   let resolve_opts = {
     ssr: true,
-    transformPage: default_transform
+    transformPageChunk: default_transform
   };
   try {
     const response = await options.hooks.handle({
@@ -2188,9 +2189,12 @@ async function respond(request, options, state) {
       resolve: async (event2, opts) => {
         var _a2;
         if (opts) {
+          if (opts.transformPage) {
+            throw new Error("transformPage has been replaced by transformPageChunk \u2014 see https://github.com/sveltejs/kit/pull/5657 for more information");
+          }
           resolve_opts = {
             ssr: opts.ssr !== false,
-            transformPage: opts.transformPage || default_transform
+            transformPageChunk: opts.transformPageChunk || default_transform
           };
         }
         if ((_a2 = state.prerendering) == null ? void 0 : _a2.fallback) {
@@ -2379,7 +2383,7 @@ class Server {
       throw new Error("The first argument to server.respond must be a Request object. See https://github.com/sveltejs/kit/pull/3384 for details");
     }
     if (!this.options.hooks) {
-      const module = await import("./_app/immutable/chunks/hooks-ead1c174.js");
+      const module = await import("./_app/immutable/chunks/hooks-ad1569d4.js");
       this.options.hooks = {
         getSession: module.getSession || (() => ({})),
         handle: module.handle || (({ event, resolve: resolve2 }) => resolve2(event)),

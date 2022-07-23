@@ -1,7 +1,7 @@
-import * as module from '../entries/pages/policies/privacy.svelte.js';
+import * as module from '../entries/pages/policies/termsofservice.svelte.js';
 
 export { module };
 export const index = 13;
-export const file = '_app/immutable/pages/policies/privacy.svelte-cb6b53fb.js';
-export const imports = ["_app/immutable/pages/policies/privacy.svelte-cb6b53fb.js","_app/immutable/chunks/index-1b426719.js"];
+export const file = '_app/immutable/pages/policies/termsofservice.svelte-33682768.js';
+export const imports = ["_app/immutable/pages/policies/termsofservice.svelte-33682768.js","_app/immutable/chunks/index-84b22e2d.js"];
 export const stylesheets = [];

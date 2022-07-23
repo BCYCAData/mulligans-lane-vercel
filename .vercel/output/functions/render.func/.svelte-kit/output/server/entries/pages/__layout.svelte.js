@@ -1,15 +1,9 @@
 import { n as noop, a as safe_not_equal, c as create_ssr_component, b as subscribe, d as add_attribute, v as validate_component, e as add_classes } from "../../_app/immutable/chunks/index-9cfba6ed.js";
 import { p as page, s as session } from "../../_app/immutable/chunks/stores-4aaf17d4.js";
-import { s as supabaseClient } from "../../_app/immutable/chunks/dbClient-0cf002cd.js";
+import { s as supabaseClient } from "../../_app/immutable/chunks/dbClient-7d0ef1f9.js";
 import { ENDPOINT_PREFIX } from "@supabase/auth-helpers-shared";
 import "dequal";
 import "@supabase/auth-helpers-sveltekit";
-function guard(name) {
-  return () => {
-    throw new Error(`Cannot call ${name}(...) on the server`);
-  };
-}
-const goto = guard("goto");
 const subscriber_queue = [];
 function writable(value, start = noop) {
   let stop;
@@ -96,10 +90,11 @@ const Logo = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 });
 const Navbar_svelte_svelte_type_style_lang = "";
 const css$1 = {
-  code: "a.active.svelte-173hj3l button.svelte-173hj3l{background-color:transparent;color:rgb(249, 115, 22)}",
+  code: "a.active.svelte-hc9kor{background-color:transparent;color:rgb(249, 115, 22)}",
   map: null
 };
 const Navbar = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  var _a, _b;
   let $page, $$unsubscribe_page;
   let $session, $$unsubscribe_session;
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
@@ -109,31 +104,37 @@ const Navbar = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   $$unsubscribe_session();
   return `<nav class="${"container h-15 flex justify-around items-center mx-auto bg-orange-300"}">${validate_component(Logo, "Logo").$$render($$result, {}, {}, {})}
 	
-	<div class="${"flex ml-[89px] items-center"}"><div class="${"hidden md:block"}"><a sveltekit:prefetch href="${"/"}" class="${["svelte-173hj3l", $page.url.pathname.endsWith("/") ? "active" : ""].join(" ").trim()}"><button class="${"py-2 px-2 font-semibold text-white bg-orange-500 rounded-xl svelte-173hj3l"}">Home</button></a>
-			<a sveltekit:prefetch href="${"/about"}" class="${["svelte-173hj3l", $page.url.pathname.endsWith("/about") ? "active" : ""].join(" ").trim()}"><button class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black svelte-173hj3l"}">About
+	<div class="${"flex ml-[89px] items-center"}"><div class="${"hidden md:block"}"><a sveltekit:prefetch href="${"/"}" class="${["svelte-hc9kor", $page.url.pathname.endsWith("/") ? "active" : ""].join(" ").trim()}"><button class="${"py-2 px-2 font-semibold text-white bg-orange-500 rounded-xl"}">Home</button></a>
+			<a sveltekit:prefetch href="${"/about"}" class="${["svelte-hc9kor", $page.url.pathname.endsWith("/about") ? "active" : ""].join(" ").trim()}"><button class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"}">About
 				</button></a>
-			<a sveltekit:prefetch href="${"/contact"}" class="${["svelte-173hj3l", $page.url.pathname.endsWith("/contact") ? "active" : ""].join(" ").trim()}"><button class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black svelte-173hj3l"}">Contact Us
+			<a sveltekit:prefetch href="${"/contact"}" class="${["svelte-hc9kor", $page.url.pathname.endsWith("/contact") ? "active" : ""].join(" ").trim()}"><button class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"}">Contact Us
 				</button></a></div></div>
 
 	
-	<div class="${"hidden md:flex items-center"}">${$session.user ? `<button href="${"/"}" class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"}">Sign Out
-			</button>` : `<a sveltekit:prefetch href="${"/auth/signin"}" class="${["svelte-173hj3l", $page.url.pathname.endsWith("/signin") ? "active" : ""].join(" ").trim()}"><button class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black svelte-173hj3l"}">Sign In
-				</button></a>`}</div>
+	<div class="${"md:flex items-center"}">${((_a = $session == null ? void 0 : $session.user) == null ? void 0 : _a.id) ? `<a href="${"/api/auth/logout"}" class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"}">Sign Out
+			</a>` : `<a class="${[
+    "py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black svelte-hc9kor",
+    $page.url.pathname.endsWith("/signin") ? "active" : ""
+  ].join(" ").trim()}" sveltekit:prefetch href="${"/auth/signin"}">Sign In
+			</a>`}</div>
 	<div class="${"text-sm pl-3 mb-4 mt-6 bg-orange-300 text-center z-50 font-extrabold text-orange-500 md:hidden"}">Strengthening Our Community
 	</div>
 	
 	<div class="${"md:hidden flex items-center"}"><button class="${"outline-none bg-transparent mobile-menu-button"}"><svg class="${"w-6 h-6 text-orange-500 hover:text-purple-500 "}" x-show="${"!showMenu"}" fill="${"none"}" stroke-linecap="${"round"}" stroke-linejoin="${"round"}" stroke-width="${"2"}" viewBox="${"0 0 24 24"}" stroke="${"currentColor"}"><path d="${"M4 6h16M4 12h16M4 18h16"}"></path></svg></button></div>
 
 	
-	<div class="${["bg-orange-300 absolute w-full mobile-menu", "hidden"].join(" ").trim()}"><ul class="${"space-y-2 list-none"}"><li><a sveltekit:prefetch href="${"/"}" class="${["svelte-173hj3l", $page.url.pathname.endsWith("/") ? "active" : ""].join(" ").trim()}"><button class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black svelte-173hj3l"}">Home
+	<div class="${["bg-orange-300 absolute w-full mobile-menu", "hidden"].join(" ").trim()}"><ul class="${"space-y-2 list-none"}"><li><a sveltekit:prefetch href="${"/"}" class="${["svelte-hc9kor", $page.url.pathname.endsWith("/") ? "active" : ""].join(" ").trim()}"><button class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"}">Home
 					</button></a></li>
-			<li><a sveltekit:prefetch href="${"/about"}" class="${["svelte-173hj3l", $page.url.pathname.endsWith("/about") ? "active" : ""].join(" ").trim()}"><button class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black svelte-173hj3l"}">About
+			<li><a sveltekit:prefetch href="${"/about"}" class="${["svelte-hc9kor", $page.url.pathname.endsWith("/about") ? "active" : ""].join(" ").trim()}"><button class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"}">About
 					</button></a></li>
-			<li><a sveltekit:prefetch href="${"/contact"}" class="${["svelte-173hj3l", $page.url.pathname.endsWith("/contact") ? "active" : ""].join(" ").trim()}"><button class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black svelte-173hj3l"}">Contact Us
+			<li><a sveltekit:prefetch href="${"/contact"}" class="${["svelte-hc9kor", $page.url.pathname.endsWith("/contact") ? "active" : ""].join(" ").trim()}"><button class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"}">Contact Us
 					</button></a></li>
-			<li>${$session.user ? `<button class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"}">Sign Out
-					</button>` : `<a sveltekit:prefetch href="${"/auth/signin"}" class="${["svelte-173hj3l", $page.url.pathname.endsWith("/signin") ? "active" : ""].join(" ").trim()}"><button class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black svelte-173hj3l"}">Sign In
-						</button></a>`}</li></ul></div>
+			<li>${((_b = $session == null ? void 0 : $session.user) == null ? void 0 : _b.id) ? `<a href="${"/api/auth/logout"}" class="${"py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black"}">Sign Out
+					</a>` : `<a class="${[
+    "py-2 px-2 text-white bg-orange-500 font-semibold rounded-xl outline-black svelte-hc9kor",
+    $page.url.pathname.endsWith("/signin") ? "active" : ""
+  ].join(" ").trim()}" sveltekit:prefetch href="${"/auth/signin"}">Sign In
+					</a>`}</li></ul></div>
 </nav>`;
 });
 const app = "";
@@ -146,22 +147,9 @@ const css = {
 const _layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $page, $$unsubscribe_page;
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
-  const onUserUpdate = async (user) => {
-    if (user) {
-      if ($page.url.pathname.endsWith("/auth/updateuser")) {
-        if (!$page.url.pathname.startsWith("/auth/updateuser")) {
-          await goto("/auth/updateuser");
-          location.reload();
-        }
-      } else if (!$page.url.pathname.startsWith("/profile")) {
-        await goto("/profile");
-        location.reload();
-      }
-    }
-  };
   $$result.css.add(css);
   $$unsubscribe_page();
-  return `${validate_component(SupaAuthHelper, "SupaAuthHelper").$$render($$result, { supabaseClient, session, onUserUpdate }, {}, {
+  return `${validate_component(SupaAuthHelper, "SupaAuthHelper").$$render($$result, { supabaseClient, session }, {}, {
     default: () => {
       return `<div class="${"grid w-11/12 mx-auto min-h-screen svelte-1jjqws8"}" id="${"wrapper"}"><header class="${"col-span-8 row-span-1"}">${validate_component(Navbar, "Navbar").$$render($$result, {}, {}, {})}</header>
 		<main class="${"col-span-8 row-span-22"}">${slots.default ? slots.default({}) : ``}</main>

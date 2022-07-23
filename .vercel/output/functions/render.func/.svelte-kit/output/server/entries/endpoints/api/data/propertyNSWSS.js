@@ -1,4 +1,4 @@
-async function post({ request }) {
+async function POST({ request }) {
   const body = await request.json();
   const addressURL = "https://portal.spatial.nsw.gov.au/server/rest/services/NSW_Geocoded_Addressing_Theme/MapServer/1/query?where=";
   let safeAddressString = body.address.replace(/\s+/g, "+");
@@ -42,5 +42,5 @@ async function post({ request }) {
   }
 }
 export {
-  post
+  POST
 };
